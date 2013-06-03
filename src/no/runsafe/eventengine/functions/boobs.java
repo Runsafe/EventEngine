@@ -5,9 +5,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class player extends TwoArgFunction
+public class boobs extends TwoArgFunction
 {
-	public player() {}
+	public boobs() {}
 
 	@Override
 	public LuaValue call(LuaValue modName, LuaValue env)
