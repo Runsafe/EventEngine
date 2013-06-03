@@ -5,18 +5,19 @@ import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.TwoArgFunction;
 
-public class player extends OneArgFunction
+public class player extends TwoArgFunction
 {
 	public player() {}
 
 	@Override
-	public LuaValue call(LuaValue env)
+	public LuaValue call(LuaValue modName, LuaValue env)
 	{
-		LuaTable player = new LuaTable();
+		LuaTable player = tableOf();
 		player.set("kill", new kill());
+
 		env.set("player", player);
-		env.get("package").get("loaded").set("player", player);
 		return player;
 	}
 
