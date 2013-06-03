@@ -7,9 +7,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 
-public class player extends TwoArgFunction
+public class Player extends TwoArgFunction
 {
-	public player() {}
+	public Player() {}
 
 	@Override
 	public LuaValue call(LuaValue modName, LuaValue env)
