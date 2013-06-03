@@ -6,17 +6,17 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 
-public class Player extends OneArgFunction
+public class player extends OneArgFunction
 {
-	public Player() {}
+	public player() {}
 
 	@Override
 	public LuaValue call(LuaValue env)
 	{
 		LuaTable player = new LuaTable();
 		player.set("kill", new kill());
-		env.set("Player", player);
-		env.get("package").get("loaded").set("Player", player);
+		env.set("player", player);
+		env.get("package").get("loaded").set("player", player);
 		return player;
 	}
 
