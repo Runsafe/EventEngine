@@ -18,6 +18,7 @@ public class Player extends OneArgFunction
 		Globals globals = env.checkglobals();
 		LuaTable player = new LuaTable();
 		player.set("kill", new kill());
+		player.set("test", new test());
 
 		env.set("player", player);
 		globals.package_.loaded.set("player", player);
