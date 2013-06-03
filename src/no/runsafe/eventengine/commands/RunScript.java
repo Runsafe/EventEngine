@@ -14,7 +14,7 @@ public class RunScript extends ExecutableCommand
 	public RunScript(Plugin eventEngine)
 	{
 		super("run", "Executes an LUA script", "runsafe.eventengine.run", "script");
-		this.path = String.format("plugins/%s/", eventEngine.getName());
+		this.path = String.format("plugins/%s/scripts/", eventEngine.getName());
 	}
 
 	@Override
