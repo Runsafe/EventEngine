@@ -16,9 +16,6 @@ public class Plugin extends RunsafePlugin
 	{
 		this.addComponent(RunScript.class);
 		Plugin.console = this.output;
-
-		LuaValue global = JsePlatform.standardGlobals();
-		global.load(new player());
 	}
 
 	public static IOutput console;
