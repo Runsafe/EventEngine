@@ -1,7 +1,7 @@
 package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.commands.RunScript;
-import no.runsafe.eventengine.functions.player.Player;
+import no.runsafe.eventengine.functions.Player;
 import no.runsafe.framework.RunsafePlugin;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
