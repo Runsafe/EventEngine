@@ -6,6 +6,11 @@ import org.luaj.vm2.lib.OneArgFunction;
 
 public class Player extends OneArgFunction
 {
+	public Player()
+	{
+
+	}
+
 	@Override
 	public LuaValue call(LuaValue env)
 	{
