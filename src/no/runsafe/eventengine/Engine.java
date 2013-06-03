@@ -7,11 +7,13 @@ import org.luaj.vm2.lib.OneArgFunction;
 
 public class Engine extends OneArgFunction
 {
+	Globals globals;
+
 	@Override
 	public LuaValue call(LuaValue env)
 	{
 		Plugin.console.write("ENGINE CALLED!");
-		Globals globals = env.checkglobals();
+		globals = env.checkglobals();
 		LuaTable lib = new LuaTable();
 
 		env.set("engine", lib);
