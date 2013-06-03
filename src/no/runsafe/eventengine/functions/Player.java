@@ -6,6 +6,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.ZeroArgFunction;
 
 public class Player extends OneArgFunction
 {
@@ -23,6 +24,16 @@ public class Player extends OneArgFunction
 		return player;
 	}
 
+	static class test extends ZeroArgFunction
+	{
+		@Override
+		public LuaValue call()
+		{
+			RunsafeServer.Instance.broadcastMessage("Test");
+			return valueOf("Test");
+		}
+	}
+
 	static class kill extends OneArgFunction
 	{
 		@Override
@@ -32,6 +43,5 @@ public class Player extends OneArgFunction
 			player.setHealth(0);
 			return null;
 		}
-		// Sciencee
 	}
 }
