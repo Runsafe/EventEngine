@@ -1,4 +1,4 @@
-package no.runsafe.eventengine.functions;
+package no.runsafe.eventengine.functions.player;
 
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
@@ -7,14 +7,11 @@ import org.luaj.vm2.lib.OneArgFunction;
 
 public class KillPlayer extends OneArgFunction
 {
-	public KillPlayer() {}
-
 	@Override
-	public LuaValue call(LuaValue playerString)
+	public LuaValue call(LuaValue playerName)
 	{
-		RunsafePlayer player = RunsafeServer.Instance.getPlayerExact(playerString.toString());
+		RunsafePlayer player = RunsafeServer.Instance.getPlayerExact(playerName.toString());
 		player.setHealth(0);
-
 		return null;
 	}
 }

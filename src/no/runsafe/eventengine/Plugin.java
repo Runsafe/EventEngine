@@ -1,8 +1,7 @@
 package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.commands.RunScript;
-import no.runsafe.eventengine.functions.HelloWorld;
-import no.runsafe.eventengine.functions.KillPlayer;
+import no.runsafe.eventengine.functions.player.Player;
 import no.runsafe.framework.RunsafePlugin;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
@@ -15,7 +14,6 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(RunScript.class);
 
 		LuaValue global = JsePlatform.standardGlobals();
-		global.load(new KillPlayer());
-		global.load(new HelloWorld());
+		global.load(new Player());
 	}
 }
