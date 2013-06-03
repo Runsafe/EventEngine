@@ -17,7 +17,7 @@ public class Player extends TwoArgFunction
 		LuaTable player = tableOf();
 		player.set("kill", new kill());
 
-		env.set("player", player);
+		env.set("Player", player);
 		return player;
 	}
 
