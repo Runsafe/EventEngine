@@ -3,6 +3,8 @@ package no.runsafe.eventengine;
 import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class Plugin extends RunsafePlugin
 {
@@ -11,6 +13,9 @@ public class Plugin extends RunsafePlugin
 	{
 		this.addComponent(RunScript.class);
 		Plugin.console = this.output;
+
+		LuaValue _G = JsePlatform.standardGlobals();
+		_G.load(new Engine());
 	}
 
 	public static IOutput console;
