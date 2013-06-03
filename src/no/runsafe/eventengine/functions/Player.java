@@ -5,25 +5,22 @@ import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class Player extends OneArgFunction
+public class Player extends TwoArgFunction
 {
-	public Player()
-	{
-		RunsafeServer.Instance.broadcastMessage("The player tier has been constructed");
-	}
+	public Player() {}
 
 	@Override
-	public LuaValue call(LuaValue env)
+	public LuaValue call(LuaValue modName, LuaValue env)
 	{
-		RunsafeServer.Instance.broadcastMessage("The player tier has been called");
-		LuaTable player = new LuaTable();
+		LuaTable player = tableOf();
 		player.set("kill", new kill());
 		player.set("test", new test());
 
 		env.set("player", player);
-		env.checkglobals().package_.loaded.set("player", player);
+		//env.checkglobals().package_.loaded.set("player", player);
 		return player;
 	}
 
