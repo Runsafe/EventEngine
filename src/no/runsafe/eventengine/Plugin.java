@@ -1,5 +1,6 @@
 package no.runsafe.eventengine;
 
+import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.framework.RunsafePlugin;
 
 public class Plugin extends RunsafePlugin
@@ -7,6 +8,6 @@ public class Plugin extends RunsafePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		//addComponent(SomeComponent.class);
+		this.addComponent(RunScript.class);
 	}
 }

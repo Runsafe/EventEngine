@@ -1,10 +1,8 @@
 name: EventEngine
 main: no.runsafe.eventengine.Plugin
 version: 1.0.@BUILD@
-authors: []
-depend: []
-description:
+author: Kruithne
+description: Event engine
 commands:
-  something:
-    description:
-    aliases: []
+  run:
+    description: Runs a script
