@@ -30,5 +30,6 @@ public class player extends TwoArgFunction
 			player.setHealth(0);
 			return null;
 		}
+		// Sciencee
 	}
 }
