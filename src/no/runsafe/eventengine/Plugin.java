@@ -13,7 +13,7 @@ public class Plugin extends RunsafePlugin
 	{
 		this.addComponent(RunScript.class);
 
-		LuaValue global = JsePlatform.standardGlobals();
-		global.load(new player());
+		//LuaValue global = JsePlatform.standardGlobals();
+		//global.load(new player());
 	}
 }
