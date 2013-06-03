@@ -19,7 +19,7 @@ public class Player extends TwoArgFunction
 		player.set("kill", new kill());
 		player.set("test", new test());
 
-		env.set("player", player);
+		env.set("Player", player);
 		//env.checkglobals().package_.loaded.set("player", player);
 		return player;
 	}
