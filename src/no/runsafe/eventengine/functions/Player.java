@@ -20,8 +20,8 @@ public class Player extends OneArgFunction
 		player.set("kill", new kill());
 		player.set("test", new test());
 
-		env.set("player", player);
-		globals.package_.loaded.set("player", player);
+		env.set("Player", player);
+		globals.package_.loaded.set("Player", player);
 		return player;
 	}
 
