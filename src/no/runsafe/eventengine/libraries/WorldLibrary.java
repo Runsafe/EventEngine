@@ -17,6 +17,7 @@ public class WorldLibrary extends OneArgFunction
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("setBlock", new SetBlock());
+		lib.set("getBlock", new GetBlock());
 
 		env.get("engine").set("world", lib);
 		return lib;
@@ -28,8 +29,7 @@ public class WorldLibrary extends OneArgFunction
 		public Varargs invoke(Varargs args)
 		{
 			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world == null)
-				return null;
+			if (world == null) return null;
 
 			RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
 
@@ -44,6 +44,26 @@ public class WorldLibrary extends OneArgFunction
 				block.setData((byte) args.checkint(6));
 
 			return null;
+		}
+	}
+
+	static class GetBlock extends VarArgFunction
+	{
+		// world, x, y, z
+		public Varargs invoke(Varargs args)
+		{
+			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
+			if (world == null) return null;
+
+			RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
+
+			RunsafeChunk chunk = location.getChunk();
+			if (!chunk.isLoaded())
+				chunk.load();
+
+			RunsafeBlock block = location.getBlock();
+			LuaValue[] data = {valueOf(block.getTypeId()), valueOf(block.getData())};
+			return varargsOf(data);
 		}
 	}
 }
