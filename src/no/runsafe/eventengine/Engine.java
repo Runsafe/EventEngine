@@ -13,6 +13,7 @@ public class Engine extends OneArgFunction
 	public LuaValue call(LuaValue env)
 	{
 		globals = env.checkglobals();
+		Plugin.global = globals;
 		LuaTable lib = new LuaTable();
 
 		env.set("engine", lib);

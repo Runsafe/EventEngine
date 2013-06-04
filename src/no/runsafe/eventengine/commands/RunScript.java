@@ -26,7 +26,7 @@ public class RunScript extends ExecutableCommand
 		if (!new File(file).exists())
 			return "&cScript not found.";
 
-		JsePlatform.standardGlobals().get("dofile").call(LuaValue.valueOf(file));
+		no.runsafe.eventengine.Plugin.global.get("dofile").call(LuaValue.valueOf(file));
 		return "&2Script executed.";
 	}
 
