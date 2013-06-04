@@ -1,4 +1,4 @@
-package no.runsafe.eventengine;
+package no.runsafe.eventengine.engine;
 
 import org.luaj.vm2.Globals;
 

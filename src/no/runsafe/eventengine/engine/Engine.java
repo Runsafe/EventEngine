@@ -1,4 +1,4 @@
-package no.runsafe.eventengine;
+package no.runsafe.eventengine.engine;
 
 import no.runsafe.eventengine.libraries.EffectLibrary;
 import no.runsafe.eventengine.libraries.PlayerLibrary;

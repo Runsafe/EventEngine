@@ -1,6 +1,7 @@
 package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.commands.RunScript;
+import no.runsafe.eventengine.engine.Engine;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
 import org.luaj.vm2.LuaValue;

@@ -1,5 +1,8 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.engine.EventEngineFunction;
+import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.eventengine.objects.LuaPlayer;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
@@ -8,6 +11,8 @@ import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
+
+import java.util.List;
 
 public class PlayerLibrary extends OneArgFunction
 {
@@ -27,14 +32,13 @@ public class PlayerLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class Kill extends OneArgFunction
+	static class Kill extends EventEngineFunction
 	{
 		@Override
-		public LuaValue call(LuaValue playerName)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(playerName);
-			if ( ObjectLibrary.canEditPlayer(player))
-					player.setHealth(0);
+			if (parameters.isPlayer(0))
+				parameters.getPlayer(0).setHealth(0);
 
 			return null;
 		}
@@ -45,9 +49,10 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public LuaValue call(LuaValue playerName, LuaValue message)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(playerName);
-			if (ObjectLibrary.canEditPlayer(player))
-				player.sendColouredMessage(message.toString());
+			LuaPlayer playerWrapper = new LuaPlayer(playerName);
+
+			if (playerWrapper.isPlayer())
+				playerWrapper.player().sendColouredMessage(message.toString());
 
 			return null;
 		}

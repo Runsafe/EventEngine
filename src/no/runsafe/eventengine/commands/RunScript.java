@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.commands;
 
-import no.runsafe.eventengine.Environment;
+import no.runsafe.eventengine.engine.Environment;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.ICommandExecutor;
