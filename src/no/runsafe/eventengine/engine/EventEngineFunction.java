@@ -1,8 +1,10 @@
 package no.runsafe.eventengine.engine;
 
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventEngineFunction extends VarArgFunction
@@ -16,9 +18,31 @@ public class EventEngineFunction extends VarArgFunction
 			parameters.addParameter(args.checkvalue(currentIndex));
 			currentIndex += 1;
 		}
+		return this.objectListToVarargs(this.run(parameters));
+	}
 
-		this.run(parameters);
-		return null;
+	private Varargs objectListToVarargs(List<Object> objects)
+	{
+		List<LuaValue> values = new ArrayList<LuaValue>();
+
+		if (objects != null)
+		{
+			for (Object object : objects)
+			{
+				if (object instanceof Boolean)
+					values.add(valueOf((Boolean) object));
+
+				if (object instanceof String)
+					values.add(valueOf((String) object));
+
+				if (object instanceof Double)
+					values.add(valueOf((Double) object));
+
+				if (object instanceof Integer)
+					values.add(valueOf((Integer) object));
+			}
+		}
+		return varargsOf(values.toArray(new LuaValue[values.size()]));
 	}
 
 	public List<Object> run(FunctionParameters parameters)
