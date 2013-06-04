@@ -12,6 +12,7 @@ public class PlayerLibrary extends OneArgFunction
 	@Override
 	public LuaValue call(LuaValue env)
 	{
+		Plugin.console.write("PLAYER LIBRARY CALLED");
 		globals = env.checkglobals();
 		LuaTable lib = new LuaTable();
 

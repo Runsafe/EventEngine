@@ -12,7 +12,6 @@ public class Engine extends OneArgFunction
 	@Override
 	public LuaValue call(LuaValue env)
 	{
-		Plugin.console.write("ENGINE CALLED!");
 		globals = env.checkglobals();
 		LuaTable lib = new LuaTable();
 
