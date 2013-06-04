@@ -87,7 +87,7 @@ public class PlayerLibrary extends OneArgFunction
 			RunsafePlayer target = ObjectLibrary.getPlayer(targetPlayerName);
 
 			if ( ObjectLibrary.canEditPlayer(player) &&  ObjectLibrary.canEditPlayer(target))
-				player.teleport(player.getLocation());
+				player.teleport(target.getLocation());
 
 			return null;
 		}
