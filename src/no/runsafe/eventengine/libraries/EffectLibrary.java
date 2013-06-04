@@ -74,14 +74,15 @@ public class EffectLibrary extends OneArgFunction
 
 			FireworkEffect effect = FireworkEffect
 					.builder()
-					.withColor(EffectLibrary.colourID.get(args.checkint(5)))
-					.withFade(EffectLibrary.colourID.get(args.checkint(6)))
-					.flicker(args.checkboolean(7))
-					.trail(args.checkboolean(8))
+					.with(FireworkEffect.Type.valueOf(args.checkjstring(5)))
+					.withColor(EffectLibrary.colourID.get(args.checkint(6)))
+					.withFade(EffectLibrary.colourID.get(args.checkint(7)))
+					.flicker(args.checkboolean(8))
+					.trail(args.checkboolean(9))
 					.build();
 
 			meta.addEffect(effect);
-			meta.setPower(args.checkint(9));
+			meta.setPower(args.checkint(10));
 			firework.setFireworkMeta(meta);
 			return null;
 		}
