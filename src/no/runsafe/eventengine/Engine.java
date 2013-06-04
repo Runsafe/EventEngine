@@ -2,6 +2,7 @@ package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.libraries.EffectLibrary;
 import no.runsafe.eventengine.libraries.PlayerLibrary;
+import no.runsafe.eventengine.libraries.WorldLibrary;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
@@ -19,6 +20,7 @@ public class Engine extends OneArgFunction
 
 		Environment.global.load(new PlayerLibrary());
 		Environment.global.load(new EffectLibrary());
+		Environment.global.load(new WorldLibrary());
 		return lib;
 	}
 }
