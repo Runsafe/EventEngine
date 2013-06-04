@@ -1,10 +1,10 @@
 package no.runsafe.eventengine.commands;
 
+import no.runsafe.eventengine.Environment;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import org.bukkit.plugin.Plugin;
 import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.JsePlatform;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class RunScript extends ExecutableCommand
 		if (!new File(file).exists())
 			return "&cScript not found.";
 
-		no.runsafe.eventengine.Plugin.global.get("dofile").call(LuaValue.valueOf(file));
+		Environment.global.get("dofile").call(LuaValue.valueOf(file));
 		return "&2Script executed.";
 	}
 

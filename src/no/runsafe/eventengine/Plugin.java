@@ -3,7 +3,6 @@ package no.runsafe.eventengine;
 import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
-import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
@@ -20,5 +19,4 @@ public class Plugin extends RunsafePlugin
 	}
 
 	public static IOutput console;
-	public static Globals global;
 }
