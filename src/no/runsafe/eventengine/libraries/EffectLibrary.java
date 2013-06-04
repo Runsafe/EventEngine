@@ -4,6 +4,7 @@ import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeWorld;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 
@@ -22,11 +23,11 @@ public class EffectLibrary extends OneArgFunction
 
 	static class LightningStrike extends VarArgFunction
 	{
-		public LuaValue call(LuaValue worldName, LuaValue x, LuaValue y, LuaValue z)
+		public Varargs invoke(Varargs args)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(worldName);
+			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
 			if (world != null)
-				world.strikeLightningEffect(new RunsafeLocation(world, x.todouble(), y.todouble(), z.todouble()));
+				world.strikeLightningEffect(new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4)));
 
 			return null;
 		}
@@ -34,13 +35,13 @@ public class EffectLibrary extends OneArgFunction
 
 	static class Explosion extends VarArgFunction
 	{
-		public LuaValue call(LuaValue worldName, LuaValue x, LuaValue y, LuaValue z, LuaValue power, LuaValue breakBlocks, LuaValue fire)
+		public Varargs invoke(Varargs args)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(worldName);
+			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
 			if (world != null)
 			{
-				RunsafeLocation location = new RunsafeLocation(world, x.todouble(), y.todouble(), z.todouble());
-				world.createExplosion(location, power.tofloat(), fire.toboolean(), breakBlocks.toboolean());
+				RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
+				world.createExplosion(location, args.checkint(5), args.checkboolean(6), args.checkboolean(7));
 			}
 			return null;
 		}

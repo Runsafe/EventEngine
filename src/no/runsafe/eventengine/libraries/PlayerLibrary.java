@@ -4,6 +4,7 @@ import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
@@ -65,16 +66,15 @@ public class PlayerLibrary extends OneArgFunction
 
 	static class TeleportToLocation extends VarArgFunction
 	{
-		public LuaValue call(LuaValue playerName, LuaValue worldName, LuaValue x, LuaValue y, LuaValue z)
+		public Varargs invoke(Varargs args)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(playerName);
+			RunsafePlayer player =  ObjectLibrary.getPlayer(args.checkstring(1));
 			if ( ObjectLibrary.canEditPlayer(player))
 			{
-				RunsafeWorld world =  ObjectLibrary.getWorld(worldName);
+				RunsafeWorld world =  ObjectLibrary.getWorld(args.checkstring(2));
 				if (world != null)
-					player.teleport(world, x.todouble(), y.todouble(), z.todouble());
+					player.teleport(world, args.checkdouble(3), args.checkdouble(4), args.checkdouble(5));
 			}
-
 			return null;
 		}
 	}
