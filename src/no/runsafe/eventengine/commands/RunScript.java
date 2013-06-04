@@ -2,6 +2,7 @@ package no.runsafe.eventengine.commands;
 
 import no.runsafe.eventengine.Environment;
 import no.runsafe.framework.command.ExecutableCommand;
+import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.ICommandExecutor;
 import org.bukkit.plugin.Plugin;
 import org.luaj.vm2.LuaValue;
@@ -11,11 +12,15 @@ import java.util.HashMap;
 
 public class RunScript extends ExecutableCommand
 {
-	public RunScript(Plugin eventEngine)
+	public RunScript(Plugin eventEngine, IOutput output)
 	{
 		super("run", "Executes an LUA script", "runsafe.eventengine.run", "script");
+		this.output = output;
+
+		// Setup folders
 		this.path = String.format("plugins/%s/scripts/", eventEngine.getName());
-		new File(this.path).mkdirs();
+		if (!new File(this.path).mkdirs())
+			this.output.warning("Failed to create scripts directory at: " + this.path);
 	}
 
 	@Override
@@ -31,4 +36,5 @@ public class RunScript extends ExecutableCommand
 	}
 
 	private String path;
+	private IOutput output;
 }
