@@ -21,6 +21,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("teleportToLocation", new TeleportToLocation());
 		lib.set("teleportToPlayer", new TeleportToPlayer());
 		lib.set("strikeLightning", new LightningStrike());
+		lib.set("cloneInventory", new CloneInventory());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -102,6 +103,23 @@ public class PlayerLibrary extends OneArgFunction
 			if (ObjectLibrary.canEditPlayer(player))
 				player.getWorld().strikeLightningEffect(player.getLocation());
 
+			return null;
+		}
+	}
+
+	static class CloneInventory extends TwoArgFunction
+	{
+		@Override
+		public LuaValue call(LuaValue sourcePlayer, LuaValue targetPlayer)
+		{
+			RunsafePlayer source = ObjectLibrary.getPlayer(sourcePlayer);
+			RunsafePlayer target = ObjectLibrary.getPlayer(targetPlayer);
+
+			if (ObjectLibrary.canEditPlayer(source) && ObjectLibrary.canEditPlayer(target))
+			{
+				target.getInventory().unserialize(source.getInventory().serialize());
+				target.updateInventory();
+			}
 			return null;
 		}
 	}
