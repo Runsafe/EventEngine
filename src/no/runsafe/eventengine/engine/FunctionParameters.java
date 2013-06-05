@@ -4,6 +4,7 @@ import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class FunctionParameters
 
 	private LuaValue getLuaValue(int index)
 	{
+		if (this.parameters.size() < index -1)
+			throw new LuaError("Function contains an invalid amount of parameters");
+
 		return this.parameters.get(index);
 	}
 
@@ -38,26 +42,25 @@ public class FunctionParameters
 
 	public RunsafePlayer getPlayer(int index)
 	{
-		return RunsafeServer.Instance.getPlayerExact(this.getString(index));
+		RunsafePlayer player = RunsafeServer.Instance.getPlayerExact(this.getString(index));
+		if (player == null)
+			throw new LuaError(String.format("Argument %s is not a valid player.", index));
+
+		return player;
 	}
 
 	public RunsafeWorld getWorld(int index)
 	{
-		return RunsafeServer.Instance.getWorld(this.getString(index));
+		RunsafeWorld world = RunsafeServer.Instance.getWorld(this.getString(index));
+		if (world == null)
+			throw new LuaError(String.format("Argument %s is not a valid world.", index));
+
+		return world;
 	}
 
 	public RunsafeLocation getLocation(int index)
 	{
-		RunsafeWorld world = this.getWorld(index);
-		if (world != null)
-			return new RunsafeLocation(world, getDouble(index + 1), getDouble(index + 2), getDouble(index +3));
-
-		return null;
-	}
-
-	public boolean isPlayer(int index)
-	{
-		return this.getPlayer(index) != null;
+		return new RunsafeLocation(this.getWorld(index), getDouble(index + 1), getDouble(index + 2), getDouble(index + 3));
 	}
 
 	List<LuaValue> parameters = new ArrayList<LuaValue>();
