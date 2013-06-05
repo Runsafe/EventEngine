@@ -20,7 +20,6 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("setHealth", new SetHealth());
 		lib.set("teleportToLocation", new TeleportToLocation());
 		lib.set("teleportToPlayer", new TeleportToPlayer());
-		lib.set("strikeLightning", new LightningStrike());
 		lib.set("cloneInventory", new CloneInventory());
 
 		env.get("engine").set("player", lib);
@@ -73,17 +72,6 @@ public class PlayerLibrary extends OneArgFunction
 		public List<Object> run(FunctionParameters parameters)
 		{
 			parameters.getPlayer(0).teleport(parameters.getPlayer(1).getLocation());
-			return null;
-		}
-	}
-
-	static class LightningStrike extends EventEngineFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafePlayer player = parameters.getPlayer(0);
-			player.getWorld().strikeLightningEffect(player.getLocation());
 			return null;
 		}
 	}
