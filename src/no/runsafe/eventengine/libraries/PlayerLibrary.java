@@ -32,9 +32,7 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			if (parameters.isPlayer(0))
-				parameters.getPlayer(0).setHealth(0);
-
+			parameters.getPlayer(0).setHealth(0);
 			return null;
 		}
 	}
@@ -44,9 +42,7 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			if (parameters.isPlayer(0))
-				parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
-
+			parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
 			return null;
 		}
 	}
@@ -56,9 +52,7 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			if (parameters.isPlayer(0))
-				parameters.getPlayer(0).setHealth(parameters.getInt(1));
-
+			parameters.getPlayer(0).setHealth(parameters.getInt(1));
 			return null;
 		}
 	}
@@ -68,11 +62,7 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			if (parameters.isPlayer(0))
-			{
-				RunsafePlayer player = parameters.getPlayer(0);
-				player.teleport(parameters.getLocation(1));
-			}
+			parameters.getPlayer(0).teleport(parameters.getLocation(1));
 			return null;
 		}
 	}
