@@ -2,15 +2,10 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
-import no.runsafe.eventengine.objects.LuaPlayer;
-import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
-import org.luaj.vm2.lib.TwoArgFunction;
-import org.luaj.vm2.lib.VarArgFunction;
 
 import java.util.List;
 
@@ -44,87 +39,75 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class SendMessage extends TwoArgFunction
+	static class SendMessage extends EventEngineFunction
 	{
 		@Override
-		public LuaValue call(LuaValue playerName, LuaValue message)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			LuaPlayer playerWrapper = new LuaPlayer(playerName);
-
-			if (playerWrapper.isPlayer())
-				playerWrapper.player().sendColouredMessage(message.toString());
+			if (parameters.isPlayer(0))
+				parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
 
 			return null;
 		}
 	}
 
-	static class SetHealth extends TwoArgFunction
+	static class SetHealth extends EventEngineFunction
 	{
 		@Override
-		public LuaValue call(LuaValue playerName, LuaValue health)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(playerName);
-			if ( ObjectLibrary.canEditPlayer(player))
-				player.setHealth(health.toint());
+			if (parameters.isPlayer(0))
+				parameters.getPlayer(0).setHealth(parameters.getInt(1));
+
 			return null;
 		}
 	}
 
-	static class TeleportToLocation extends VarArgFunction
+	static class TeleportToLocation extends EventEngineFunction
 	{
-		public Varargs invoke(Varargs args)
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(args.checkstring(1));
-			if ( ObjectLibrary.canEditPlayer(player))
+			if (parameters.isPlayer(0))
 			{
-				RunsafeWorld world =  ObjectLibrary.getWorld(args.checkstring(2));
-				if (world != null)
-					player.teleport(world, args.checkdouble(3), args.checkdouble(4), args.checkdouble(5));
+				RunsafePlayer player = parameters.getPlayer(0);
+				player.teleport(parameters.getLocation(1));
 			}
 			return null;
 		}
 	}
 
-	static class TeleportToPlayer extends TwoArgFunction
+	static class TeleportToPlayer extends EventEngineFunction
 	{
-		public LuaValue call(LuaValue playerName, LuaValue targetPlayerName)
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player = ObjectLibrary.getPlayer(playerName);
-			RunsafePlayer target = ObjectLibrary.getPlayer(targetPlayerName);
-
-			if ( ObjectLibrary.canEditPlayer(player) &&  ObjectLibrary.canEditPlayer(target))
-				player.teleport(target.getLocation());
-
+			parameters.getPlayer(0).teleport(parameters.getPlayer(1).getLocation());
 			return null;
 		}
 	}
 
-	static class LightningStrike extends OneArgFunction
+	static class LightningStrike extends EventEngineFunction
 	{
 		@Override
-		public LuaValue call(LuaValue playerName)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player =  ObjectLibrary.getPlayer(playerName);
-			if (ObjectLibrary.canEditPlayer(player))
-				player.getWorld().strikeLightningEffect(player.getLocation());
-
+			RunsafePlayer player = parameters.getPlayer(0);
+			player.getWorld().strikeLightningEffect(player.getLocation());
 			return null;
 		}
 	}
 
-	static class CloneInventory extends TwoArgFunction
+	static class CloneInventory extends EventEngineFunction
 	{
 		@Override
-		public LuaValue call(LuaValue sourcePlayer, LuaValue targetPlayer)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer source = ObjectLibrary.getPlayer(sourcePlayer);
-			RunsafePlayer target = ObjectLibrary.getPlayer(targetPlayer);
+			RunsafePlayer source = parameters.getPlayer(0);
+			RunsafePlayer target = parameters.getPlayer(1);
 
-			if (ObjectLibrary.canEditPlayer(source) && ObjectLibrary.canEditPlayer(target))
-			{
-				target.getInventory().unserialize(source.getInventory().serialize());
-				target.updateInventory();
-			}
+			target.getInventory().unserialize(source.getInventory().serialize());
+			target.updateInventory();
 			return null;
 		}
 	}
