@@ -63,5 +63,5 @@ public class FunctionParameters
 		return new RunsafeLocation(this.getWorld(index), getDouble(index + 1), getDouble(index + 2), getDouble(index + 3));
 	}
 
-	List<LuaValue> parameters = new ArrayList<LuaValue>();
+	private List<LuaValue> parameters = new ArrayList<LuaValue>();
 }
