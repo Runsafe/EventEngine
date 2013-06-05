@@ -5,6 +5,7 @@ import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.ICommandExecutor;
 import org.bukkit.plugin.Plugin;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 
 import java.io.File;
@@ -31,7 +32,15 @@ public class RunScript extends ExecutableCommand
 		if (!new File(file).exists())
 			return "&cScript not found.";
 
-		Environment.global.get("dofile").call(LuaValue.valueOf(file));
+		try
+		{
+			Environment.global.get("dofile").call(LuaValue.valueOf(file));
+		}
+		catch (LuaError error)
+		{
+			return "&c" + error.getMessage();
+		}
+
 		return "&2Script executed.";
 	}
 
