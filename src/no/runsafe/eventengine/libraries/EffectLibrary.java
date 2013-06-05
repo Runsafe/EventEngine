@@ -1,23 +1,20 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.framework.server.RunsafeFireworkEffect;
+import no.runsafe.eventengine.engine.EventEngineFunction;
+import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.server.RunsafeLocation;
-import no.runsafe.framework.server.RunsafeWorld;
-import no.runsafe.framework.server.entity.PassiveEntity;
 import no.runsafe.framework.server.entity.ProjectileEntity;
 import no.runsafe.framework.server.entity.RunsafeEntity;
-import no.runsafe.framework.server.item.meta.RunsafeFireworkMeta;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
-import org.luaj.vm2.lib.VarArgFunction;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class EffectLibrary extends OneArgFunction
 {
@@ -33,56 +30,51 @@ public class EffectLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class LightningStrike extends VarArgFunction
+	static class LightningStrike extends EventEngineFunction
 	{
-		public Varargs invoke(Varargs args)
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world != null)
-				world.strikeLightningEffect(new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4)));
-
+			RunsafeLocation location = parameters.getLocation(0);
+			location.getWorld().strikeLightningEffect(location);
 			return null;
 		}
 	}
 
-	static class Explosion extends VarArgFunction
+	static class Explosion extends EventEngineFunction
 	{
-		public Varargs invoke(Varargs args)
+		// world, x, y, z, power, break, fire
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world != null)
-			{
-				RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
-				world.createExplosion(location, args.checkint(5), args.checkboolean(6), args.checkboolean(7));
-			}
+			RunsafeLocation location = parameters.getLocation(0);
+			location.getWorld().createExplosion(location, parameters.getInt(4), parameters.getBool(5), parameters.getBool(6));
 			return null;
 		}
 	}
 
-	static class SpawnFirework extends VarArgFunction
+	static class SpawnFirework extends EventEngineFunction
 	{
-		// worldName, x, y, z, type, colour1, colour2, flicker, trail, power
-		public Varargs invoke(Varargs args)
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world == null) return null;
+			RunsafeLocation location = parameters.getLocation(0);
+			RunsafeEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
 
-			RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
-			RunsafeEntity entity = world.spawnCreature(location, ProjectileEntity.Firework.getId());
 			Firework firework = (Firework) entity.getRaw();
 			FireworkMeta meta = firework.getFireworkMeta();
 
 			FireworkEffect effect = FireworkEffect
 					.builder()
-					.with(FireworkEffect.Type.valueOf(args.checkjstring(5)))
-					.withColor(EffectLibrary.colourID.get(args.checkint(6)))
-					.withFade(EffectLibrary.colourID.get(args.checkint(7)))
-					.flicker(args.checkboolean(8))
-					.trail(args.checkboolean(9))
+					.with(FireworkEffect.Type.valueOf(parameters.getString(4)))
+					.withColor(EffectLibrary.colourID.get(parameters.getInt(5)))
+					.withFade(EffectLibrary.colourID.get(parameters.getInt(6)))
+					.flicker(parameters.getBool(7))
+					.trail(parameters.getBool(8))
 					.build();
 
 			meta.addEffect(effect);
-			meta.setPower(args.checkint(10));
+			meta.setPower(parameters.getInt(9));
 			firework.setFireworkMeta(meta);
 			return null;
 		}
