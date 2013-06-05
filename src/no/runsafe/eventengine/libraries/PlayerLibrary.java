@@ -2,11 +2,13 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerLibrary extends OneArgFunction
@@ -21,6 +23,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("teleportToLocation", new TeleportToLocation());
 		lib.set("teleportToPlayer", new TeleportToPlayer());
 		lib.set("cloneInventory", new CloneInventory());
+		lib.set("getLocation", new GetLocation());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -87,6 +90,23 @@ public class PlayerLibrary extends OneArgFunction
 			target.getInventory().unserialize(source.getInventory().serialize());
 			target.updateInventory();
 			return null;
+		}
+	}
+
+	static class GetLocation extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			RunsafeLocation location = parameters.getPlayer(0).getLocation();
+			List<Object> values = new ArrayList<Object>();
+
+			values.add(location.getWorld().getName());
+			values.add(location.getX());
+			values.add(location.getY());
+			values.add(location.getZ());
+
+			return values;
 		}
 	}
 }
