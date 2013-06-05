@@ -40,6 +40,11 @@ public class FunctionParameters
 		return this.getLuaValue(index).toint();
 	}
 
+	public Boolean getBool(int index)
+	{
+		return this.getLuaValue(index).toboolean();
+	}
+
 	public RunsafePlayer getPlayer(int index)
 	{
 		RunsafePlayer player = RunsafeServer.Instance.getPlayerExact(this.getString(index));
