@@ -1,5 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.engine.EventEngineFunction;
+import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.block.RunsafeBlock;
@@ -9,6 +11,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldLibrary extends OneArgFunction
 {
@@ -23,47 +28,44 @@ public class WorldLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class SetBlock extends VarArgFunction
+	public static void prepareLocationForEdit(RunsafeLocation location)
 	{
-		// world, x, y, z, blockID, [blockData]
-		public Varargs invoke(Varargs args)
+		RunsafeChunk chunk = location.getChunk();
+		if (!chunk.isLoaded()) chunk.load();
+	}
+
+	static class SetBlock extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world == null) return null;
-
-			RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
-
-			RunsafeChunk chunk = location.getChunk();
-			if (!chunk.isLoaded())
-				chunk.load();
+			RunsafeLocation location = parameters.getLocation(0);
+			WorldLibrary.prepareLocationForEdit(location);
 
 			RunsafeBlock block = location.getBlock();
-			block.setTypeId(args.checkint(5));
+			block.setTypeId(parameters.getInt(4));
 
-			if (args.isnumber(6))
-				block.setData((byte) args.checkint(6));
+			if (parameters.hasParameter(5))
+				block.setData((byte) (int) parameters.getInt(5));
 
 			return null;
 		}
 	}
 
-	static class GetBlock extends VarArgFunction
+	static class GetBlock extends EventEngineFunction
 	{
-		// world, x, y, z
-		public Varargs invoke(Varargs args)
+		@Override
+		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafeWorld world = ObjectLibrary.getWorld(args.checkstring(1));
-			if (world == null) return null;
-
-			RunsafeLocation location = new RunsafeLocation(world, args.checkdouble(2), args.checkdouble(3), args.checkdouble(4));
-
-			RunsafeChunk chunk = location.getChunk();
-			if (!chunk.isLoaded())
-				chunk.load();
+			List<Object> returns = new ArrayList<Object>();
+			RunsafeLocation location = parameters.getLocation(0);
+			WorldLibrary.prepareLocationForEdit(location);
 
 			RunsafeBlock block = location.getBlock();
-			LuaValue[] data = {valueOf(block.getTypeId()), valueOf(block.getData())};
-			return varargsOf(data);
+			returns.add(block.getTypeId());
+			returns.add(block.getData());
+
+			return returns;
 		}
 	}
 }
