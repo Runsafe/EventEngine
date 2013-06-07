@@ -5,6 +5,7 @@ import no.runsafe.eventengine.engine.Engine;
 import no.runsafe.eventengine.libraries.SoundLibrary;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.moosic.MusicHandler;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
@@ -13,8 +14,8 @@ public class Plugin extends RunsafePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		this.addComponent(getInstance(no.runsafe.moosic.MusicHandler.class));
-		this.addComponent(getInstance(no.runsafe.moosic.MusicTrack.class));
+		this.addComponent(Instances.get("Moosic").getComponent(MusicHandler.class));
+		this.addComponent(Instances.get("Moosic").getComponent(no.runsafe.moosic.MusicTrack.class));
 		this.addComponent(RunScript.class);
 		Plugin.console = this.output;
 
