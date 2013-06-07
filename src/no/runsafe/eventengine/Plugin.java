@@ -2,8 +2,11 @@ package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.eventengine.engine.Engine;
+import no.runsafe.eventengine.engine.ScriptRunner;
 import no.runsafe.eventengine.libraries.SoundLibrary;
 import no.runsafe.eventengine.triggers.RedstoneTriggers;
+import no.runsafe.eventengine.triggers.TriggerHandler;
+import no.runsafe.eventengine.triggers.TriggerRepository;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.moosic.MusicHandler;
@@ -15,7 +18,11 @@ public class Plugin extends RunsafePlugin
 	@Override
 	protected void PluginSetup()
 	{
+		this.addComponent(ScriptRunner.class);
+		this.addComponent(TriggerRepository.class);
+		this.addComponent(TriggerHandler.class);
 		this.addComponent(RedstoneTriggers.class);
+
 		this.addComponent(getPluginAPI(MusicHandler.class));
 		this.addComponent(RunScript.class);
 		Plugin.console = this.output;
