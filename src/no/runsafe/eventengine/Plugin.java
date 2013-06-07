@@ -6,7 +6,6 @@ import no.runsafe.eventengine.libraries.SoundLibrary;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.moosic.MusicHandler;
-import no.runsafe.moosic.MusicTrack;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
