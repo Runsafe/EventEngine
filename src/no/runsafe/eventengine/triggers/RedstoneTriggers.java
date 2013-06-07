@@ -12,9 +12,6 @@ public class RedstoneTriggers implements IBlockRedstone
 	public void OnBlockRedstoneEvent(RunsafeBlockRedstoneEvent event)
 	{
 		RunsafeBlock block = event.getBlock();
-		if (block.is(Item.BuildingBlock.Sponge))
-		{
-			RunsafeServer.Instance.broadcastMessage("Current: " + event.getNewCurrent());
-		}
+		RunsafeServer.Instance.broadcastMessage(block.getTypeId() + ": " + event.getNewCurrent());
 	}
 }
