@@ -16,7 +16,6 @@ public class Plugin extends RunsafePlugin
 	protected void PluginSetup()
 	{
 		this.addComponent(Instances.get("Moosic").getComponent(MusicHandler.class));
-		this.addComponent(Instances.get("Moosic").getComponent(MusicTrack.class));
 		this.addComponent(RunScript.class);
 		Plugin.console = this.output;
 
