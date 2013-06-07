@@ -24,6 +24,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("teleportToPlayer", new TeleportToPlayer());
 		lib.set("cloneInventory", new CloneInventory());
 		lib.set("getLocation", new GetLocation());
+		lib.set("isDead", new IsDead());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -107,6 +108,19 @@ public class PlayerLibrary extends OneArgFunction
 			values.add(location.getZ());
 
 			return values;
+		}
+	}
+
+	static class IsDead extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			List<Object> returnValues = new ArrayList<Object>();
+			RunsafePlayer player = parameters.getPlayer(0);
+
+			returnValues.add(player.isDead());
+			return returnValues;
 		}
 	}
 }
