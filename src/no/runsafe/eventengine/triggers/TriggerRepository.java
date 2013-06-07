@@ -27,7 +27,7 @@ public class TriggerRepository extends Repository
 	public void addTrigger(RunsafeLocation location, String script)
 	{
 		this.database.Execute(
-				"INSERT INTO event_triggers(world, x, y, z, script) VALUES(?, ?, ?, ?, ?)",
+				"INSERT INTO `event_triggers` (world, x, y, z, script) VALUES(?, ?, ?, ?, ?)",
 				location.getWorld().getName(),
 				location.getBlockX(),
 				location.getBlockY(),
@@ -39,7 +39,7 @@ public class TriggerRepository extends Repository
 	public void deleteTriggers(RunsafeLocation location)
 	{
 		this.database.Execute(
-				"DELETE FROM event_triggers WHERE world = ? AND x = ? AND y = ? AND z = ?",
+				"DELETE FROM `event_triggers` WHERE world = ? AND x = ? AND y = ? AND z = ?",
 				location.getWorld().getName(),
 				location.getBlockX(),
 				location.getBlockY(),
@@ -50,7 +50,7 @@ public class TriggerRepository extends Repository
 	public HashMap<String, List<Trigger>> getTriggers()
 	{
 		HashMap<String, List<Trigger>> triggers = new HashMap<String, List<Trigger>>();
-		List<Map<String, Object>> data = this.database.Query("SELECT world, x, y, z, script FROM event_triggers");
+		List<Map<String, Object>> data = this.database.Query("SELECT world, x, y, z, script FROM `event_triggers`");
 
 		if (data != null)
 		{
