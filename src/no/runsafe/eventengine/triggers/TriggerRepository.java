@@ -87,7 +87,7 @@ public class TriggerRepository extends Repository
 						"`x` DOUBLE NOT NULL," +
 						"`y` DOUBLE NOT NULL," +
 						"`z` DOUBLE NOT NULL," +
-						"`script` VARCHAR(50) NOT NULL," +
+						"`script` VARCHAR(50) NOT NULL" +
 					")"
 		);
 		versions.put(1, sql);
