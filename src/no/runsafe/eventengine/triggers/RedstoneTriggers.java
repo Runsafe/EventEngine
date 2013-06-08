@@ -22,7 +22,7 @@ public class RedstoneTriggers implements IBlockRedstone, IBlockBreakEvent, IBloc
 	public void OnBlockRedstoneEvent(RunsafeBlockRedstoneEvent event)
 	{
 		RunsafeBlock block = event.getBlock();
-		if (block.is(Item.Unavailable.CommandBlock))
+		if (block.is(Item.Unavailable.CommandBlock) && event.getOldCurrent() == 0 && event.getNewCurrent() > 0)
 			this.triggerHandler.trigger(block.getLocation());
 	}
 
