@@ -24,6 +24,7 @@ public class TriggerHandler
 		if (this.triggers.containsKey(worldName))
 			for (Trigger trigger : this.triggers.get(worldName))
 				if (trigger.getLocation().distance(location) < 1)
+					if (trigger.getLocation().getWorld().getName().equals(worldName))
 					this.scriptRunner.runScript(trigger.getScriptFile());
 	}
 
@@ -35,10 +36,13 @@ public class TriggerHandler
 		{
 			for (Trigger trigger : triggers.get(worldName))
 			{
-				if (trigger.getLocation().distance(location) < 1)
+				if (trigger.getLocation().getWorld().getName().equals(worldName))
 				{
-					this.repository.deleteTriggers(location);
-					return;
+					if (trigger.getLocation().distance(location) < 1)
+					{
+						this.repository.deleteTriggers(location);
+						return;
+					}
 				}
 			}
 		}
