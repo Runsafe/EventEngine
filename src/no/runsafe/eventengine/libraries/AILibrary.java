@@ -2,6 +2,7 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.server.player.RunsafeFakePlayer;
@@ -59,6 +60,9 @@ public class AILibrary extends OneArgFunction
 
 			RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(AILibrary.ai.get(id), parameters.getString(1));
 			event.Fire();
+
+			if (!event.getCancelled())
+				RunsafeServer.Instance.broadcastMessage(event.getMessage());
 
 			return null;
 		}
