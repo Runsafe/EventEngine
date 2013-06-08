@@ -1,5 +1,6 @@
 package no.runsafe.eventengine;
 
+import no.runsafe.eventengine.commands.LuaEnv;
 import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.eventengine.engine.Engine;
 import no.runsafe.eventengine.engine.ScriptRunner;
@@ -22,6 +23,7 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(TriggerRepository.class);
 		this.addComponent(TriggerHandler.class);
 		this.addComponent(RedstoneTriggers.class);
+		this.addComponent(LuaEnv.class);
 
 		this.addComponent(getPluginAPI(MusicHandler.class));
 		this.addComponent(RunScript.class);

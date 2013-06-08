@@ -7,3 +7,5 @@ depend: [Moosic]
 commands:
   run:
     description: Runs a script
+  luaenv:
+    description: Sets an Lua environment value
