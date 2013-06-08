@@ -62,7 +62,7 @@ public class AILibrary extends OneArgFunction
 			event.Fire();
 
 			if (!event.getCancelled())
-				RunsafeServer.Instance.broadcastMessage(event.getMessage());
+				RunsafeServer.Instance.broadcastMessage(String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage()));
 
 			return null;
 		}
