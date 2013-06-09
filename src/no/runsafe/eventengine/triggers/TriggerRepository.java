@@ -95,5 +95,5 @@ public class TriggerRepository extends Repository
 		return versions;
 	}
 
-	private IDatabase database;
+	private final IDatabase database;
 }

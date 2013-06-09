@@ -58,7 +58,7 @@ public class TriggerHandler
 		this.repository.addTrigger(location, scriptFile);
 	}
 
-	private ScriptRunner scriptRunner;
-	private TriggerRepository repository;
+	private final ScriptRunner scriptRunner;
+	private final TriggerRepository repository;
 	private HashMap<String, List<Trigger>> triggers = new HashMap<String, List<Trigger>>();
 }

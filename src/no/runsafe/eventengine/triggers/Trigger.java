@@ -20,6 +20,6 @@ public class Trigger
 		return this.scriptFile;
 	}
 
-	private RunsafeLocation location;
-	private String scriptFile;
+	private final RunsafeLocation location;
+	private final String scriptFile;
 }

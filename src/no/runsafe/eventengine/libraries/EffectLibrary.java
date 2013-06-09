@@ -80,7 +80,7 @@ public class EffectLibrary extends OneArgFunction
 		}
 	}
 
-	public static HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();
+	public static final HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();
 
 	static
 	{

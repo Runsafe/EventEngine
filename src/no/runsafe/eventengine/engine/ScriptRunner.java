@@ -36,5 +36,5 @@ public class ScriptRunner
 		return "&2Script executed.";
 	}
 
-	private String path;
+	private final String path;
 }

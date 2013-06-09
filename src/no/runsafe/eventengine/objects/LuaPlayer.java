@@ -21,5 +21,5 @@ public class LuaPlayer
 		return this.player;
 	}
 
-	private RunsafePlayer player;
+	private final RunsafePlayer player;
 }

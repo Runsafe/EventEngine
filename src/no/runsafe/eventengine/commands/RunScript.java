@@ -20,5 +20,5 @@ public class RunScript extends ExecutableCommand
 		return this.scriptRunner.runScript(parameters.get("script"));
 	}
 
-	private ScriptRunner scriptRunner;
+	private final ScriptRunner scriptRunner;
 }

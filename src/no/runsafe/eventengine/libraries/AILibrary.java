@@ -68,5 +68,5 @@ public class AILibrary extends OneArgFunction
 		}
 	}
 
-	private static List<RunsafeFakePlayer> ai = new ArrayList<RunsafeFakePlayer>();
+	private static final List<RunsafeFakePlayer> ai = new ArrayList<RunsafeFakePlayer>();
 }

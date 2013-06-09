@@ -78,5 +78,5 @@ public class FunctionParameters
 		return this.parameters.size() >= index + 1;
 	}
 
-	private List<LuaValue> parameters = new ArrayList<LuaValue>();
+	private final List<LuaValue> parameters = new ArrayList<LuaValue>();
 }
