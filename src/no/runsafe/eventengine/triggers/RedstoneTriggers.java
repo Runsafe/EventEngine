@@ -8,7 +8,6 @@ import no.runsafe.framework.server.block.RunsafeBlock;
 import no.runsafe.framework.server.event.block.RunsafeBlockBreakEvent;
 import no.runsafe.framework.server.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.server.item.RunsafeItemStack;
-import no.runsafe.framework.server.item.meta.RunsafeItemMeta;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
 public class RedstoneTriggers implements IBlockRedstone, IBlockBreakEvent, IBlockPlace
@@ -42,8 +41,7 @@ public class RedstoneTriggers implements IBlockRedstone, IBlockBreakEvent, IBloc
 		{
 			if (player.hasPermission("runsafe.eventengine.triggers"))
 			{
-				RunsafeItemMeta meta = item.getItemMeta();
-				String displayName = meta.getDisplayName();
+				String displayName = item.getDisplayName();
 
 				if (displayName != null)
 				{
@@ -55,5 +53,5 @@ public class RedstoneTriggers implements IBlockRedstone, IBlockBreakEvent, IBloc
 		return true;
 	}
 
-	private TriggerHandler triggerHandler;
+	private final TriggerHandler triggerHandler;
 }
