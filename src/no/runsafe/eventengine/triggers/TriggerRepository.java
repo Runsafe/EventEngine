@@ -66,9 +66,9 @@ public class TriggerRepository extends Repository
 
 					triggers.get(worldName).add(new Trigger(new RunsafeLocation(
 							world,
-							(Double) node.get("x"),
-							(Double) node.get("y"),
-							(Double) node.get("z")
+							getDoubleValue(node, "x"),
+							getDoubleValue(node, "y"),
+							getDoubleValue(node, "z")
 					), (String) node.get("script")));
 				}
 			}
