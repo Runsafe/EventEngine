@@ -2,6 +2,8 @@ package no.runsafe.eventengine.triggers;
 
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.Repository;
+import no.runsafe.framework.database.Row;
+import no.runsafe.framework.database.Set;
 import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.RunsafeWorld;
@@ -9,7 +11,6 @@ import no.runsafe.framework.server.RunsafeWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TriggerRepository extends Repository
 {
@@ -50,13 +51,13 @@ public class TriggerRepository extends Repository
 	public HashMap<String, List<Trigger>> getTriggers()
 	{
 		HashMap<String, List<Trigger>> triggers = new HashMap<String, List<Trigger>>();
-		List<Map<String, Object>> data = this.database.Query("SELECT world, x, y, z, script FROM `event_triggers`");
+		Set data = this.database.Query("SELECT world, x, y, z, script FROM `event_triggers`");
 
 		if (data != null)
 		{
-			for (Map<String, Object> node : data)
+			for (Row node : data)
 			{
-				String worldName = (String) node.get("world");
+				String worldName = node.String("world");
 				RunsafeWorld world = RunsafeServer.Instance.getWorld(worldName);
 
 				if (world != null)
@@ -66,10 +67,10 @@ public class TriggerRepository extends Repository
 
 					triggers.get(worldName).add(new Trigger(new RunsafeLocation(
 							world,
-							getDoubleValue(node, "x"),
-							getDoubleValue(node, "y"),
-							getDoubleValue(node, "z")
-					), (String) node.get("script")));
+							node.Double("x"),
+							node.Double("y"),
+							node.Double("z")
+					), node.String("script")));
 				}
 			}
 		}
