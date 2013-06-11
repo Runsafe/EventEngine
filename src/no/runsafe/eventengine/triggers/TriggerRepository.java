@@ -1,9 +1,9 @@
 package no.runsafe.eventengine.triggers;
 
 import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.internal.database.Repository;
-import no.runsafe.framework.internal.database.Row;
-import no.runsafe.framework.internal.database.Set;
+import no.runsafe.framework.api.database.IRow;
+import no.runsafe.framework.api.database.ISet;
+import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
@@ -51,11 +51,11 @@ public class TriggerRepository extends Repository
 	public HashMap<String, List<Trigger>> getTriggers()
 	{
 		HashMap<String, List<Trigger>> triggers = new HashMap<String, List<Trigger>>();
-		Set data = this.database.Query("SELECT world, x, y, z, script FROM `event_triggers`");
+		ISet data = this.database.Query("SELECT world, x, y, z, script FROM `event_triggers`");
 
 		if (data != null)
 		{
-			for (Row node : data)
+			for (IRow node : data)
 			{
 				String worldName = node.String("world");
 				RunsafeWorld world = RunsafeServer.Instance.getWorld(worldName);
