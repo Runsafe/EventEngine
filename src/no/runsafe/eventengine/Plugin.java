@@ -9,7 +9,7 @@ import no.runsafe.eventengine.triggers.RedstoneTriggers;
 import no.runsafe.eventengine.triggers.TriggerHandler;
 import no.runsafe.eventengine.triggers.TriggerRepository;
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.moosic.MusicHandler;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
