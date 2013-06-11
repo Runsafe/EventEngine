@@ -1,8 +1,8 @@
 package no.runsafe.eventengine.commands;
 
 import no.runsafe.eventengine.engine.ScriptRunner;
-import no.runsafe.framework.command.ExecutableCommand;
-import no.runsafe.framework.server.ICommandExecutor;
+import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.internal.command.ExecutableCommand;
 
 import java.util.HashMap;
 

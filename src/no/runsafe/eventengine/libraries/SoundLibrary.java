@@ -2,7 +2,7 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
-import no.runsafe.framework.server.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.moosic.MusicHandler;
 import no.runsafe.moosic.MusicTrack;
 import org.luaj.vm2.LuaError;

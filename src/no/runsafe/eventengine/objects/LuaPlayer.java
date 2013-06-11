@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.objects;
 
-import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.minecraft.RunsafeServer;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaValue;
 
 public class LuaPlayer

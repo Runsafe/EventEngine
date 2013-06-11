@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.triggers;
 
-import no.runsafe.framework.server.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeLocation;
 
 public class Trigger
 {

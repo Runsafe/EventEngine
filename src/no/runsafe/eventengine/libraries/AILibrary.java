@@ -2,10 +2,10 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
-import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.RunsafeWorld;
-import no.runsafe.framework.server.event.player.RunsafePlayerFakeChatEvent;
-import no.runsafe.framework.server.player.RunsafeFakePlayer;
+import no.runsafe.framework.minecraft.RunsafeServer;
+import no.runsafe.framework.minecraft.RunsafeWorld;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
+import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;

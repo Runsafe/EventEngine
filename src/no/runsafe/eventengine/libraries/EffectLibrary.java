@@ -2,9 +2,9 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
-import no.runsafe.framework.server.RunsafeLocation;
-import no.runsafe.framework.server.entity.ProjectileEntity;
-import no.runsafe.framework.server.entity.RunsafeEntity;
+import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.entity.ProjectileEntity;
+import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Firework;

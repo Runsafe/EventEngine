@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.triggers;
 
 import no.runsafe.eventengine.engine.ScriptRunner;
-import no.runsafe.framework.server.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
