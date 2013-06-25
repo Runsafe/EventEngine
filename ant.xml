@@ -38,7 +38,7 @@
             </manifest>
             <fileset dir="${build.dir}" includes="plugin.yml"/>
             <fileset dir="${src.dir}" includes="defaults.yml"/>
-            <fileset dir="${src.dir}" includes="engine.yml"/>
+            <fileset dir="${src.dir}" includes="engine.lua"/>
         </jar>
     </target>
 
