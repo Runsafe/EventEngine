@@ -44,7 +44,7 @@ public class ScriptRunner implements IPluginEnabled
 					String output = this.runScript(fileName);
 					if (output != null)
 					{
-						this.output.write(output);
+						this.output.logError(output);
 						failed += 1;
 					}
 					else
@@ -66,7 +66,7 @@ public class ScriptRunner implements IPluginEnabled
 		String file = path + script;
 
 		if (!new File(file).exists())
-			return "&cUnable to find script: " + file;
+			return "Unable to find script: " + file;
 
 		try
 		{
@@ -74,7 +74,7 @@ public class ScriptRunner implements IPluginEnabled
 		}
 		catch (LuaError error)
 		{
-			return "&cLua Error: " + error.getMessage();
+			return "Lua Error: " + error.getMessage();
 		}
 		return null;
 	}
