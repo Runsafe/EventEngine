@@ -1,3 +1,3 @@
-function test()
-    print("This is the test function");
+function registerHook(hookType, functionName, ...)
+    engine.hooks.registerHook(hookType, functionName, ...);
 end

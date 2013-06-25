@@ -16,6 +16,7 @@ public class Engine extends OneArgFunction
 		env.set("engine", lib);
 		env.get("package").get("loaded").set("engine", lib);
 
+		Environment.global.load(new HookingLibrary());
 		Environment.global.load(new PlayerLibrary());
 		Environment.global.load(new EffectLibrary());
 		Environment.global.load(new WorldLibrary());
