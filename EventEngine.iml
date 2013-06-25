@@ -12,7 +12,6 @@
     <orderEntry type="library" name="craftbukkit" level="project" />
     <orderEntry type="library" name="luaj-jse-3.0-alpha2" level="project" />
     <orderEntry type="library" name="Moosic" level="project" />
-    <orderEntry type="library" name="Cheeves" level="project" />
   </component>
 </module>
 

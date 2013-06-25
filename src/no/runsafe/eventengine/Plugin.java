@@ -4,7 +4,6 @@ import no.runsafe.eventengine.commands.LuaEnv;
 import no.runsafe.eventengine.commands.RunScript;
 import no.runsafe.eventengine.engine.Engine;
 import no.runsafe.eventengine.engine.ScriptRunner;
-import no.runsafe.eventengine.libraries.PlayerLibrary;
 import no.runsafe.eventengine.libraries.SoundLibrary;
 import no.runsafe.eventengine.triggers.RedstoneTriggers;
 import no.runsafe.eventengine.triggers.TriggerHandler;
@@ -34,7 +33,6 @@ public class Plugin extends RunsafePlugin
 		_G.load(new Engine());
 
 		SoundLibrary.musicHandler = this.getComponent(no.runsafe.moosic.MusicHandler.class);
-		PlayerLibrary.achievementFinder = this.getComponent(no.runsafe.cheeves.AchievementFinder.class);
 	}
 
 	public static IOutput console;

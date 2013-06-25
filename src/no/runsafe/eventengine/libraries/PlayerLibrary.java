@@ -1,7 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.cheeves.Achievement;
-import no.runsafe.cheeves.AchievementFinder;
+import no.runsafe.eventengine.CustomEvent;
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -27,7 +26,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("cloneInventory", new CloneInventory());
 		lib.set("getLocation", new GetLocation());
 		lib.set("isDead", new IsDead());
-		lib.set("awardAchievement", new AwardAchievement());
+		lib.set("sendEvent", new SendEvent());
 		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
 
 		env.get("engine").set("player", lib);
@@ -128,15 +127,12 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class AwardAchievement extends EventEngineFunction
+	static class SendEvent extends EventEngineFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			RunsafePlayer player = parameters.getPlayer(0);
-			player.sendColouredMessage("Found you.");
-			Achievement achievement = PlayerLibrary.achievementFinder.getAchievementByID(parameters.getInt(1));
-			player.sendColouredMessage(achievement.getAchievementName());
+			new CustomEvent(parameters.getPlayer(0), parameters.getString(1));
 			return null;
 		}
 	}
@@ -160,6 +156,4 @@ public class PlayerLibrary extends OneArgFunction
 			return returnValues;
 		}
 	}
-
-	public static AchievementFinder achievementFinder;
 }

@@ -8,13 +8,11 @@
     <property name="runsafe.dir" value="${framework.dir}/lastStable/archive/build/jar"/>
     <property name="lib.dir" value="${framework.dir}/workspace/lib"/>
 	<property name="moosic.dir" value="../../Moosic/lastStable/archive/build/jar"/>
-	<property name="cheeves.dir" value="../../Cheeves/lastStable/archive/build/jar"/>
 
     <path id="classpath">
         <fileset dir="${runsafe.dir}" includes="framework.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar"/>
 		<fileset dir="${moosic.dir}" includes="*.jar"/>
-		<fileset dir="${cheeves.dir}" includes="*.jar"/>
     </path>
 
     <target name="clean">
