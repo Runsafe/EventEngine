@@ -3,7 +3,7 @@ main: no.runsafe.eventengine.Plugin
 version: 1.0.@BUILD@
 author: Kruithne
 description: Event engine
-depend: [Moosic]
+depend: [Moosic, Cheeves]
 commands:
   run:
     description: Runs a script

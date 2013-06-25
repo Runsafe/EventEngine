@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.cheeves.AchievementFinder;
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -25,6 +26,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("cloneInventory", new CloneInventory());
 		lib.set("getLocation", new GetLocation());
 		lib.set("isDead", new IsDead());
+		lib.set("awardAchievement", new AwardAchievement());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -123,4 +125,16 @@ public class PlayerLibrary extends OneArgFunction
 			return returnValues;
 		}
 	}
+
+	static class AwardAchievement extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			PlayerLibrary.achievementFinder.getAchievementByID(parameters.getInt(1)).award(parameters.getPlayer(0));
+			return null;
+		}
+	}
+
+	public static AchievementFinder achievementFinder;
 }
