@@ -7,6 +7,9 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class ScriptManager implements IPluginEnabled
 {
@@ -27,15 +30,36 @@ public class ScriptManager implements IPluginEnabled
 	public void OnPluginEnabled()
 	{
 		this.loadEngine();
-		this.runScripts();
 	}
 
 	private void loadEngine()
 	{
-		Environment.global.get("dofile").call(LuaValue.valueOf(ScriptManager.class.getResource("../engine.lua").getFile()));
+		try
+		{
+			String engineFile = this.path + "engine.lua";
+			InputStream input = getClass().getResourceAsStream("/engine.lua");
+			OutputStream output = new FileOutputStream(engineFile);
+
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = input.read(buffer)) > 0)
+				output.write(buffer, 0, length);
+
+			output.close();
+			input.close();
+
+			Environment.global.get("dofile").call(LuaValue.valueOf(engineFile));
+		}
+		catch (Exception e)
+		{
+			this.output.logError("Unable to write engine file, exception below.");
+			this.output.logException(e);
+			return;
+		}
+		this.loadScripts();
 	}
 
-	private void runScripts()
+	private void loadScripts()
 	{
 		int succeeded = 0;
 		int failed = 0;
