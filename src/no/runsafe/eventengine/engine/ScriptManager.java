@@ -16,12 +16,13 @@ public class ScriptManager implements IPluginEnabled
 	public ScriptManager(Plugin eventEngine, IOutput output)
 	{
 		// Setup folders
-		this.path = String.format("plugins/%s/scripts/", eventEngine.getName());
-		File pathCheck = new File(this.path);
+		this.path = String.format("plugins/%s/", eventEngine.getName());
+		this.scriptPath = this.path + "scripts/";
 
+		File pathCheck = new File(this.scriptPath);
 		if (!pathCheck.exists())
 			if (pathCheck.mkdirs())
-				output.warning("Failed to create scripts directory at: " + this.path);
+				output.warning("Failed to create scripts directory at: " + this.scriptPath);
 
 		this.output = output;
 	}
@@ -64,7 +65,7 @@ public class ScriptManager implements IPluginEnabled
 		int succeeded = 0;
 		int failed = 0;
 
-		File[] files = new File(this.path).listFiles();
+		File[] files = new File(this.scriptPath).listFiles();
 
 		if (files != null)
 		{
@@ -95,7 +96,7 @@ public class ScriptManager implements IPluginEnabled
 
 	private String runScript(String script)
 	{
-		String file = path + script;
+		String file = scriptPath + script;
 
 		if (!new File(file).exists())
 			return "Unable to find script: " + file;
@@ -111,6 +112,7 @@ public class ScriptManager implements IPluginEnabled
 		return null;
 	}
 
-	private final String path;
+	private String path;
+	private String scriptPath;
 	private IOutput output;
 }
