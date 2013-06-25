@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.cheeves.Achievement;
 import no.runsafe.cheeves.AchievementFinder;
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
@@ -132,7 +133,10 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			PlayerLibrary.achievementFinder.getAchievementByID(parameters.getInt(1)).award(parameters.getPlayer(0));
+			RunsafePlayer player = parameters.getPlayer(0);
+			player.sendColouredMessage("Found you.");
+			Achievement achievement = PlayerLibrary.achievementFinder.getAchievementByID(parameters.getInt(1));
+			player.sendColouredMessage(achievement.getAchievementName());
 			return null;
 		}
 	}
