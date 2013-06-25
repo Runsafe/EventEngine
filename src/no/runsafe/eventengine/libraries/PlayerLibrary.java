@@ -27,6 +27,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("getLocation", new GetLocation());
 		lib.set("isDead", new IsDead());
 		lib.set("awardAchievement", new AwardAchievement());
+		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -133,6 +134,26 @@ public class PlayerLibrary extends OneArgFunction
 		{
 			PlayerLibrary.achievementFinder.getAchievementByID(parameters.getInt(1)).award(parameters.getPlayer(0));
 			return null;
+		}
+	}
+
+	static class GetPlayerAtLocation extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			List<Object> returnValues = new ArrayList<Object>();
+			RunsafeLocation location = parameters.getLocation(0);
+
+			for (RunsafePlayer player : location.getWorld().getPlayers())
+			{
+				if (player.getLocation().distance(location) < 1)
+				{
+					returnValues.add(player.getName());
+					return returnValues;
+				}
+			}
+			return returnValues;
 		}
 	}
 
