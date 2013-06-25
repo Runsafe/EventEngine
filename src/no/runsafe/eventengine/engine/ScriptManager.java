@@ -37,7 +37,7 @@ public class ScriptManager implements IPluginEnabled
 		try
 		{
 			String engineFile = this.path + "engine.lua";
-			InputStream input = getClass().getResourceAsStream("/engine.lua");
+			InputStream input = ScriptManager.class.getResourceAsStream("../engine.lua");
 			OutputStream output = new FileOutputStream(engineFile);
 
 			byte[] buffer = new byte[4096];
