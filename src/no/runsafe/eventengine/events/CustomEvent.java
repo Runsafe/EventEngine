@@ -1,4 +1,4 @@
-package no.runsafe.eventengine;
+package no.runsafe.eventengine.events;
 
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;

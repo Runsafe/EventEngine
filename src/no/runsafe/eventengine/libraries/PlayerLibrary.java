@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.CustomEvent;
+import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.minecraft.RunsafeLocation;
