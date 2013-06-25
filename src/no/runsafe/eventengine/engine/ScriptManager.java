@@ -40,8 +40,7 @@ public class ScriptManager implements IPluginEnabled
 		int succeeded = 0;
 		int failed = 0;
 
-		File folder = new File(this.path);
-		File[] files = folder.listFiles();
+		File[] files = new File(this.path).listFiles();
 
 		if (files != null)
 		{
