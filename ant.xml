@@ -37,6 +37,7 @@
                 <attribute name="Class-Path" value="runsafe/framework.jar runsafe/joda-time-2.1.jar runsafe/luaj-jse-3.0-alpha2.jar"/>
             </manifest>
             <fileset dir="${build.dir}" includes="plugin.yml"/>
+            <fileset dir="${build.dir}" includes="engine.lua"/>
             <fileset dir="${src.dir}" includes="defaults.yml"/>
         </jar>
     </target>
