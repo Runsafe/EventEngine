@@ -147,7 +147,7 @@ public class PlayerLibrary extends OneArgFunction
 
 			for (RunsafePlayer player : location.getWorld().getPlayers())
 			{
-				if (player.getLocation().distance(location) < 1)
+				if (player.getLocation().distance(location) < 2)
 				{
 					returnValues.add(player.getName());
 					return returnValues;
