@@ -2,12 +2,13 @@ package no.runsafe.eventengine.engine;
 
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 
 import java.io.File;
 
-public class ScriptRunner
+public class ScriptRunner implements IPluginEnabled
 {
 	public ScriptRunner(Plugin eventEngine, IOutput output)
 	{
@@ -17,6 +18,11 @@ public class ScriptRunner
 			output.warning("Failed to create scripts directory at: " + this.path);
 
 		this.output = output;
+	}
+
+	@Override
+	public void OnPluginEnabled()
+	{
 		this.runScripts();
 	}
 
@@ -49,8 +55,7 @@ public class ScriptRunner
 			}
 		}
 
-		if (succeeded > 0)
-			this.output.logInformation("%d lua scripts loaded.", succeeded);
+		this.output.logInformation("%d lua scripts loaded.", succeeded);
 
 		if (failed > 0)
 			this.output.logError("%d lua scripts failed to load.", failed);
