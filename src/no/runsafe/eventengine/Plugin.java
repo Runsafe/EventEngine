@@ -1,7 +1,7 @@
 package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.engine.Engine;
-import no.runsafe.eventengine.engine.ScriptRunner;
+import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.libraries.SoundLibrary;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.IOutput;
@@ -21,8 +21,7 @@ public class Plugin extends RunsafePlugin
 		_G.load(new Engine());
 
 		SoundLibrary.musicHandler = this.getComponent(no.runsafe.moosic.MusicHandler.class);
-
-		this.addComponent(ScriptRunner.class);
+		this.addComponent(ScriptManager.class);
 	}
 
 	public static IOutput console;

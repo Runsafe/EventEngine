@@ -1,3 +1,3 @@
 function test()
-    printf("This is the test function");
+    print("This is the test function");
 end

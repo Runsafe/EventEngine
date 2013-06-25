@@ -8,9 +8,9 @@ import org.luaj.vm2.LuaValue;
 
 import java.io.File;
 
-public class ScriptRunner implements IPluginEnabled
+public class ScriptManager implements IPluginEnabled
 {
-	public ScriptRunner(Plugin eventEngine, IOutput output)
+	public ScriptManager(Plugin eventEngine, IOutput output)
 	{
 		// Setup folders
 		this.path = String.format("plugins/%s/scripts/", eventEngine.getName());
@@ -26,10 +26,16 @@ public class ScriptRunner implements IPluginEnabled
 	@Override
 	public void OnPluginEnabled()
 	{
+		this.loadEngine();
 		this.runScripts();
 	}
 
-	public void runScripts()
+	private void loadEngine()
+	{
+		Environment.global.get("dofile").call(LuaValue.valueOf(getClass().getResource("engine.lua").getFile()));
+	}
+
+	private void runScripts()
 	{
 		int succeeded = 0;
 		int failed = 0;
@@ -64,7 +70,7 @@ public class ScriptRunner implements IPluginEnabled
 			this.output.logError("%d lua scripts failed to load.", failed);
 	}
 
-	public String runScript(String script)
+	private String runScript(String script)
 	{
 		String file = path + script;
 
