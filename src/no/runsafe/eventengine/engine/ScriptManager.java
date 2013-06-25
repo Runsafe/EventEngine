@@ -32,7 +32,7 @@ public class ScriptManager implements IPluginEnabled
 
 	private void loadEngine()
 	{
-		Environment.global.get("dofile").call(LuaValue.valueOf(ScriptManager.class.getResource("/engine.lua").getFile()));
+		Environment.global.get("dofile").call(LuaValue.valueOf(ScriptManager.class.getResource("../engine.lua").getFile()));
 	}
 
 	private void runScripts()
