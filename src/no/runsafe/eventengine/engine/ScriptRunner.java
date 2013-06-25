@@ -14,8 +14,11 @@ public class ScriptRunner implements IPluginEnabled
 	{
 		// Setup folders
 		this.path = String.format("plugins/%s/scripts/", eventEngine.getName());
-		if (!new File(this.path).mkdirs())
-			output.warning("Failed to create scripts directory at: " + this.path);
+		File pathCheck = new File(this.path);
+
+		if (!pathCheck.exists())
+			if (pathCheck.mkdirs())
+				output.warning("Failed to create scripts directory at: " + this.path);
 
 		this.output = output;
 	}
