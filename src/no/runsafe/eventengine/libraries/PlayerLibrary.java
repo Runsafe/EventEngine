@@ -132,7 +132,7 @@ public class PlayerLibrary extends OneArgFunction
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			new CustomEvent(parameters.getPlayer(0), parameters.getString(1));
+			new CustomEvent(parameters.getPlayer(0), parameters.getString(1)).Fire();
 			return null;
 		}
 	}
