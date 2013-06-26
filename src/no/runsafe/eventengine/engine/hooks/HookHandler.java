@@ -44,7 +44,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 			for (Hook hook : hooks)
-				if (hook.getPlayerName().equalsIgnoreCase(event.getPlayer().getName()))
+				if (hook.getPlayerName().equalsIgnoreCase(event.getPlayer().getName()) &&
+						event.getMessage().equalsIgnoreCase((String) hook.getData()))
 					hook.execute();
 	}
 
