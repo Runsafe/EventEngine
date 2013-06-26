@@ -48,6 +48,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					hook.execute();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
