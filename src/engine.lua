@@ -4,6 +4,7 @@ function registerHook(hookType, functionName, ...)
 end
 
 -- Player object
+Player = {};
 function Player:new(playerName)
     local o = {
         name = playerName
@@ -54,6 +55,7 @@ function Player:sendEvent(event)
 end
 
 -- Location object
+Location = {};
 function Location:new(world, x, y, z)
     local o = {
         world = world,
@@ -95,6 +97,7 @@ function Location:explosion(power, breakBlocks, fire)
 end
 
 -- AI Object
+AI = {};
 function AI:new(name, world)
     local o = {
         id = engine.ai.create(name, world)
@@ -109,6 +112,7 @@ function AI:speak(message)
 end
 
 -- Song object
+Song = {};
 function Song:new(id)
     local o = {
         id = id
