@@ -7,6 +7,8 @@ import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +45,17 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		List<Hook> hooks = HookHandler.getHooks(HookType.CHAT_MESSAGE);
 
 		if (hooks != null)
+		{
 			for (Hook hook : hooks)
+			{
 				if (event.getMessage().equalsIgnoreCase((String) hook.getData()))
-					hook.execute();
+				{
+					LuaTable table = new LuaTable();
+					table.add(LuaValue.valueOf(event.getPlayer().getName()));
+					hook.execute(table);
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
