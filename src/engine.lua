@@ -6,10 +6,12 @@ end
 -- Player object
 Player = {};
 function Player:new(playerName)
-    local o = {};
+    local o = {
+        name = playerName
+    };
     setmetatable(o, self);
     self.__index = self;
-    o.name = playerName;
+    print(o.name);
     return o;
 end
 
