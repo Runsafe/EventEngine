@@ -5,13 +5,12 @@ end
 
 -- Player object
 Player = {};
-function Player:new(playerName)
-    local o = {
-        name = playerName
-    };
-    setmetatable(o, self);
-    self.__index = self;
-    return o;
+Player.__index = Player;
+
+function Player.new(playerName)
+    local self = setmetatable({}, Player);
+    self.name = playerName;
+    return self;
 end
 
 function Player:getName()
@@ -19,8 +18,6 @@ function Player:getName()
 end
 
 function Player:kill()
-    print(self);
-    print(self.name);
     engine.player.kill(self.name);
 end
 
