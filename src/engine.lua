@@ -86,12 +86,12 @@ function Location:lightningStrike()
     engine.effects.strikeLightning(self.world, self.x, self.y, self.z);
 end
 
-function Location:explosion(power, break, fire)
-    engine.effects.explosion(self.world, self.x, self.y, self.z, power, break, fire);
-end
-
 function Location:firework(type, colour, fade, flicker, trail)
     engine.effects.firework(self.world, self.x, self.y, self.z, type, colour, fade, flicker, trail);
+end
+
+function Location:explosion(power, break, fire)
+    engine.effects.explosion(self.world, self.x, self.y, self.z, power, break fire);
 end
 
 -- AI Object
