@@ -11,7 +11,6 @@ function Player:new(playerName)
     };
     setmetatable(o, self);
     self.__index = self;
-    print(o.name);
     return o;
 end
 
@@ -20,6 +19,8 @@ function Player:getName()
 end
 
 function Player:kill()
+    print(self);
+    print(self.name);
     engine.player.kill(self.name);
 end
 
