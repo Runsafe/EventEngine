@@ -5,7 +5,5 @@ author: Kruithne
 description: Event engine
 depend: [Moosic]
 commands:
-  run:
-    description: Runs a script
-  luaenv:
-    description: Sets an Lua environment value
+  reloadscripts:
+    description: Reloads the lua engine and all scripts.

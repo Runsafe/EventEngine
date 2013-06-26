@@ -32,6 +32,11 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		return null;
 	}
 
+	public static void clearHooks()
+	{
+		HookHandler.hooks.clear();
+	}
+
 	@Override
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{

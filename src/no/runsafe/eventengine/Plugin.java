@@ -1,5 +1,6 @@
 package no.runsafe.eventengine;
 
+import no.runsafe.eventengine.commands.ReloadScripts;
 import no.runsafe.eventengine.engine.Engine;
 import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
@@ -24,6 +25,7 @@ public class Plugin extends RunsafePlugin
 		SoundLibrary.musicHandler = this.getComponent(no.runsafe.moosic.MusicHandler.class);
 		this.addComponent(ScriptManager.class);
 		this.addComponent(HookHandler.class);
+		this.addComponent(ReloadScripts.class);
 	}
 
 	public static IOutput console;

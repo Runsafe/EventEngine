@@ -4,6 +4,7 @@ import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 
 import java.io.File;
@@ -31,6 +32,13 @@ public class ScriptManager implements IPluginEnabled
 	public void OnPluginEnabled()
 	{
 		this.loadEngine();
+	}
+
+	public void reloadEngine()
+	{
+		Environment.global.get("setfenv").call(LuaValue.valueOf(1), new LuaTable());
+		Environment.global.get("dofile").call(LuaValue.valueOf(this.path + "engine.lua"));
+		this.loadScripts();
 	}
 
 	private void loadEngine()
