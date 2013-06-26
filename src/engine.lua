@@ -13,43 +13,43 @@ function Player.new(playerName)
     return self;
 end
 
-function Player:getName()
+function Player.getName()
     return self.name;
 end
 
-function Player:kill()
+function Player.kill()
     engine.player.kill(self.name);
 end
 
-function Player:sendMessage(message)
+function Player.sendMessage(message)
     engine.player.sendMessage(self.name, message);
 end
 
-function Player:setHealth(health)
+function Player.setHealth(health)
     engine.player.setHealth(self.name, health);
 end
 
-function Player:teleport(location)
+function Player.teleport(location)
     engine.player.teleportToLocation(location.world, location.x, location.y, location.z);
 end
 
-function Player:teleportToPlayer(player)
+function Player.teleportToPlayer(player)
     engine.player.teleportToPlayer(self.name, player.name);
 end
 
-function Player:cloneInventory(player)
+function Player.cloneInventory(player)
     engine.player.cloneInventory(player.name, self.name);
 end
 
-function Player:getLocation()
+function Player.getLocation()
     return engine.player.getLocation(self.name);
 end
 
-function Player:isDead()
+function Player.isDead()
     return engine.player.isDead(self.name);
 end
 
-function Player:sendEvent(event)
+function Player.sendEvent(event)
     engine.player.sendEvent(self.name, event);
 end
 
