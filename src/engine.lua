@@ -5,12 +5,14 @@ end
 
 -- Player object
 Player = {};
-Player.__index = Player;
 
 function Player.new(playerName)
-    local self = setmetatable({}, Player);
-    self.name = playerName;
-    return self;
+    local o = {
+        name = playerName
+    };
+    setmetatable(o, self);
+    self.__index = self;
+    return o;
 end
 
 function Player:getName()
