@@ -6,7 +6,7 @@ end
 -- Player object
 Player = {};
 
-function Player.new(playerName)
+function Player:new(playerName)
     local o = {
         name = playerName
     };
