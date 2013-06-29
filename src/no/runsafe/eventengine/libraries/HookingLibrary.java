@@ -50,7 +50,7 @@ public class HookingLibrary extends OneArgFunction
 			}
 			else if (type == HookType.INTERACT)
 			{
-				hook.setData(parameters.getString(2));
+				hook.setData(Integer.parseInt(parameters.getString(2)));
 				hook.setLocation(parameters.getLocation(3));
 			}
 			else if (type == HookType.PLAYER_LOGIN || type == HookType.PLAYER_LOGOUT)
