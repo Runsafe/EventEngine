@@ -147,7 +147,6 @@ end
 
 -- Player object
 Player = class('Player');
-
 function Player:initialize(playerName)
     self.name = playerName;
 end
@@ -193,17 +192,12 @@ function Player:sendEvent(event)
 end
 
 -- Location object
-Location = {};
-function Location:new(world, x, y, z)
-    local o = {
-        world = world,
-        x = x,
-        y = y,
-        z = z
-    };
-    setmetatable(o, self);
-    self.__index = self;
-    return o;
+Location = class('Location');
+function Location:initialize(world, x, y, z)
+    self.world = world;
+    self.x = x;
+    self.y = y;
+    self.z = z;
 end
 
 function Location:getClosestPlayer()
@@ -235,14 +229,10 @@ function Location:explosion(power, breakBlocks, fire)
 end
 
 -- AI Object
-AI = {};
-function AI:new(name, world)
-    local o = {
-        id = engine.ai.create(name, world)
-    }
-    setmetatable(o, self);
-    self.__index = self;
-    return o;
+AI = class('AI');
+function AI:initialize(name, world)
+    self.name = name;
+    self.world = world;
 end
 
 function AI:speak(message)
@@ -250,14 +240,9 @@ function AI:speak(message)
 end
 
 -- Song object
-Song = {};
-function Song:new(id)
-    local o = {
-        id = id
-    };
-    setmetatable(o, self);
-    self.__index = self;
-    return o;
+Song = class('Song');
+function Song:initialize(id)
+    self.id = id;
 end
 
 function Song:stop()
