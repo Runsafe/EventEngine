@@ -9,7 +9,7 @@ Player = {};
 function Player:new(playerName)
     o = {};
     setmetatable(o, self);
-    self.__index = self;
+    self:__index = self;
     o.name = playerName;
     return o;
 end
