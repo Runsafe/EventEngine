@@ -231,7 +231,7 @@ end
 -- AI Object
 AI = class('AI');
 function AI:initialize(name, world)
-    self.id = engine.ai.create(name, world);
+    self.id = engine.ai.createAI(name, world);
 end
 
 function AI:speak(message)
