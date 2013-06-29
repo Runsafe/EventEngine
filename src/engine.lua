@@ -3,15 +3,18 @@ function registerHook(hookType, functionName, ...)
     engine.hooks.registerHook(hookType, functionName, ...); -- Register the hook with the server.
 end
 
+function createObject(objectFrame)
+    local u = {};
+    for k, v in pairs(objectFrame) do u[k] = v end
+    return setmetatable(u, getmetatable(objectFrame));
+end
+
 -- Player object
 Player = {};
-
 function Player:new(playerName)
-    o = {};
-    setmetatable(o, self);
-    self:__index = self;
-    o.name = playerName;
-    return o;
+    local newPlayer = createObject(player);
+    newPlayer.name = playerName;
+    return newPlayer;
 end
 
 function Player:getName()
@@ -19,7 +22,6 @@ function Player:getName()
 end
 
 function Player:kill()
-    print(self.name);
     engine.player.kill(self.name);
 end
 
