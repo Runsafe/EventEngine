@@ -124,8 +124,9 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				if (block != null && block.getTypeId() == (Integer) hook.getData())
 				{
 					RunsafeLocation location = block.getLocation();
-					if (location.distance(hook.getLocation()) < 1)
-						hook.execute();
+					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
+						if (location.distance(hook.getLocation()) < 1)
+							hook.execute();
 				}
 			}
 		}
@@ -146,8 +147,9 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					if (block != null)
 					{
 						RunsafeLocation location = block.getLocation();
-						if (location.distance(hook.getLocation()) < 1)
-							hook.execute();
+						if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
+							if (location.distance(hook.getLocation()) < 1)
+								hook.execute();
 					}
 				}
 			}
