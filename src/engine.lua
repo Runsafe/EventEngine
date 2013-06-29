@@ -19,6 +19,7 @@ function Player:getName()
 end
 
 function Player:kill()
+    print(self.name);
     engine.player.kill(self.name);
 end
 
