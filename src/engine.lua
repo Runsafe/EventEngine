@@ -7,7 +7,7 @@ end
 Player = {};
 Player.__index = Player;
 
-function Player:new(playerName)
+function Player.new(playerName)
     return setmetatable({}, self);
 end
 
