@@ -3,16 +3,25 @@ function registerHook(hookType, functionName, ...)
     engine.hooks.registerHook(hookType, functionName, ...); -- Register the hook with the server.
 end
 
-function createObject(objectFrame)
-    local u = {};
-    for k, v in pairs(objectFrame) do u[k] = v end
-    return setmetatable(u, getmetatable(objectFrame));
+function createCopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else
+        copy = orig
+    end
+    return copy
 end
 
 -- Player object
 Player = {};
 function Player:new(playerName)
-    local newPlayer = createObject(Player);
+    local newPlayer = createCopy(Player);
     newPlayer.name = playerName;
     return newPlayer;
 end
@@ -22,6 +31,8 @@ function Player:getName()
 end
 
 function Player:kill()
+    print(self);
+    print(self.name);
     engine.player.kill(self.name);
 end
 
