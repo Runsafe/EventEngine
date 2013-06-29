@@ -12,7 +12,7 @@ end
 -- Player object
 Player = {};
 function Player:new(playerName)
-    local newPlayer = createObject(player);
+    local newPlayer = createObject(Player);
     newPlayer.name = playerName;
     return newPlayer;
 end
