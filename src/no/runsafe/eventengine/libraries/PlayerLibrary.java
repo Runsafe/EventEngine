@@ -181,7 +181,7 @@ public class PlayerLibrary extends OneArgFunction
 			RunsafePlayer player = parameters.getPlayer(0);
 			RunsafeMeta meta = Item.get(parameters.getInt(1), parameters.getByte(2)).getItem();
 			meta.setAmount(parameters.getInt(3));
-			player.getInventory().addItems();
+			player.getInventory().addItems(meta);
 			player.updateInventory();
 			return null;
 		}
