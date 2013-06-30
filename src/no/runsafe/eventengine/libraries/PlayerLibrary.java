@@ -5,6 +5,7 @@ import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -178,7 +179,9 @@ public class PlayerLibrary extends OneArgFunction
 		public List<Object> run(FunctionParameters parameters)
 		{
 			RunsafePlayer player = parameters.getPlayer(0);
-			player.getInventory().addItems(Item.get(parameters.getInt(1), parameters.getByte(2)).getItem());
+			RunsafeMeta meta = Item.get(parameters.getInt(1), parameters.getByte(2)).getItem();
+			meta.setAmount(parameters.getInt(3));
+			player.getInventory().addItems();
 			player.updateInventory();
 			return null;
 		}
