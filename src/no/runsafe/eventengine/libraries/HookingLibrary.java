@@ -41,8 +41,7 @@ public class HookingLibrary extends OneArgFunction
 			}
 			else if (type == HookType.REGION_ENTER || type == HookType.REGION_LEAVE)
 			{
-				hook.setPlayerName(parameters.getString(2));
-				hook.setData(parameters.getString(3));
+				hook.setData(parameters.getString(2));
 			}
 			else if (type == HookType.CHAT_MESSAGE)
 			{
