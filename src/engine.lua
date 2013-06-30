@@ -191,6 +191,14 @@ function Player:sendEvent(event)
     engine.player.sendEvent(self.name, event);
 end
 
+function Player:clearInventory()
+    engine.player.clearInventory(self.name);
+end
+
+function Player:addItem(itemID, itemData, itemAmount)
+    engine.player.addItem(self.name, itemID, itemData, itemAmount);
+end
+
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
