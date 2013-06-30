@@ -50,6 +50,16 @@ public class FunctionParameters
 		return this.getLuaValue(index).tofloat();
 	}
 
+	public Short getShort(int index)
+	{
+		return this.getLuaValue(index).toshort();
+	}
+
+	public Byte getByte(int index)
+	{
+		return this.getLuaValue(index).tobyte();
+	}
+
 	public RunsafePlayer getPlayer(int index)
 	{
 		RunsafePlayer player = RunsafeServer.Instance.getPlayerExact(this.getString(index));
