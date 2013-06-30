@@ -168,7 +168,7 @@ function Player:setHealth(health)
 end
 
 function Player:teleport(location)
-    engine.player.teleportToLocation(location.world, location.x, location.y, location.z);
+    engine.player.teleportToLocation(self.name, location.world, location.x, location.y, location.z);
 end
 
 function Player:teleportToPlayer(player)
