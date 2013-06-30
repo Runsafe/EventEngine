@@ -3,6 +3,7 @@ package no.runsafe.eventengine.libraries;
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.eventengine.engine.EventEngineFunction;
 import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
@@ -28,6 +29,8 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("isDead", new IsDead());
 		lib.set("sendEvent", new SendEvent());
 		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
+		lib.set("clearInventory", new ClearInventory());
+		lib.set("addItem", new AddItem());
 
 		env.get("engine").set("player", lib);
 		return lib;
@@ -154,6 +157,30 @@ public class PlayerLibrary extends OneArgFunction
 				}
 			}
 			return returnValues;
+		}
+	}
+
+	static class ClearInventory extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			RunsafePlayer player = parameters.getPlayer(0);
+			player.getInventory().clear();
+			player.updateInventory();
+			return null;
+		}
+	}
+
+	static class AddItem extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			RunsafePlayer player = parameters.getPlayer(0);
+			player.getInventory().addItems(Item.get(parameters.getInt(1), parameters.getByte(2)).getItem());
+			player.updateInventory();
+			return null;
 		}
 	}
 }
