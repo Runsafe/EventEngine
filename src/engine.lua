@@ -208,6 +208,14 @@ function Location:initialize(world, x, y, z)
     self.z = z;
 end
 
+function Location:setYaw(yaw)
+    self.yaw = yaw;
+end
+
+function Location:setPitch(pitch)
+    self.pitch = pitch;
+end
+
 function Location:getClosestPlayer()
     return Player:new(engine.player.getPlayerAtLocation(self.world, self.x, self.y, self.z));
 end

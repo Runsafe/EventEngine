@@ -24,6 +24,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("sendMessage", new SendMessage());
 		lib.set("setHealth", new SetHealth());
 		lib.set("teleportToLocation", new TeleportToLocation());
+		lib.set("teleportToLocationRotation", new TeleportToLocationRotation());
 		lib.set("teleportToPlayer", new TeleportToPlayer());
 		lib.set("cloneInventory", new CloneInventory());
 		lib.set("getLocation", new GetLocation());
@@ -73,6 +74,19 @@ public class PlayerLibrary extends OneArgFunction
 		public List<Object> run(FunctionParameters parameters)
 		{
 			parameters.getPlayer(0).teleport(parameters.getLocation(1));
+			return null;
+		}
+	}
+
+	static class TeleportToLocationRotation extends EventEngineFunction
+	{
+		@Override
+		public List<Object> run(FunctionParameters parameters)
+		{
+			RunsafeLocation location = parameters.getLocation(1);
+			location.setYaw(parameters.getFloat(5));
+			location.setPitch(parameters.getFloat(6));
+			parameters.getPlayer(0).teleport(location);
 			return null;
 		}
 	}
