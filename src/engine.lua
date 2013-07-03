@@ -168,7 +168,11 @@ function Player:setHealth(health)
 end
 
 function Player:teleport(location)
-    engine.player.teleportToLocation(self.name, location.world, location.x, location.y, location.z);
+    if location.yaw ~= nil and location.pitch ~= nil then
+        engine.player.teleportToLocationRotation(self.name, location.world, location.x, location.y, location.z, location.yaw, location.pitch);
+    else
+        engine.player.teleportToLocation(self.name, location.world, location.x, location.y, location.z);
+    end
 end
 
 function Player:teleportToPlayer(player)
