@@ -127,7 +127,13 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					RunsafeLocation location = block.getLocation();
 					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 						if (location.distance(hook.getLocation()) < 1)
-							hook.execute();
+						{
+							LuaTable table = new LuaTable();
+							if (event.getPlayer() != null)
+								table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+
+							hook.execute(table);
+						}
 				}
 			}
 		}
