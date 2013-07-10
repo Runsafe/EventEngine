@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
@@ -37,7 +37,7 @@ public class AILibrary extends OneArgFunction
 		return AILibrary.ai.size() - 1;
 	}
 
-	static class Create extends EventEngineFunction
+	static class Create extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -48,7 +48,7 @@ public class AILibrary extends OneArgFunction
 		}
 	}
 
-	static class Speak extends EventEngineFunction
+	static class Speak extends RunsafeLuaFunction
 	{
 		// aiID, text
 		@Override

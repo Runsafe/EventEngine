@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
@@ -31,7 +31,7 @@ public class WorldLibrary extends OneArgFunction
 		if (!chunk.isLoaded()) chunk.load();
 	}
 
-	static class SetBlock extends EventEngineFunction
+	static class SetBlock extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -49,7 +49,7 @@ public class WorldLibrary extends OneArgFunction
 		}
 	}
 
-	static class GetBlock extends EventEngineFunction
+	static class GetBlock extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

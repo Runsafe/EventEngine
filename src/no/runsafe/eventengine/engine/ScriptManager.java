@@ -3,6 +3,7 @@ package no.runsafe.eventengine.engine;
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
+import no.runsafe.framework.lua.Environment;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 

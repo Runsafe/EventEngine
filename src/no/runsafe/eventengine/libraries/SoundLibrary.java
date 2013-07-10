@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.moosic.MusicHandler;
 import no.runsafe.moosic.MusicTrack;
@@ -27,7 +27,7 @@ public class SoundLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class PlaySong extends EventEngineFunction
+	static class PlaySong extends RunsafeLuaFunction
 	{
 		// world, x, y, z, songFile, volume
 		// Returns int
@@ -54,7 +54,7 @@ public class SoundLibrary extends OneArgFunction
 		}
 	}
 
-	static class StopSong extends EventEngineFunction
+	static class StopSong extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

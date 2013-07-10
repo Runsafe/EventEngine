@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.entity.ProjectileEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
@@ -30,7 +30,7 @@ public class EffectLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class LightningStrike extends EventEngineFunction
+	static class LightningStrike extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -41,7 +41,7 @@ public class EffectLibrary extends OneArgFunction
 		}
 	}
 
-	static class Explosion extends EventEngineFunction
+	static class Explosion extends RunsafeLuaFunction
 	{
 		// world, x, y, z, power, break, fire
 		@Override
@@ -53,7 +53,7 @@ public class EffectLibrary extends OneArgFunction
 		}
 	}
 
-	static class SpawnFirework extends EventEngineFunction
+	static class SpawnFirework extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

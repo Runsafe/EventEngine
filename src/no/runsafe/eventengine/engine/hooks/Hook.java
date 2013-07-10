@@ -1,10 +1,8 @@
 package no.runsafe.eventengine.engine.hooks;
 
-import no.runsafe.eventengine.engine.Environment;
+import no.runsafe.framework.lua.Environment;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import org.luaj.vm2.LuaTable;
-
-import java.util.List;
 
 public class Hook
 {

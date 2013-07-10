@@ -1,8 +1,8 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.events.CustomEvent;
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
@@ -38,7 +38,7 @@ public class PlayerLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class Kill extends EventEngineFunction
+	static class Kill extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -48,7 +48,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class SendMessage extends EventEngineFunction
+	static class SendMessage extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -58,7 +58,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class SetHealth extends EventEngineFunction
+	static class SetHealth extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -68,7 +68,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class TeleportToLocation extends EventEngineFunction
+	static class TeleportToLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -78,7 +78,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class TeleportToLocationRotation extends EventEngineFunction
+	static class TeleportToLocationRotation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -91,7 +91,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class TeleportToPlayer extends EventEngineFunction
+	static class TeleportToPlayer extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -101,7 +101,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class CloneInventory extends EventEngineFunction
+	static class CloneInventory extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -115,7 +115,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class GetLocation extends EventEngineFunction
+	static class GetLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -132,7 +132,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class IsDead extends EventEngineFunction
+	static class IsDead extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -145,7 +145,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class SendEvent extends EventEngineFunction
+	static class SendEvent extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -155,7 +155,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class GetPlayerAtLocation extends EventEngineFunction
+	static class GetPlayerAtLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -175,7 +175,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class ClearInventory extends EventEngineFunction
+	static class ClearInventory extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -187,7 +187,7 @@ public class PlayerLibrary extends OneArgFunction
 		}
 	}
 
-	static class AddItem extends EventEngineFunction
+	static class AddItem extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

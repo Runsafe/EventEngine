@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.engine.EventEngineFunction;
-import no.runsafe.eventengine.engine.FunctionParameters;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
@@ -24,7 +24,7 @@ public class HookingLibrary extends OneArgFunction
 		return lib;
 	}
 
-	static class RegisterHook extends EventEngineFunction
+	static class RegisterHook extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
