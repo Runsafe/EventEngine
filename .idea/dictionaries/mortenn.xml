@@ -5,6 +5,7 @@
       <w>eventengine</w>
       <w>luaenv</w>
       <w>luaj</w>
+      <w>reloadscripts</w>
     </words>
   </dictionary>
 </component>

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="luaj-jse-3.0-alpha2">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../luaj-jse-3.0-alpha2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Framework/lib/luaj-jse-3.0-alpha2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -28,7 +28,7 @@ public class WorldLibrary extends OneArgFunction
 	public static void prepareLocationForEdit(RunsafeLocation location)
 	{
 		RunsafeChunk chunk = location.getChunk();
-		if (!chunk.isLoaded()) chunk.load();
+		if (chunk.isUnloaded()) chunk.load();
 	}
 
 	static class SetBlock extends RunsafeLuaFunction

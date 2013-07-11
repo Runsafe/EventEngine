@@ -27,6 +27,6 @@ public class ReloadScripts extends ExecutableCommand
 		return (executor instanceof RunsafePlayer ? "&eReloaded!" : null);
 	}
 
-	private IOutput output;
-	private ScriptManager scriptManager;
+	private final IOutput output;
+	private final ScriptManager scriptManager;
 }

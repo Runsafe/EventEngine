@@ -163,5 +163,5 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		}
 	}
 
-	private static HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
+	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
 }

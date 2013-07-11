@@ -65,8 +65,8 @@ public class Hook
 			Environment.global.get(this.getFunction()).call();
 	}
 
-	private HookType type;
-	private String function;
+	private final HookType type;
+	private final String function;
 	private RunsafeLocation location;
 	private String playerName;
 	private Object data;

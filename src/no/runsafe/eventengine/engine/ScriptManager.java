@@ -118,7 +118,7 @@ public class ScriptManager implements IPluginEnabled
 		return null;
 	}
 
-	private String path;
-	private String scriptPath;
-	private IOutput output;
+	private final String path;
+	private final String scriptPath;
+	private final IOutput output;
 }
