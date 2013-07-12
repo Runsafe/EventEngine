@@ -23,7 +23,7 @@ public class ReloadScripts extends ExecutableCommand
 	{
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.
-		this.scriptManager.reloadEngine(); // Clear environment and reload all scripts.
+		this.scriptManager.OnPluginEnabled(); // Clear environment and reload all scripts.
 		return (executor instanceof RunsafePlayer ? "&eReloaded!" : null);
 	}
 

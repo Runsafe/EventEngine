@@ -3,14 +3,10 @@ package no.runsafe.eventengine.engine;
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
-import no.runsafe.framework.lua.Environment;
+import no.runsafe.framework.lua.LuaEnvironment;
 import org.luaj.vm2.LuaError;
-import org.luaj.vm2.LuaValue;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ScriptManager implements IPluginEnabled
 {
@@ -31,38 +27,6 @@ public class ScriptManager implements IPluginEnabled
 	@Override
 	public void OnPluginEnabled()
 	{
-		this.loadEngine();
-	}
-
-	public void reloadEngine()
-	{
-		this.loadScripts();
-	}
-
-	private void loadEngine()
-	{
-		try
-		{
-			String engineFile = this.path + "engine.lua";
-			InputStream input = ScriptManager.class.getResourceAsStream("/engine.lua");
-			OutputStream output = new FileOutputStream(engineFile);
-
-			byte[] buffer = new byte[4096];
-			int length;
-			while ((length = input.read(buffer)) > 0)
-				output.write(buffer, 0, length);
-
-			output.close();
-			input.close();
-
-			Environment.global.get("dofile").call(LuaValue.valueOf(engineFile));
-		}
-		catch (Exception e)
-		{
-			this.output.logError("Unable to write engine file, exception below.");
-			this.output.logException(e);
-			return;
-		}
 		this.loadScripts();
 	}
 
@@ -109,7 +73,7 @@ public class ScriptManager implements IPluginEnabled
 
 		try
 		{
-			Environment.global.get("dofile").call(LuaValue.valueOf(file));
+			LuaEnvironment.loadFile(file);
 		}
 		catch (LuaError error)
 		{
