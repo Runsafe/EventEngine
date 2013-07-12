@@ -12,8 +12,8 @@ public class APIHandler extends OneArgFunction
 	public LuaValue call(LuaValue env)
 	{
 		LuaTable lib = new LuaTable();
-		lib.set("api", lib);
-		lib.get("package").get("loaded").set("api", lib);
+		LuaEnvironment.env.set("api", lib);
+		LuaEnvironment.env.get("package").get("loaded").set("api", lib);
 
 		LuaEnvironment.loadFile("plugins/EventEngine/lua/engine.lua");
 		LuaEnvironment.global.load(new HookingLibrary());
