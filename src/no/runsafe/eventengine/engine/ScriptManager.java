@@ -58,10 +58,10 @@ public class ScriptManager implements IPluginEnabled
 			}
 		}
 
-		this.output.logInformation("%d lua scripts loaded.", succeeded);
+		this.output.logInformation("%d lua script(s) loaded.", succeeded);
 
 		if (failed > 0)
-			this.output.logError("%d lua scripts failed to load.", failed);
+			this.output.logError("%d lua script(s) failed to load.", failed);
 	}
 
 	private String runScript(String script)
