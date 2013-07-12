@@ -34,7 +34,7 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("clearInventory", new ClearInventory());
 		lib.set("addItem", new AddItem());
 
-		env.get("engine").set("player", lib);
+		env.get("api").set("player", lib);
 		return lib;
 	}
 

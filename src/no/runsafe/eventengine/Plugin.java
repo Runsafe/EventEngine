@@ -1,6 +1,7 @@
 package no.runsafe.eventengine;
 
 import no.runsafe.eventengine.commands.ReloadScripts;
+import no.runsafe.eventengine.engine.APIHandler;
 import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.libraries.*;
@@ -17,13 +18,7 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(getPluginAPI(MusicHandler.class));
 		Plugin.console = this.output;
 
-		LuaEnvironment.loadFile("plugins/EventEngine/lua/engine.lua");
-		LuaEnvironment.global.load(new HookingLibrary());
-		LuaEnvironment.global.load(new PlayerLibrary());
-		LuaEnvironment.global.load(new EffectLibrary());
-		LuaEnvironment.global.load(new WorldLibrary());
-		LuaEnvironment.global.load(new SoundLibrary());
-		LuaEnvironment.global.load(new AILibrary());
+		LuaEnvironment.global.load(new APIHandler());
 
 		SoundLibrary.musicHandler = this.getComponent(no.runsafe.moosic.MusicHandler.class);
 		this.addComponent(ScriptManager.class);

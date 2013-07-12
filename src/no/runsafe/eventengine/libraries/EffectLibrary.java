@@ -26,7 +26,7 @@ public class EffectLibrary extends OneArgFunction
 		lib.set("explosion", new Explosion());
 		lib.set("firework", new SpawnFirework());
 
-		env.get("engine").set("effects", lib);
+		env.get("api").set("effects", lib);
 		return lib;
 	}
 

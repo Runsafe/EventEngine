@@ -23,7 +23,7 @@ public class AILibrary extends OneArgFunction
 		lib.set("create", new Create());
 		lib.set("speak", new Speak());
 
-		env.get("engine").set("ai", lib);
+		env.get("api").set("ai", lib);
 		return lib;
 	}
 

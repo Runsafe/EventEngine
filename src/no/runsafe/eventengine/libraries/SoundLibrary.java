@@ -23,7 +23,7 @@ public class SoundLibrary extends OneArgFunction
 		lib.set("playSong", new PlaySong());
 		lib.set("stopSong", new StopSong());
 
-		env.get("engine").set("sound", lib);
+		env.get("api").set("sound", lib);
 		return lib;
 	}
 

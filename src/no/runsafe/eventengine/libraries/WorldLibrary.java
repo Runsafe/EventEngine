@@ -21,7 +21,7 @@ public class WorldLibrary extends OneArgFunction
 		lib.set("setBlock", new SetBlock());
 		lib.set("getBlock", new GetBlock());
 
-		env.get("engine").set("world", lib);
+		env.get("api").set("world", lib);
 		return lib;
 	}
 

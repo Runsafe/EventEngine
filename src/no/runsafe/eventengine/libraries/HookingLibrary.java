@@ -20,7 +20,7 @@ public class HookingLibrary extends OneArgFunction
 		LuaTable lib = new LuaTable();
 		lib.set("registerHook", new RegisterHook());
 
-		env.get("engine").set("hooks", lib);
+		env.get("api").set("hooks", lib);
 		return lib;
 	}
 
