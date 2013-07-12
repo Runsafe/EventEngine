@@ -17,6 +17,7 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(getPluginAPI(MusicHandler.class));
 		Plugin.console = this.output;
 
+		LuaEnvironment.loadFile("plugins/EventEngine/lua/engine.lua");
 		LuaEnvironment.global.load(new HookingLibrary());
 		LuaEnvironment.global.load(new PlayerLibrary());
 		LuaEnvironment.global.load(new EffectLibrary());

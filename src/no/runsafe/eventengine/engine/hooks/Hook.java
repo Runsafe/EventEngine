@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.engine.hooks;
 
-import no.runsafe.framework.lua.Environment;
+import no.runsafe.framework.lua.LuaEnvironment;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import org.luaj.vm2.LuaTable;
 
@@ -60,9 +60,9 @@ public class Hook
 	public void execute(LuaTable arguments)
 	{
 		if (arguments != null)
-			Environment.global.get(this.getFunction()).call(arguments);
+			LuaEnvironment.global.get(this.getFunction()).call(arguments);
 		else
-			Environment.global.get(this.getFunction()).call();
+			LuaEnvironment.global.get(this.getFunction()).call();
 	}
 
 	private final HookType type;
