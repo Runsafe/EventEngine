@@ -3,7 +3,6 @@ main: no.runsafe.eventengine.Plugin
 version: 1.0.@BUILD@
 author: Kruithne
 description: Event engine
-depend: [Moosic]
 commands:
   reloadscripts:
     description: Reloads the lua engine and all scripts.

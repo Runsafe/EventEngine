@@ -115,13 +115,3 @@ end
 function AI:speak(message)
     EventEngine.ai.speak(self.id, message);
 end
-
--- Song object
-Song = class('Song');
-function Song:initialize(id)
-    self.id = id;
-end
-
-function Song:stop()
-    EventEngine.song.stopSong(self.id);
-end

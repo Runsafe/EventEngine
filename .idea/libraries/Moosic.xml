@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Moosic">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../out/Moosic.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
