@@ -1,6 +1,6 @@
 -- Hook registering
 function registerHook(hookType, functionName, ...)
-    api.hooks.registerHook(hookType, functionName, ...); -- Register the hook with the server.
+    EventEngine.hooks.registerHook(hookType, functionName, ...); -- Register the hook with the server.
 end
 
 -- Player object
@@ -14,51 +14,51 @@ function Player:getName()
 end
 
 function Player:kill()
-    api.player.kill(self.name);
+    EventEngine.player.kill(self.name);
 end
 
 function Player:sendMessage(message)
-    api.player.sendMessage(self.name, message);
+    EventEngine.player.sendMessage(self.name, message);
 end
 
 function Player:setHealth(health)
-    api.player.setHealth(self.name, health);
+    EventEngine.player.setHealth(self.name, health);
 end
 
 function Player:teleport(location)
     if location.yaw ~= nil and location.pitch ~= nil then
-        api.player.teleportToLocationRotation(self.name, location.world, location.x, location.y, location.z, location.yaw, location.pitch);
+        EventEngine.player.teleportToLocationRotation(self.name, location.world, location.x, location.y, location.z, location.yaw, location.pitch);
     else
-        api.player.teleportToLocation(self.name, location.world, location.x, location.y, location.z);
+        EventEngine.player.teleportToLocation(self.name, location.world, location.x, location.y, location.z);
     end
 end
 
 function Player:teleportToPlayer(player)
-    api.player.teleportToPlayer(self.name, player.name);
+    EventEngine.player.teleportToPlayer(self.name, player.name);
 end
 
 function Player:cloneInventory(player)
-    api.player.cloneInventory(player.name, self.name);
+    EventEngine.player.cloneInventory(player.name, self.name);
 end
 
 function Player:getLocation()
-    return api.player.getLocation(self.name);
+    return EventEngine.player.getLocation(self.name);
 end
 
 function Player:isDead()
-    return api.player.isDead(self.name);
+    return EventEngine.player.isDead(self.name);
 end
 
 function Player:sendEvent(event)
-    api.player.sendEvent(self.name, event);
+    EventEngine.player.sendEvent(self.name, event);
 end
 
 function Player:clearInventory()
-    api.player.clearInventory(self.name);
+    EventEngine.player.clearInventory(self.name);
 end
 
 function Player:addItem(itemID, itemData, itemAmount)
-    api.player.addItem(self.name, itemID, itemData, itemAmount);
+    EventEngine.player.addItem(self.name, itemID, itemData, itemAmount);
 end
 
 -- Location object
@@ -79,41 +79,41 @@ function Location:setPitch(pitch)
 end
 
 function Location:getClosestPlayer()
-    return Player:new(api.player.getPlayerAtLocation(self.world, self.x, self.y, self.z));
+    return Player:new(EventEngine.player.getPlayerAtLocation(self.world, self.x, self.y, self.z));
 end
 
 function Location:setBlock(blockID, data)
-    api.world.setBlock(self.world, self.x, self.y, self.z, blockID, data);
+    EventEngine.world.setBlock(self.world, self.x, self.y, self.z, blockID, data);
 end
 
 function Location:getBlock()
-    return api.world.getBlock(self.world, self.x, self.y, self.z);
+    return EventEngine.world.getBlock(self.world, self.x, self.y, self.z);
 end
 
 function Location:playSong(file, volume)
-    return Song:new(api.sound.playSong(self.world, self.x, self.y, self.z, file, volume));
+    return Song:new(EventEngine.sound.playSong(self.world, self.x, self.y, self.z, file, volume));
 end
 
 function Location:lightningStrike()
-    api.effects.strikeLightning(self.world, self.x, self.y, self.z);
+    EventEngine.effects.strikeLightning(self.world, self.x, self.y, self.z);
 end
 
 function Location:firework(type, colour, fade, flicker, trail)
-    api.effects.firework(self.world, self.x, self.y, self.z, type, colour, fade, flicker, trail);
+    EventEngine.effects.firework(self.world, self.x, self.y, self.z, type, colour, fade, flicker, trail);
 end
 
 function Location:explosion(power, breakBlocks, fire)
-    api.effects.explosion(self.world, self.x, self.y, self.z, power, breakBlocks, fire);
+    EventEngine.effects.explosion(self.world, self.x, self.y, self.z, power, breakBlocks, fire);
 end
 
 -- AI Object
 AI = class('AI');
 function AI:initialize(name, group, world)
-    self.id = api.ai.create(name, group, world);
+    self.id = EventEngine.ai.create(name, group, world);
 end
 
 function AI:speak(message)
-    api.ai.speak(self.id, message);
+    EventEngine.ai.speak(self.id, message);
 end
 
 -- Song object
@@ -123,5 +123,5 @@ function Song:initialize(id)
 end
 
 function Song:stop()
-    api.song.stopSong(self.id);
+    EventEngine.song.stopSong(self.id);
 end
