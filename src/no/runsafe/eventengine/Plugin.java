@@ -16,8 +16,6 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(getPluginAPI(MusicHandler.class));
 		Plugin.console = this.output;
 
-//		LuaEnvironment.global.load(new APIHandler());
-
 		addComponent(AILibrary.class);
 		addComponent(EffectLibrary.class);
 		addComponent(HookingLibrary.class);
@@ -31,5 +29,5 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(ReloadScripts.class);
 	}
 
-	public static IOutput console;
+	private static IOutput console;
 }

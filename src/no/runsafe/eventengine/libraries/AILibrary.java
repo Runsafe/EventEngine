@@ -1,9 +1,9 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
@@ -20,16 +20,6 @@ public class AILibrary extends Library
 	{
 		super(plugin, "ai");
 	}
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("create", new Create());
-//		lib.set("speak", new Speak());
-//
-//		env.get("api").set("ai", lib);
-//		return lib;
-//	}
 
 	@Override
 	protected LuaTable getAPI()
@@ -40,7 +30,7 @@ public class AILibrary extends Library
 		return lib;
 	}
 
-	public static int createAI(String name, String group, RunsafeWorld world)
+	private static int createAI(String name, String group, RunsafeWorld world)
 	{
 		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name);
 		newAI.getGroups().add(group);
@@ -50,7 +40,7 @@ public class AILibrary extends Library
 		return AILibrary.ai.size() - 1;
 	}
 
-	static class Create extends RunsafeLuaFunction
+	private static class Create extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -61,7 +51,7 @@ public class AILibrary extends Library
 		}
 	}
 
-	static class Speak extends RunsafeLuaFunction
+	private static class Speak extends RunsafeLuaFunction
 	{
 		// aiID, text
 		@Override

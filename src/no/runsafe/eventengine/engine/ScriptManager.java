@@ -3,7 +3,7 @@ package no.runsafe.eventengine.engine;
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
-import no.runsafe.framework.lua.LuaEnvironment;
+import no.runsafe.framework.internal.lua.Environment;
 import org.luaj.vm2.LuaError;
 
 import java.io.File;
@@ -73,7 +73,7 @@ public class ScriptManager implements IPluginEnabled
 
 		try
 		{
-			LuaEnvironment.loadFile(file);
+			Environment.loadFile(file);
 		}
 		catch (LuaError error)
 		{

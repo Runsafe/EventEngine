@@ -2,8 +2,8 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
@@ -18,16 +18,6 @@ public class WorldLibrary extends Library
 	{
 		super(plugin, "world");
 	}
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("setBlock", new SetBlock());
-//		lib.set("getBlock", new GetBlock());
-//
-//		env.get("api").set("world", lib);
-//		return lib;
-//	}
 
 	@Override
 	protected LuaTable getAPI()
@@ -38,13 +28,13 @@ public class WorldLibrary extends Library
 		return lib;
 	}
 
-	public static void prepareLocationForEdit(RunsafeLocation location)
+	private static void prepareLocationForEdit(RunsafeLocation location)
 	{
 		RunsafeChunk chunk = location.getChunk();
 		if (chunk.isUnloaded()) chunk.load();
 	}
 
-	static class SetBlock extends RunsafeLuaFunction
+	private static class SetBlock extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -62,7 +52,7 @@ public class WorldLibrary extends Library
 		}
 	}
 
-	static class GetBlock extends RunsafeLuaFunction
+	private static class GetBlock extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

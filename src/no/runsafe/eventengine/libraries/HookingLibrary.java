@@ -5,8 +5,8 @@ import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 
@@ -18,15 +18,6 @@ public class HookingLibrary extends Library
 	{
 		super(plugin, "hooks");
 	}
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("registerHook", new RegisterHook());
-//
-//		env.get("api").set("hooks", lib);
-//		return lib;
-//	}
 
 	@Override
 	protected LuaTable getAPI()
@@ -36,7 +27,7 @@ public class HookingLibrary extends Library
 		return lib;
 	}
 
-	static class RegisterHook extends RunsafeLuaFunction
+	private static class RegisterHook extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

@@ -2,8 +2,8 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.entity.ProjectileEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
@@ -25,18 +25,6 @@ public class EffectLibrary extends Library
 		super(plugin, "effects");
 	}
 
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("strikeLightning", new LightningStrike());
-//		lib.set("explosion", new Explosion());
-//		lib.set("firework", new SpawnFirework());
-//
-//		env.get("api").set("effects", lib);
-//		return lib;
-//	}
-
 	@Override
 	protected LuaTable getAPI()
 	{
@@ -47,7 +35,7 @@ public class EffectLibrary extends Library
 		return lib;
 	}
 
-	static class LightningStrike extends RunsafeLuaFunction
+	private static class LightningStrike extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -58,7 +46,7 @@ public class EffectLibrary extends Library
 		}
 	}
 
-	static class Explosion extends RunsafeLuaFunction
+	private static class Explosion extends RunsafeLuaFunction
 	{
 		// world, x, y, z, power, break, fire
 		@Override
@@ -70,7 +58,7 @@ public class EffectLibrary extends Library
 		}
 	}
 
-	static class SpawnFirework extends RunsafeLuaFunction
+	private static class SpawnFirework extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -97,7 +85,7 @@ public class EffectLibrary extends Library
 		}
 	}
 
-	public static final HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();
+	private static final HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();
 
 	static
 	{

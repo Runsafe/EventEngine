@@ -3,8 +3,8 @@ package no.runsafe.eventengine.libraries;
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
@@ -20,27 +20,6 @@ public class PlayerLibrary extends Library
 	{
 		super(plugin, "player");
 	}
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("kill", new Kill());
-//		lib.set("sendMessage", new SendMessage());
-//		lib.set("setHealth", new SetHealth());
-//		lib.set("teleportToLocation", new TeleportToLocation());
-//		lib.set("teleportToLocationRotation", new TeleportToLocationRotation());
-//		lib.set("teleportToPlayer", new TeleportToPlayer());
-//		lib.set("cloneInventory", new CloneInventory());
-//		lib.set("getLocation", new GetLocation());
-//		lib.set("isDead", new IsDead());
-//		lib.set("sendEvent", new SendEvent());
-//		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
-//		lib.set("clearInventory", new ClearInventory());
-//		lib.set("addItem", new AddItem());
-//
-//		env.get("api").set("player", lib);
-//		return lib;
-//	}
 
 	@Override
 	protected LuaTable getAPI()
@@ -62,7 +41,7 @@ public class PlayerLibrary extends Library
 		return lib;
 	}
 
-	static class Kill extends RunsafeLuaFunction
+	private static class Kill extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -72,7 +51,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class SendMessage extends RunsafeLuaFunction
+	private static class SendMessage extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -82,7 +61,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class SetHealth extends RunsafeLuaFunction
+	private static class SetHealth extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -92,7 +71,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class TeleportToLocation extends RunsafeLuaFunction
+	private static class TeleportToLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -102,7 +81,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class TeleportToLocationRotation extends RunsafeLuaFunction
+	private static class TeleportToLocationRotation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -115,7 +94,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class TeleportToPlayer extends RunsafeLuaFunction
+	private static class TeleportToPlayer extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -125,7 +104,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class CloneInventory extends RunsafeLuaFunction
+	private static class CloneInventory extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -139,7 +118,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class GetLocation extends RunsafeLuaFunction
+	private static class GetLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -156,7 +135,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class IsDead extends RunsafeLuaFunction
+	private static class IsDead extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -169,7 +148,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class SendEvent extends RunsafeLuaFunction
+	private static class SendEvent extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -179,7 +158,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class GetPlayerAtLocation extends RunsafeLuaFunction
+	private static class GetPlayerAtLocation extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -199,7 +178,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class ClearInventory extends RunsafeLuaFunction
+	private static class ClearInventory extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
@@ -211,7 +190,7 @@ public class PlayerLibrary extends Library
 		}
 	}
 
-	static class AddItem extends RunsafeLuaFunction
+	private static class AddItem extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)

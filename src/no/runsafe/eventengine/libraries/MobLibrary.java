@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-public class MobLibrary
+class MobLibrary
 {
 
 }

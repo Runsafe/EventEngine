@@ -26,7 +26,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		HookHandler.hooks.get(type).add(hook);
 	}
 
-	public static List<Hook> getHooks(HookType type)
+	private static List<Hook> getHooks(HookType type)
 	{
 		if (HookHandler.hooks.containsKey(type))
 			return HookHandler.hooks.get(type);

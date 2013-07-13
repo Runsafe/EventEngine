@@ -2,8 +2,8 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.moosic.MusicHandler;
 import no.runsafe.moosic.MusicTrack;
@@ -21,17 +21,6 @@ public class SoundLibrary extends Library
 		super(plugin, "sound");
 	}
 
-//	@Override
-//	public LuaValue call(LuaValue env)
-//	{
-//		LuaTable lib = new LuaTable();
-//		lib.set("playSong", new PlaySong());
-//		lib.set("stopSong", new StopSong());
-//
-//		env.get("api").set("sound", lib);
-//		return lib;
-//	}
-
 	@Override
 	protected LuaTable getAPI()
 	{
@@ -41,7 +30,7 @@ public class SoundLibrary extends Library
 		return lib;
 	}
 
-	static class PlaySong extends RunsafeLuaFunction
+	private static class PlaySong extends RunsafeLuaFunction
 	{
 		// world, x, y, z, songFile, volume
 		// Returns int
@@ -68,7 +57,7 @@ public class SoundLibrary extends Library
 		}
 	}
 
-	static class StopSong extends RunsafeLuaFunction
+	private static class StopSong extends RunsafeLuaFunction
 	{
 		@Override
 		public List<Object> run(FunctionParameters parameters)
