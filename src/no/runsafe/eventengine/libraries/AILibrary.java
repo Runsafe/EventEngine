@@ -1,9 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.lua.FunctionParameters;
-import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.api.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
@@ -25,9 +23,35 @@ public class AILibrary extends Library
 	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
-		lib.set("create", new Create());
-		lib.set("speak", new Speak());
+		lib.set("create", new IntegerFunction()
+		{
+			@Override
+			public Integer run(FunctionParameters parameters)
+			{
+				return createAI(parameters.getString(0), parameters.getString(1), parameters.getWorld(2));
+			}
+		});
+		lib.set("speak", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				speak(parameters.getInt(0), parameters.getString(1));
+			}
+		});
 		return lib;
+	}
+
+	private static void speak(int id, String message)
+	{
+		if (ai.size() <= id)
+			throw new LuaError("No AI with given ID.");
+
+		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(AILibrary.ai.get(id), message);
+		event.Fire();
+
+		if (!event.getCancelled())
+			RunsafeServer.Instance.broadcastMessage(String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage()));
 	}
 
 	private static int createAI(String name, String group, RunsafeWorld world)
@@ -38,37 +62,6 @@ public class AILibrary extends Library
 
 		AILibrary.ai.add(newAI);
 		return AILibrary.ai.size() - 1;
-	}
-
-	private static class Create extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			List<Object> returnValues = new ArrayList<Object>();
-			returnValues.add(AILibrary.createAI(parameters.getString(0), parameters.getString(1), parameters.getWorld(2)));
-			return returnValues;
-		}
-	}
-
-	private static class Speak extends RunsafeLuaFunction
-	{
-		// aiID, text
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			int id = parameters.getInt(0);
-			if (ai.size() <= id)
-				throw new LuaError("No AI with given ID.");
-
-			RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(AILibrary.ai.get(id), parameters.getString(1));
-			event.Fire();
-
-			if (!event.getCancelled())
-				RunsafeServer.Instance.broadcastMessage(String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage()));
-
-			return null;
-		}
 	}
 
 	private static final List<RunsafeFakePlayer> ai = new ArrayList<RunsafeFakePlayer>();
