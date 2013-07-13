@@ -1,5 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.lua.FunctionParameters;
 import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -16,17 +18,32 @@ import org.luaj.vm2.lib.OneArgFunction;
 import java.util.HashMap;
 import java.util.List;
 
-public class EffectLibrary extends OneArgFunction
+public class EffectLibrary extends Library
 {
+	public EffectLibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "effects");
+	}
+
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("strikeLightning", new LightningStrike());
+//		lib.set("explosion", new Explosion());
+//		lib.set("firework", new SpawnFirework());
+//
+//		env.get("api").set("effects", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("strikeLightning", new LightningStrike());
 		lib.set("explosion", new Explosion());
 		lib.set("firework", new SpawnFirework());
-
-		env.get("api").set("effects", lib);
 		return lib;
 	}
 

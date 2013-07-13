@@ -1,5 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.lua.FunctionParameters;
 import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeServer;
@@ -8,22 +10,33 @@ import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AILibrary extends OneArgFunction
+public class AILibrary extends Library
 {
+	public AILibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "ai");
+	}
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("create", new Create());
+//		lib.set("speak", new Speak());
+//
+//		env.get("api").set("ai", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("create", new Create());
 		lib.set("speak", new Speak());
-
-		env.get("api").set("ai", lib);
 		return lib;
 	}
 

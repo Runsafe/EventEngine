@@ -1,5 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.lua.FunctionParameters;
 import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -7,23 +9,35 @@ import no.runsafe.moosic.MusicHandler;
 import no.runsafe.moosic.MusicTrack;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoundLibrary extends OneArgFunction
+public class SoundLibrary extends Library
 {
+	public SoundLibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "sound");
+	}
+
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("playSong", new PlaySong());
+//		lib.set("stopSong", new StopSong());
+//
+//		env.get("api").set("sound", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("playSong", new PlaySong());
 		lib.set("stopSong", new StopSong());
-
-		env.get("api").set("sound", lib);
 		return lib;
 	}
 

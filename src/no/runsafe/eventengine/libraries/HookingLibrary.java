@@ -1,26 +1,38 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.framework.lua.FunctionParameters;
-import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
+import no.runsafe.framework.lua.FunctionParameters;
+import no.runsafe.framework.lua.RunsafeLuaFunction;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.util.List;
 
-public class HookingLibrary extends OneArgFunction
+public class HookingLibrary extends Library
 {
+	public HookingLibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "hooks");
+	}
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("registerHook", new RegisterHook());
+//
+//		env.get("api").set("hooks", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("registerHook", new RegisterHook());
-
-		env.get("api").set("hooks", lib);
 		return lib;
 	}
 

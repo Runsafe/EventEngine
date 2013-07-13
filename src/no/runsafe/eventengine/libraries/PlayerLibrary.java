@@ -1,6 +1,8 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.events.CustomEvent;
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.lua.FunctionParameters;
 import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.Item;
@@ -8,16 +10,40 @@ import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerLibrary extends OneArgFunction
+public class PlayerLibrary extends Library
 {
+	public PlayerLibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "player");
+	}
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("kill", new Kill());
+//		lib.set("sendMessage", new SendMessage());
+//		lib.set("setHealth", new SetHealth());
+//		lib.set("teleportToLocation", new TeleportToLocation());
+//		lib.set("teleportToLocationRotation", new TeleportToLocationRotation());
+//		lib.set("teleportToPlayer", new TeleportToPlayer());
+//		lib.set("cloneInventory", new CloneInventory());
+//		lib.set("getLocation", new GetLocation());
+//		lib.set("isDead", new IsDead());
+//		lib.set("sendEvent", new SendEvent());
+//		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
+//		lib.set("clearInventory", new ClearInventory());
+//		lib.set("addItem", new AddItem());
+//
+//		env.get("api").set("player", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("kill", new Kill());
@@ -33,8 +59,6 @@ public class PlayerLibrary extends OneArgFunction
 		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
 		lib.set("clearInventory", new ClearInventory());
 		lib.set("addItem", new AddItem());
-
-		env.get("api").set("player", lib);
 		return lib;
 	}
 

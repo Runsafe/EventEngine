@@ -1,27 +1,40 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.lua.FunctionParameters;
 import no.runsafe.framework.lua.RunsafeLuaFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldLibrary extends OneArgFunction
+public class WorldLibrary extends Library
 {
+	public WorldLibrary(RunsafePlugin plugin)
+	{
+		super(plugin, "world");
+	}
+//	@Override
+//	public LuaValue call(LuaValue env)
+//	{
+//		LuaTable lib = new LuaTable();
+//		lib.set("setBlock", new SetBlock());
+//		lib.set("getBlock", new GetBlock());
+//
+//		env.get("api").set("world", lib);
+//		return lib;
+//	}
+
 	@Override
-	public LuaValue call(LuaValue env)
+	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
 		lib.set("setBlock", new SetBlock());
 		lib.set("getBlock", new GetBlock());
-
-		env.get("api").set("world", lib);
 		return lib;
 	}
 
