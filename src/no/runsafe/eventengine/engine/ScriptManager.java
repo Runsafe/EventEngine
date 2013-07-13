@@ -4,22 +4,20 @@ import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.internal.lua.Environment;
+import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.LuaError;
 
 import java.io.File;
+import java.util.Collection;
 
 public class ScriptManager implements IPluginEnabled
 {
 	public ScriptManager(Plugin eventEngine, IOutput output)
 	{
-		// Setup folders
-		this.path = String.format("plugins/%s/", eventEngine.getName());
-		this.scriptPath = this.path + "scripts/";
-
-		File pathCheck = new File(this.scriptPath);
-		if (!pathCheck.exists())
-			if (pathCheck.mkdirs())
-				output.warning("Failed to create scripts directory at: " + this.scriptPath);
+		scriptPath = new File(eventEngine.getDataFolder(), "scripts");
+		if (!scriptPath.exists())
+			if (scriptPath.mkdirs())
+				output.warning("Failed to create scripts directory at: " + scriptPath.getPath());
 
 		this.output = output;
 	}
@@ -35,45 +33,37 @@ public class ScriptManager implements IPluginEnabled
 		int succeeded = 0;
 		int failed = 0;
 
-		File[] files = new File(this.scriptPath).listFiles();
-
+		Collection<File> files = FileUtils.listFiles(scriptPath, new String[]{"lua"}, true);
 		if (files != null)
 		{
 			for (File file : files)
 			{
-				String fileName = file.getName();
-				if (file.isFile() && fileName.endsWith(".lua"))
+				String output = this.runScript(file);
+				if (output != null)
 				{
-					String output = this.runScript(fileName);
-					if (output != null)
-					{
-						this.output.logError(output);
-						failed += 1;
-					}
-					else
-					{
-						succeeded += 1;
-					}
+					this.output.logError(output);
+					failed++;
+				}
+				else
+				{
+					succeeded++;
 				}
 			}
 		}
 
 		this.output.logInformation("%d lua script(s) loaded.", succeeded);
-
 		if (failed > 0)
 			this.output.logError("%d lua script(s) failed to load.", failed);
 	}
 
-	private String runScript(String script)
+	private String runScript(File script)
 	{
-		String file = scriptPath + script;
-
-		if (!new File(file).exists())
-			return "Unable to find script: " + file;
+		if (!script.isFile())
+			return null;
 
 		try
 		{
-			Environment.loadFile(file);
+			Environment.loadFile(script.getAbsolutePath());
 		}
 		catch (LuaError error)
 		{
@@ -82,7 +72,6 @@ public class ScriptManager implements IPluginEnabled
 		return null;
 	}
 
-	private final String path;
-	private final String scriptPath;
+	private final File scriptPath;
 	private final IOutput output;
 }
