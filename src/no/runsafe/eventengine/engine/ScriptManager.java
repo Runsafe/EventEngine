@@ -2,6 +2,7 @@ package no.runsafe.eventengine.engine;
 
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.internal.lua.Environment;
 import org.apache.commons.io.FileUtils;
@@ -12,8 +13,9 @@ import java.util.Collection;
 
 public class ScriptManager implements IPluginEnabled
 {
-	public ScriptManager(Plugin eventEngine, IOutput output)
+	public ScriptManager(Plugin eventEngine, IOutput output, IScheduler scheduler)
 	{
+		this.scheduler = scheduler;
 		scriptPath = new File(eventEngine.getDataFolder(), "scripts");
 		if (!scriptPath.exists())
 			if (scriptPath.mkdirs())
@@ -25,7 +27,14 @@ public class ScriptManager implements IPluginEnabled
 	@Override
 	public void OnPluginEnabled()
 	{
-		this.loadScripts();
+		scheduler.startSyncTask(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				loadScripts();
+			}
+		}, 1);
 	}
 
 	private void loadScripts()
@@ -74,4 +83,5 @@ public class ScriptManager implements IPluginEnabled
 
 	private final File scriptPath;
 	private final IOutput output;
+	private final IScheduler scheduler;
 }
