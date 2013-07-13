@@ -1,9 +1,9 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.FunctionParameters;
-import no.runsafe.framework.api.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.Library;
+import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.entity.ProjectileEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
@@ -12,11 +12,8 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class EffectLibrary extends Library
 {
@@ -29,60 +26,65 @@ public class EffectLibrary extends Library
 	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
-		lib.set("strikeLightning", new LightningStrike());
-		lib.set("explosion", new Explosion());
-		lib.set("firework", new SpawnFirework());
+		lib.set("strikeLightning", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				LightningStrike(parameters.getLocation(0));
+			}
+		});
+		lib.set("explosion", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				Explosion(parameters.getLocation(0), parameters.getInt(4), parameters.getBool(5), parameters.getBool(6));
+			}
+		});
+		lib.set("firework", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				SpawnFirework(
+					parameters.getLocation(0),
+					FireworkEffect.Type.valueOf(parameters.getString(4)),
+					EffectLibrary.colourID.get(parameters.getInt(5)),
+					EffectLibrary.colourID.get(parameters.getInt(6)),
+					parameters.getBool(7),
+					parameters.getBool(8),
+					parameters.getInt(9)
+				);
+			}
+		});
 		return lib;
 	}
 
-	private static class LightningStrike extends RunsafeLuaFunction
+	private static void LightningStrike(RunsafeLocation location)
 	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafeLocation location = parameters.getLocation(0);
-			location.getWorld().strikeLightningEffect(location);
-			return null;
-		}
+		location.getWorld().strikeLightningEffect(location);
 	}
 
-	private static class Explosion extends RunsafeLuaFunction
+	private static void Explosion(RunsafeLocation location, int power, boolean setFire, boolean breakBlocks)
 	{
-		// world, x, y, z, power, break, fire
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafeLocation location = parameters.getLocation(0);
-			location.getWorld().createExplosion(location, parameters.getInt(4), parameters.getBool(5), parameters.getBool(6));
-			return null;
-		}
+		location.getWorld().createExplosion(location, power, setFire, breakBlocks);
 	}
 
-	private static class SpawnFirework extends RunsafeLuaFunction
+	private void SpawnFirework(RunsafeLocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
 	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafeLocation location = parameters.getLocation(0);
-			RunsafeEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
+		RunsafeEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
 
-			Firework firework = (Firework) entity.getRaw();
-			FireworkMeta meta = firework.getFireworkMeta();
+		Firework firework = (Firework) entity.getRaw();
+		FireworkMeta meta = firework.getFireworkMeta();
 
-			FireworkEffect effect = FireworkEffect
-					.builder()
-					.with(FireworkEffect.Type.valueOf(parameters.getString(4)))
-					.withColor(EffectLibrary.colourID.get(parameters.getInt(5)))
-					.withFade(EffectLibrary.colourID.get(parameters.getInt(6)))
-					.flicker(parameters.getBool(7))
-					.trail(parameters.getBool(8))
-					.build();
+		FireworkEffect effect = FireworkEffect.builder()
+			.with(type).withColor(color).withFade(fade).flicker(flicker).trail(trail)
+			.build();
 
-			meta.addEffect(effect);
-			meta.setPower(parameters.getInt(9));
-			firework.setFireworkMeta(meta);
-			return null;
-		}
+		meta.addEffect(effect);
+		meta.setPower(power);
+		firework.setFireworkMeta(meta);
 	}
 
 	private static final HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();

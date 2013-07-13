@@ -4,13 +4,11 @@ import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.FunctionParameters;
-import no.runsafe.framework.api.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.Library;
+import no.runsafe.framework.api.lua.VoidFunction;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
-
-import java.util.List;
 
 public class HookingLibrary extends Library
 {
@@ -27,10 +25,10 @@ public class HookingLibrary extends Library
 		return lib;
 	}
 
-	private static class RegisterHook extends RunsafeLuaFunction
+	private static class RegisterHook extends VoidFunction
 	{
 		@Override
-		public List<Object> run(FunctionParameters parameters)
+		public void run(FunctionParameters parameters)
 		{
 			HookType type = HookType.valueOf(parameters.getString(0));
 			if (type == null)
@@ -61,7 +59,6 @@ public class HookingLibrary extends Library
 			}
 
 			HookHandler.registerHook(hook);
-			return null;
 		}
 	}
 }

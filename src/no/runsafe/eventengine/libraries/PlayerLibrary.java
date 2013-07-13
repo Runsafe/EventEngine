@@ -2,9 +2,7 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.lua.Library;
-import no.runsafe.framework.api.lua.FunctionParameters;
-import no.runsafe.framework.api.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
@@ -25,182 +23,134 @@ public class PlayerLibrary extends Library
 	protected LuaTable getAPI()
 	{
 		LuaTable lib = new LuaTable();
-		lib.set("kill", new Kill());
-		lib.set("sendMessage", new SendMessage());
-		lib.set("setHealth", new SetHealth());
-		lib.set("teleportToLocation", new TeleportToLocation());
-		lib.set("teleportToLocationRotation", new TeleportToLocationRotation());
-		lib.set("teleportToPlayer", new TeleportToPlayer());
-		lib.set("cloneInventory", new CloneInventory());
-		lib.set("getLocation", new GetLocation());
-		lib.set("isDead", new IsDead());
-		lib.set("sendEvent", new SendEvent());
-		lib.set("getPlayerAtLocation", new GetPlayerAtLocation());
-		lib.set("clearInventory", new ClearInventory());
-		lib.set("addItem", new AddItem());
+		lib.set("kill", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).setHealth(0);
+			}
+		});
+		lib.set("getLocation", new LocationFunction()
+		{
+			@Override
+			public RunsafeLocation run(FunctionParameters parameters)
+			{
+				return parameters.getPlayer(0).getLocation();
+			}
+		});
+		lib.set("isDead", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				return parameters.getPlayer(0).isDead();
+			}
+		});
+
+		lib.set("sendMessage", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
+			}
+		});
+		lib.set("setHealth", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).setHealth(parameters.getDouble(1));
+			}
+		});
+		lib.set("teleportToLocation", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).teleport(parameters.getLocation(1));
+			}
+		});
+		lib.set("teleportToLocationRotation", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).teleport(parameters.getLocation(1, true));
+			}
+		});
+		lib.set("teleportToPlayer", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).teleport(parameters.getPlayer(1));
+			}
+		});
+		lib.set("cloneInventory", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				CloneInventory(parameters.getPlayer(0), parameters.getPlayer(1));
+			}
+		});
+		lib.set("sendEvent", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				new CustomEvent(parameters.getPlayer(0), parameters.getString(1)).Fire();
+			}
+		});
+		lib.set("clearInventory", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).clearInventory();
+			}
+		});
+
+		lib.set("addItem", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				AddItem(parameters.getPlayer(0), parameters.getInt(1), parameters.getByte(2), parameters.getInt(3));
+			}
+		});
+		lib.set("getPlayerAtLocation", new StringFunction()
+		{
+			@Override
+			public String run(FunctionParameters parameters)
+			{
+				return GetPlayerAtLocation(parameters.getLocation(0));
+			}
+		});
+
 		return lib;
 	}
 
-	private static class Kill extends RunsafeLuaFunction
+	private static void CloneInventory(RunsafePlayer source, RunsafePlayer target)
 	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			parameters.getPlayer(0).setHealth(0);
-			return null;
-		}
+		target.getInventory().unserialize(source.getInventory().serialize());
+		target.updateInventory();
 	}
 
-	private static class SendMessage extends RunsafeLuaFunction
+	private static String GetPlayerAtLocation(RunsafeLocation location)
 	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
-			return null;
-		}
+		for (RunsafePlayer player : location.getWorld().getPlayers())
+			if (player.getLocation().distance(location) < 2)
+				return player.getName();
+		return null;
 	}
 
-	private static class SetHealth extends RunsafeLuaFunction
+	private static void AddItem(RunsafePlayer player, int itemId, byte data, int amount)
 	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			parameters.getPlayer(0).setHealth(parameters.getInt(1));
-			return null;
-		}
-	}
-
-	private static class TeleportToLocation extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			parameters.getPlayer(0).teleport(parameters.getLocation(1));
-			return null;
-		}
-	}
-
-	private static class TeleportToLocationRotation extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafeLocation location = parameters.getLocation(1);
-			location.setYaw(parameters.getFloat(5));
-			location.setPitch(parameters.getFloat(6));
-			parameters.getPlayer(0).teleport(location);
-			return null;
-		}
-	}
-
-	private static class TeleportToPlayer extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			parameters.getPlayer(0).teleport(parameters.getPlayer(1).getLocation());
-			return null;
-		}
-	}
-
-	private static class CloneInventory extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafePlayer source = parameters.getPlayer(0);
-			RunsafePlayer target = parameters.getPlayer(1);
-
-			target.getInventory().unserialize(source.getInventory().serialize());
-			target.updateInventory();
-			return null;
-		}
-	}
-
-	private static class GetLocation extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafeLocation location = parameters.getPlayer(0).getLocation();
-			List<Object> values = new ArrayList<Object>();
-
-			values.add(location.getWorld().getName());
-			values.add(location.getX());
-			values.add(location.getY());
-			values.add(location.getZ());
-
-			return values;
-		}
-	}
-
-	private static class IsDead extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			List<Object> returnValues = new ArrayList<Object>();
-			RunsafePlayer player = parameters.getPlayer(0);
-
-			returnValues.add(player.isDead());
-			return returnValues;
-		}
-	}
-
-	private static class SendEvent extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			new CustomEvent(parameters.getPlayer(0), parameters.getString(1)).Fire();
-			return null;
-		}
-	}
-
-	private static class GetPlayerAtLocation extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			List<Object> returnValues = new ArrayList<Object>();
-			RunsafeLocation location = parameters.getLocation(0);
-
-			for (RunsafePlayer player : location.getWorld().getPlayers())
-			{
-				if (player.getLocation().distance(location) < 2)
-				{
-					returnValues.add(player.getName());
-					return returnValues;
-				}
-			}
-			return returnValues;
-		}
-	}
-
-	private static class ClearInventory extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafePlayer player = parameters.getPlayer(0);
-			player.getInventory().clear();
-			player.updateInventory();
-			return null;
-		}
-	}
-
-	private static class AddItem extends RunsafeLuaFunction
-	{
-		@Override
-		public List<Object> run(FunctionParameters parameters)
-		{
-			RunsafePlayer player = parameters.getPlayer(0);
-			RunsafeMeta meta = Item.get(parameters.getInt(1), parameters.getByte(2)).getItem();
-			meta.setAmount(parameters.getInt(3));
-			player.getInventory().addItems(meta);
-			player.updateInventory();
-			return null;
-		}
+		RunsafeMeta meta = Item.get(itemId, data).getItem();
+		meta.setAmount(amount);
+		player.give(meta);
 	}
 }

@@ -4,6 +4,7 @@ import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
+import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
@@ -34,10 +35,10 @@ public class WorldLibrary extends Library
 		if (chunk.isUnloaded()) chunk.load();
 	}
 
-	private static class SetBlock extends RunsafeLuaFunction
+	private static class SetBlock extends VoidFunction
 	{
 		@Override
-		public List<Object> run(FunctionParameters parameters)
+		public void run(FunctionParameters parameters)
 		{
 			RunsafeLocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
@@ -47,8 +48,6 @@ public class WorldLibrary extends Library
 
 			if (parameters.hasParameter(5))
 				block.setData((byte) (int) parameters.getInt(5));
-
-			return null;
 		}
 	}
 
