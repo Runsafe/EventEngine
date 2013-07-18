@@ -1,8 +1,10 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.lua.*;
-import no.runsafe.framework.minecraft.RunsafeServer;
+import no.runsafe.framework.api.lua.FunctionParameters;
+import no.runsafe.framework.api.lua.IntegerFunction;
+import no.runsafe.framework.api.lua.Library;
+import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
@@ -47,11 +49,7 @@ public class AILibrary extends Library
 		if (ai.size() <= id)
 			throw new LuaError("No AI with given ID.");
 
-		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(AILibrary.ai.get(id), message);
-		event.Fire();
-
-		if (!event.isCancelled())
-			RunsafeServer.Instance.broadcastMessage(String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage()));
+		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message);
 	}
 
 	private static int createAI(String name, String group, RunsafeWorld world)
