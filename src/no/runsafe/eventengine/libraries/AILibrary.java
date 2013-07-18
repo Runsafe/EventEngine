@@ -50,7 +50,7 @@ public class AILibrary extends Library
 		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(AILibrary.ai.get(id), message);
 		event.Fire();
 
-		if (!event.getCancelled())
+		if (!event.isCancelled())
 			RunsafeServer.Instance.broadcastMessage(String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage()));
 	}
 
