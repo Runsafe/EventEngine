@@ -7,7 +7,7 @@ import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ReloadScripts extends ExecutableCommand
 {
@@ -19,7 +19,7 @@ public class ReloadScripts extends ExecutableCommand
 	}
 
 	@Override
-	protected String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters)
+	protected String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.

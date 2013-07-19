@@ -28,7 +28,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				parameters.getPlayer(0).setHealth(0);
+				parameters.getPlayer(0).setHealth(0.0D);
 			}
 		});
 		lib.set("getLocation", new LocationFunction()
