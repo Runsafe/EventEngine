@@ -19,7 +19,7 @@ public class ReloadScripts extends ExecutableCommand
 	}
 
 	@Override
-	protected String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.
