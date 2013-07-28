@@ -54,8 +54,7 @@ public class AILibrary extends Library
 
 	private static int createAI(String name, String group, RunsafeWorld world)
 	{
-		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name);
-		newAI.getGroups().add(group);
+		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name, group);
 		newAI.setWorld(world);
 
 		AILibrary.ai.add(newAI);
