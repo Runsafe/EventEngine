@@ -44,6 +44,12 @@ public class AILibrary extends Library
 		return lib;
 	}
 
+	/*
+		#LUA
+		@function speak
+		@param Integer id The ID of the AI, provided by the create function.
+		@param String message The message to be broadcast by the AI.
+	 */
 	private static void speak(int id, String message)
 	{
 		if (ai.size() <= id)
@@ -52,6 +58,13 @@ public class AILibrary extends Library
 		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message);
 	}
 
+	/*
+		#LUA
+		@function create
+		@param String name The name of the AI, will be shown in chat.
+		@param String group A user-group for the AI.
+		@param RunsafeWorld world The world in which the AI will appear to be in.
+	 */
 	private static int createAI(String name, String group, RunsafeWorld world)
 	{
 		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name, group);
