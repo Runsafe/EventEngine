@@ -45,7 +45,7 @@ public class AILibrary extends Library
 	}
 
 	/*
-		#LUA
+		#LUADOC
 		@function speak
 		@param Integer id The ID of the AI, provided by the create function.
 		@param String message The message to be broadcast by the AI.
@@ -59,7 +59,7 @@ public class AILibrary extends Library
 	}
 
 	/*
-		#LUA
+		#LUADOC
 		@function create
 		@param String name The name of the AI, will be shown in chat.
 		@param String group A user-group for the AI.
