@@ -68,6 +68,7 @@ public class AILibrary extends Library
 		@param String name The name of the AI, will be shown in chat.
 		@param String group A user-group for the AI.
 		@param RunsafeWorld world The world in which the AI will appear to be in.
+		@return Integer The ID of the AI for use with AI functions.
 	 */
 	private static int createAI(String name, String group, RunsafeWorld world)
 	{
