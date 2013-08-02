@@ -50,8 +50,21 @@ public class HookingLibrary extends Library
 			}
 			else if (type == HookType.INTERACT)
 			{
-				hook.setData(Integer.parseInt(parameters.getString(2)));
-				hook.setLocation(parameters.getLocation(3));
+				int parCount =parameters.parameterCount();
+				if (parCount == 3)
+				{
+					hook.setWorld(parameters.getWorld(2));
+				}
+				else if (parCount == 4)
+				{
+					hook.setData(parameters.getInt(2));
+					hook.setWorld(parameters.getWorld(3));
+				}
+				else if (parCount > 4)
+				{
+					hook.setData(parameters.getInt(2));
+					hook.setLocation(parameters.getLocation(3));
+				}
 			}
 			else if (type == HookType.PLAYER_LOGIN || type == HookType.PLAYER_LOGOUT)
 			{

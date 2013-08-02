@@ -3,6 +3,7 @@ package no.runsafe.eventengine.engine.hooks;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
@@ -122,10 +123,16 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			for (Hook hook : hooks)
 			{
 				RunsafeBlock block = event.getBlock();
-				if (block != null && block.getTypeId() == (Integer) hook.getData())
+				if (hook.getData() != null)
+					if (block == null || block.getTypeId() != (Integer) hook.getData())
+						return;
+
+				RunsafeWorld hookWorld = hook.getWorld();
+				RunsafeLocation location = block.getLocation();
+				if (hookWorld == null)
 				{
-					RunsafeLocation location = block.getLocation();
 					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
+					{
 						if (location.distance(hook.getLocation()) < 1)
 						{
 							LuaTable table = new LuaTable();
@@ -134,6 +141,21 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 							hook.execute(table);
 						}
+					}
+				}
+				else if (hookWorld.getName().equals(block.getWorld().getName()))
+				{
+					LuaTable table = new LuaTable();
+					if (event.getPlayer() != null)
+						table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+
+					table.set("x", LuaValue.valueOf(location.getBlockX()));
+					table.set("y", LuaValue.valueOf(location.getBlockY()));
+					table.set("z", LuaValue.valueOf(location.getBlockZ()));
+					table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+					table.set("blockData", LuaValue.valueOf(block.getData()));
+
+					hook.execute(table);
 				}
 			}
 		}
