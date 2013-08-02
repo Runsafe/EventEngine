@@ -50,7 +50,7 @@ public class HookingLibrary extends Library
 			}
 			else if (type == HookType.INTERACT)
 			{
-				int parCount =parameters.parameterCount();
+				int parCount = parameters.parameterCount();
 				if (parCount == 3)
 				{
 					hook.setWorld(parameters.getWorld(2));
