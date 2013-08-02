@@ -16,6 +16,7 @@ public class Plugin extends RunsafePlugin
 		addComponent(HookingLibrary.class);
 		addComponent(PlayerLibrary.class);
 		addComponent(WorldLibrary.class);
+		addComponent(TimerLibrary.class);
 
 		this.addComponent(ScriptManager.class);
 		this.addComponent(HookHandler.class);
