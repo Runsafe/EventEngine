@@ -119,3 +119,25 @@ end
 function AI:speak(message)
     EventEngine.ai.speak(self.id, message);
 end
+
+-- Timer object
+Timer = class('Timer');
+function Timer:initialize(func, delay)
+    self.func = func;
+    self.delay = delay;
+end
+
+function Timer:startRepeating()
+    self.id = EventEngine.timer.scheduleRepeatingTask(self.func, self.delay);
+end
+
+function Timer:start()
+    self.id = EventEngine.timer.scheduleTak(self.func, self.delay);
+end
+
+function Timer:cancel()
+    if self.id ~= nil then
+        EventEngine.timer.cancelTask(self.id);
+    end
+    self.id = nil;
+end
