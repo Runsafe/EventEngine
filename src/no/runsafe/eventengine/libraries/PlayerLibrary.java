@@ -9,9 +9,6 @@ import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlayerLibrary extends Library
 {
 	public PlayerLibrary(RunsafePlugin plugin)
