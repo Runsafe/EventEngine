@@ -129,6 +129,12 @@ public class PlayerLibrary extends Library
 				return GetPlayerAtLocation(parameters.getLocation(0));
 			}
 		});
+		lib.set("isOnline", new BooleanFunction() {
+			@Override
+			protected boolean run(FunctionParameters parameters) {
+				return parameters.getPlayer(0).isOnline();
+			}
+		});
 
 		return lib;
 	}

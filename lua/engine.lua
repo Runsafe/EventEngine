@@ -61,6 +61,10 @@ function Player:addItem(itemID, itemData, itemAmount)
     EventEngine.player.addItem(self.name, itemID, itemData, itemAmount);
 end
 
+function Player:isOnline()
+    return EventEngine.player.isOnline(self.name);
+end
+
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
