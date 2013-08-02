@@ -5,12 +5,14 @@ import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.libraries.*;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.IScheduler;
 
 public class Plugin extends RunsafePlugin
 {
 	@Override
 	protected void PluginSetup()
 	{
+		this.scheduler = this.getComponent(IScheduler.class);
 		addComponent(AILibrary.class);
 		addComponent(EffectLibrary.class);
 		addComponent(HookingLibrary.class);
@@ -22,4 +24,5 @@ public class Plugin extends RunsafePlugin
 		this.addComponent(HookHandler.class);
 		this.addComponent(ReloadScripts.class);
 	}
+	public IScheduler scheduler;
 }
