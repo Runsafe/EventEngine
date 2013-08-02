@@ -78,7 +78,14 @@ end
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
-    self.world = world;
+    if type(world) == "string" then
+        self.world = world;
+    elseif world.name ~= nil then
+        self.world = world.name;
+    else
+        print("Error: Location object expects world or string!");
+        return;
+    end
     self.x = x;
     self.y = y;
     self.z = z;
