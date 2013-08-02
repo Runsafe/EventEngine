@@ -30,14 +30,14 @@ public class TimerLibrary extends Library
 					public void run() {
 						Environment.global.get(parameters.getString(0)).call();
 					}
-				}, parameters.getInt(1));
+				}, (long) parameters.getInt(1));
 			}
 		});
 
 		lib.set("scheduleRepeatingTask", new IntegerFunction() {
 			@Override
 			public Integer run(final FunctionParameters parameters) {
-				int delay = parameters.getInt(1);
+				long delay = parameters.getInt(1);
 				return scheduler.startSyncRepeatingTask(new Runnable() {
 					@Override
 					public void run() {
