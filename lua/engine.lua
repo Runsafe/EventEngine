@@ -65,6 +65,16 @@ function Player:isOnline()
     return EventEngine.player.isOnline(self.name);
 end
 
+-- World object
+World = class('World');
+function World:initialize(name)
+    self.name = name;
+end
+
+function World:getPlayers()
+    return EventEngine.world.getPlayers(self.name);
+end
+
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
