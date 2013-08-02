@@ -1,6 +1,5 @@
 package no.runsafe.eventengine.libraries;
 
-import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.lua.FunctionParameters;
@@ -12,10 +11,10 @@ import org.luaj.vm2.LuaTable;
 
 public class TimerLibrary extends Library
 {
-	protected TimerLibrary(RunsafePlugin plugin)
+	public TimerLibrary(RunsafePlugin plugin, IScheduler scheduler)
 	{
 		super(plugin, "timer");
-		this.scheduler = ((Plugin) plugin).scheduler;
+		this.scheduler = scheduler;
 	}
 
 	@Override
