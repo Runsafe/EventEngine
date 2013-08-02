@@ -75,6 +75,16 @@ function World:getPlayers()
     return EventEngine.world.getPlayers(self.name);
 end
 
+function World:broadcast(message)
+    local players = {self:getPlayers()};
+    for index, playerName in pairs(players) do
+        local player = Player:new(playerName);
+        if player:isOnline() then
+            player:sendMessage(message);
+        end
+    end
+end
+
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
