@@ -194,19 +194,18 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		if (hooks != null)
 		{
 			RunsafeLocation blockLocation = block.getLocation();
+			String blockWorld = blockLocation.getWorld().getName();
 			for (Hook hook : hooks)
 			{
 				RunsafeWorld world = hook.getWorld();
-				if (world != null && !blockLocation.getWorld().getName().equals(world.getName()))
+				if (world != null && !blockWorld.equals(world.getName()))
 					return true;
 
 				LuaTable table = new LuaTable();
 				if (player != null)
 					table.set("player", LuaValue.valueOf(player.getName()));
 
-				if (world != null)
-					table.set("world", LuaValue.valueOf(world.getName()));
-
+				table.set("world", LuaValue.valueOf(blockWorld));
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
