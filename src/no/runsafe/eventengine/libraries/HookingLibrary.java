@@ -70,6 +70,11 @@ public class HookingLibrary extends Library
 			{
 				hook.setPlayerName(parameters.getString(2));
 			}
+			else if (type == HookType.BLOCK_BREAK)
+			{
+				if (parameters.parameterCount() > 2)
+					hook.setWorld(parameters.getWorld(2));
+			}
 
 			HookHandler.registerHook(hook);
 		}

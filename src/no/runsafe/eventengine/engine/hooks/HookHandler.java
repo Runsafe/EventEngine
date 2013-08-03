@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak
 {
 	public static void registerHook(Hook hook)
 	{
@@ -183,6 +184,37 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean OnBlockBreak(RunsafePlayer player, RunsafeBlock block)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
+
+		if (hooks != null)
+		{
+			for (Hook hook : hooks)
+			{
+				RunsafeWorld world = hook.getWorld();
+				RunsafeLocation blockLocation = block.getLocation();
+				if (world != null && !blockLocation.getWorld().getName().equals(world.getName()))
+					return true;
+
+				LuaTable table = new LuaTable();
+				if (player != null)
+					table.set("player", LuaValue.valueOf(player.getName()));
+
+				if (world != null)
+					table.set("world", LuaValue.valueOf(world.getName()));
+
+				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
+				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
+				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockData", LuaValue.valueOf(block.getData()));
+			}
+		}
+		return true;
 	}
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
