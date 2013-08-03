@@ -193,10 +193,10 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 		{
+			RunsafeLocation blockLocation = block.getLocation();
 			for (Hook hook : hooks)
 			{
 				RunsafeWorld world = hook.getWorld();
-				RunsafeLocation blockLocation = block.getLocation();
 				if (world != null && !blockLocation.getWorld().getName().equals(world.getName()))
 					return true;
 
