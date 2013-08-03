@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent
 {
 	public static void registerHook(Hook hook)
 	{
@@ -216,6 +216,37 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void OnPlayerLeftClick(RunsafePlayerClickEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.LEFT_CLICK_BLOCK);
+
+		if (hooks != null)
+		{
+			RunsafeBlock block = event.getBlock();
+			RunsafeLocation blockLocation = block.getLocation();
+			String blockWorldName = blockLocation.getWorld().getName();
+			String playerName = event.getPlayer().getName();
+			for (Hook hook : hooks)
+			{
+				RunsafeWorld world = hook.getWorld();
+				if (world != null && !blockWorldName.equals(world.getName()))
+					return;
+
+				LuaTable table = new LuaTable();
+				table.set("player", LuaValue.valueOf(playerName));
+				table.set("world", LuaValue.valueOf(blockWorldName));
+				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
+				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
+				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockData", LuaValue.valueOf(block.getData()));
+
+				hook.execute(table);
+			}
+		}
 	}
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();

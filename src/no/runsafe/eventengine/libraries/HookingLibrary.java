@@ -70,7 +70,7 @@ public class HookingLibrary extends Library
 			{
 				hook.setPlayerName(parameters.getString(2));
 			}
-			else if (type == HookType.BLOCK_BREAK)
+			else if (type == HookType.BLOCK_BREAK || type == HookType.LEFT_CLICK_BLOCK)
 			{
 				if (parameters.parameterCount() > 2)
 					hook.setWorld(parameters.getWorld(2));
