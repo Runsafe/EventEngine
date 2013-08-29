@@ -1,8 +1,10 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent
 {
 	public static void registerHook(Hook hook)
 	{
@@ -122,10 +124,16 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			for (Hook hook : hooks)
 			{
 				RunsafeBlock block = event.getBlock();
-				if (block != null && block.getTypeId() == (Integer) hook.getData())
+				if (hook.getData() != null)
+					if (block == null || block.getTypeId() != (Integer) hook.getData())
+						return;
+
+				RunsafeWorld hookWorld = hook.getWorld();
+				RunsafeLocation location = block.getLocation();
+				if (hookWorld == null)
 				{
-					RunsafeLocation location = block.getLocation();
 					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
+					{
 						if (location.distance(hook.getLocation()) < 1)
 						{
 							LuaTable table = new LuaTable();
@@ -134,6 +142,21 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 							hook.execute(table);
 						}
+					}
+				}
+				else if (hookWorld.getName().equals(block.getWorld().getName()))
+				{
+					LuaTable table = new LuaTable();
+					if (event.getPlayer() != null)
+						table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+
+					table.set("x", LuaValue.valueOf(location.getBlockX()));
+					table.set("y", LuaValue.valueOf(location.getBlockY()));
+					table.set("z", LuaValue.valueOf(location.getBlockZ()));
+					table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+					table.set("blockData", LuaValue.valueOf(block.getData()));
+
+					hook.execute(table);
 				}
 			}
 		}
@@ -159,6 +182,69 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 								hook.execute();
 					}
 				}
+			}
+		}
+	}
+
+	@Override
+	public boolean OnBlockBreak(RunsafePlayer player, RunsafeBlock block)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
+
+		if (hooks != null)
+		{
+			RunsafeLocation blockLocation = block.getLocation();
+			String blockWorld = blockLocation.getWorld().getName();
+			for (Hook hook : hooks)
+			{
+				RunsafeWorld world = hook.getWorld();
+				if (world != null && !blockWorld.equals(world.getName()))
+					return true;
+
+				LuaTable table = new LuaTable();
+				if (player != null)
+					table.set("player", LuaValue.valueOf(player.getName()));
+
+				table.set("world", LuaValue.valueOf(blockWorld));
+				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
+				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
+				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockData", LuaValue.valueOf(block.getData()));
+
+				hook.execute(table);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void OnPlayerLeftClick(RunsafePlayerClickEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.LEFT_CLICK_BLOCK);
+
+		if (hooks != null)
+		{
+			RunsafeBlock block = event.getBlock();
+			RunsafeLocation blockLocation = block.getLocation();
+			String blockWorldName = blockLocation.getWorld().getName();
+			String playerName = event.getPlayer().getName();
+			for (Hook hook : hooks)
+			{
+				RunsafeWorld world = hook.getWorld();
+				if (world != null && !blockWorldName.equals(world.getName()))
+					return;
+
+				LuaTable table = new LuaTable();
+				table.set("player", LuaValue.valueOf(playerName));
+				table.set("world", LuaValue.valueOf(blockWorldName));
+				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
+				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
+				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockData", LuaValue.valueOf(block.getData()));
+
+				hook.execute(table);
 			}
 		}
 	}

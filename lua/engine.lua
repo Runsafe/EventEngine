@@ -61,10 +61,41 @@ function Player:addItem(itemID, itemData, itemAmount)
     EventEngine.player.addItem(self.name, itemID, itemData, itemAmount);
 end
 
+function Player:isOnline()
+    return EventEngine.player.isOnline(self.name);
+end
+
+-- World object
+World = class('World');
+function World:initialize(name)
+    self.name = name;
+end
+
+function World:getPlayers()
+    return EventEngine.world.getPlayers(self.name);
+end
+
+function World:broadcast(message)
+    local players = {self:getPlayers()};
+    for index, playerName in pairs(players) do
+        local player = Player:new(playerName);
+        if player:isOnline() then
+            player:sendMessage(message);
+        end
+    end
+end
+
 -- Location object
 Location = class('Location');
 function Location:initialize(world, x, y, z)
-    self.world = world;
+    if type(world) == "string" then
+        self.world = world;
+    elseif world.name ~= nil then
+        self.world = world.name;
+    else
+        print("Error: Location object expects world or string!");
+        return;
+    end
     self.x = x;
     self.y = y;
     self.z = z;
@@ -114,4 +145,26 @@ end
 
 function AI:speak(message)
     EventEngine.ai.speak(self.id, message);
+end
+
+-- Timer object
+Timer = class('Timer');
+function Timer:initialize(func, delay)
+    self.func = func;
+    self.delay = delay;
+end
+
+function Timer:startRepeating()
+    self.id = EventEngine.timer.scheduleRepeatingTask(self.func, self.delay);
+end
+
+function Timer:start()
+    self.id = EventEngine.timer.scheduleTak(self.func, self.delay);
+end
+
+function Timer:cancel()
+    if self.id ~= nil then
+        EventEngine.timer.cancelTask(self.id);
+    end
+    self.id = nil;
 end

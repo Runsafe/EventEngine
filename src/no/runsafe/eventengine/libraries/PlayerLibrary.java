@@ -9,9 +9,6 @@ import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlayerLibrary extends Library
 {
 	public PlayerLibrary(RunsafePlugin plugin)
@@ -127,6 +124,12 @@ public class PlayerLibrary extends Library
 			public String run(FunctionParameters parameters)
 			{
 				return GetPlayerAtLocation(parameters.getLocation(0));
+			}
+		});
+		lib.set("isOnline", new BooleanFunction() {
+			@Override
+			protected boolean run(FunctionParameters parameters) {
+				return parameters.getPlayer(0).isOnline();
 			}
 		});
 

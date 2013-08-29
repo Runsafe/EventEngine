@@ -2,6 +2,7 @@ package no.runsafe.eventengine.engine.hooks;
 
 import no.runsafe.framework.internal.lua.Environment;
 import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeWorld;
 import org.luaj.vm2.LuaTable;
 
 public class Hook
@@ -30,6 +31,16 @@ public class Hook
 	public void setLocation(RunsafeLocation location)
 	{
 		this.location = location;
+	}
+
+	public void setWorld(RunsafeWorld world)
+	{
+		this.world = world;
+	}
+
+	public RunsafeWorld getWorld()
+	{
+		return this.world;
 	}
 
 	public String getPlayerName()
@@ -68,6 +79,7 @@ public class Hook
 	private final HookType type;
 	private final String function;
 	private RunsafeLocation location;
+	private RunsafeWorld world;
 	private String playerName;
 	private Object data;
 }

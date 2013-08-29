@@ -16,6 +16,10 @@ import java.util.List;
 
 public class AILibrary extends Library
 {
+	/*
+		#LUADOC
+		@library AI
+	 */
 	public AILibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "ai");
@@ -44,6 +48,12 @@ public class AILibrary extends Library
 		return lib;
 	}
 
+	/*
+		#LUADOC
+		@function speak Allows you to broadcast a message as an AI.
+		@param Integer id The ID of the AI, provided by the create function.
+		@param String message The message to be broadcast by the AI.
+	 */
 	private static void speak(int id, String message)
 	{
 		if (ai.size() <= id)
@@ -52,6 +62,14 @@ public class AILibrary extends Library
 		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message);
 	}
 
+	/*
+		#LUADOC
+		@function create Creates an AI and returns the ID for use with AI functions.
+		@param String name The name of the AI, will be shown in chat.
+		@param String group A user-group for the AI.
+		@param RunsafeWorld world The world in which the AI will appear to be in.
+		@return Integer The ID of the AI for use with AI functions.
+	 */
 	private static int createAI(String name, String group, RunsafeWorld world)
 	{
 		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name, group);
