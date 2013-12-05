@@ -19,7 +19,7 @@ public class ScriptManager implements IPluginEnabled
 		scriptPath = new File(eventEngine.getDataFolder(), "scripts");
 		if (!scriptPath.exists())
 			if (scriptPath.mkdirs())
-				output.warning("Failed to create scripts directory at: " + scriptPath.getPath());
+				output.logWarning("Failed to create scripts directory at: " + scriptPath.getPath());
 
 		this.output = output;
 	}
