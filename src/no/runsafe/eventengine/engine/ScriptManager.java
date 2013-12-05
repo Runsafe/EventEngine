@@ -1,7 +1,8 @@
 package no.runsafe.eventengine.engine;
 
 import no.runsafe.eventengine.Plugin;
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IConsole;
+import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.internal.lua.Environment;
@@ -13,7 +14,7 @@ import java.util.Collection;
 
 public class ScriptManager implements IPluginEnabled
 {
-	public ScriptManager(Plugin eventEngine, IOutput output, IScheduler scheduler)
+	public ScriptManager(Plugin eventEngine, IConsole output, IScheduler scheduler)
 	{
 		this.scheduler = scheduler;
 		scriptPath = new File(eventEngine.getDataFolder(), "scripts");
@@ -82,6 +83,6 @@ public class ScriptManager implements IPluginEnabled
 	}
 
 	private final File scriptPath;
-	private final IOutput output;
+	private final IConsole output;
 	private final IScheduler scheduler;
 }
