@@ -3,10 +3,10 @@ package no.runsafe.eventengine.libraries;
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.lua.*;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 
 public class PlayerLibrary extends Library
@@ -126,9 +126,11 @@ public class PlayerLibrary extends Library
 				return GetPlayerAtLocation(parameters.getLocation(0));
 			}
 		});
-		lib.set("isOnline", new BooleanFunction() {
+		lib.set("isOnline", new BooleanFunction()
+		{
 			@Override
-			protected boolean run(FunctionParameters parameters) {
+			protected boolean run(FunctionParameters parameters)
+			{
 				return parameters.getPlayer(0).isOnline();
 			}
 		});
@@ -136,7 +138,7 @@ public class PlayerLibrary extends Library
 		return lib;
 	}
 
-	private static void CloneInventory(RunsafePlayer source, RunsafePlayer target)
+	private static void CloneInventory(IPlayer source, IPlayer target)
 	{
 		target.getInventory().unserialize(source.getInventory().serialize());
 		target.updateInventory();
@@ -144,13 +146,13 @@ public class PlayerLibrary extends Library
 
 	private static String GetPlayerAtLocation(RunsafeLocation location)
 	{
-		for (RunsafePlayer player : location.getWorld().getPlayers())
+		for (IPlayer player : location.getWorld().getPlayers())
 			if (player.getLocation().distance(location) < 2)
 				return player.getName();
 		return null;
 	}
 
-	private static void AddItem(RunsafePlayer player, int itemId, byte data, int amount)
+	private static void AddItem(IPlayer player, int itemId, byte data, int amount)
 	{
 		RunsafeMeta meta = Item.get(itemId, data).getItem();
 		meta.setAmount(amount);

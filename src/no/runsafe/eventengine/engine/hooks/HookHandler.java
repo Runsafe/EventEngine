@@ -4,11 +4,11 @@ import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 
@@ -104,7 +104,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		this.playerLogEvent(event.getPlayer(), HookType.PLAYER_LOGOUT);
 	}
 
-	private void playerLogEvent(RunsafePlayer player, HookType type)
+	private void playerLogEvent(IPlayer player, HookType type)
 	{
 		List<Hook> hooks = HookHandler.getHooks(type);
 
@@ -187,7 +187,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	}
 
 	@Override
-	public boolean OnBlockBreak(RunsafePlayer player, IBlock block)
+	public boolean OnBlockBreak(IPlayer player, IBlock block)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
 
