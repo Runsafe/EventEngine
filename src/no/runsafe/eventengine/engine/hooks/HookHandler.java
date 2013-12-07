@@ -1,11 +1,11 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.RunsafeWorld;
-import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -123,9 +123,9 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		{
 			for (Hook hook : hooks)
 			{
-				RunsafeBlock block = event.getBlock();
+				IBlock block = event.getBlock();
 				if (hook.getData() != null)
-					if (block == null || block.getTypeId() != (Integer) hook.getData())
+					if (block == null || block.getMaterial().getTypeID() != (Integer) hook.getData())
 						return;
 
 				RunsafeWorld hookWorld = hook.getWorld();
@@ -153,7 +153,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					table.set("x", LuaValue.valueOf(location.getBlockX()));
 					table.set("y", LuaValue.valueOf(location.getBlockY()));
 					table.set("z", LuaValue.valueOf(location.getBlockZ()));
-					table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+					table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
 					table.set("blockData", LuaValue.valueOf(block.getData()));
 
 					hook.execute(table);
@@ -173,7 +173,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			{
 				for (Hook hook : hooks)
 				{
-					RunsafeBlock block = event.getBlock();
+					IBlock block = event.getBlock();
 					if (block != null)
 					{
 						RunsafeLocation location = block.getLocation();
@@ -187,7 +187,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	}
 
 	@Override
-	public boolean OnBlockBreak(RunsafePlayer player, RunsafeBlock block)
+	public boolean OnBlockBreak(RunsafePlayer player, IBlock block)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
 
@@ -209,7 +209,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
 				table.set("blockData", LuaValue.valueOf(block.getData()));
 
 				hook.execute(table);
@@ -225,7 +225,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 		{
-			RunsafeBlock block = event.getBlock();
+			IBlock block = event.getBlock();
 			RunsafeLocation blockLocation = block.getLocation();
 			String blockWorldName = blockLocation.getWorld().getName();
 			String playerName = event.getPlayer().getName();
@@ -241,7 +241,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getTypeId()));
+				table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
 				table.set("blockData", LuaValue.valueOf(block.getData()));
 
 				hook.execute(table);

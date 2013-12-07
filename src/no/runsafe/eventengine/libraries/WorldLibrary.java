@@ -1,10 +1,12 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.api.lua.VoidFunction;
+import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
@@ -46,8 +48,8 @@ public class WorldLibrary extends Library
 			RunsafeLocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
-			RunsafeBlock block = location.getBlock();
-			block.setTypeId(parameters.getInt(4));
+			IBlock block = location.getBlock();
+			block.set(Item.get(parameters.getInt(4)));
 
 			if (parameters.hasParameter(5))
 				block.setData((byte) (int) parameters.getInt(5));
@@ -63,8 +65,8 @@ public class WorldLibrary extends Library
 			RunsafeLocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
-			RunsafeBlock block = location.getBlock();
-			returns.add(block.getTypeId());
+			IBlock block = location.getBlock();
+			returns.add(block.getMaterial().getTypeID());
 			returns.add(block.getData());
 
 			return returns;
