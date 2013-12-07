@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
@@ -73,9 +74,9 @@ public class EffectLibrary extends Library
 
 	private void SpawnFirework(RunsafeLocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
 	{
-		RunsafeEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
+		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
 
-		Firework firework = (Firework) entity.getRaw();
+		Firework firework = (Firework) ((RunsafeEntity) entity).getRaw();
 		FireworkMeta meta = firework.getFireworkMeta();
 
 		FireworkEffect effect = FireworkEffect.builder()
