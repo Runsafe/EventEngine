@@ -1,12 +1,12 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeLocation;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
 import org.luaj.vm2.LuaTable;
@@ -128,7 +128,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					if (block == null || block.getMaterial().getTypeID() != (Integer) hook.getData())
 						return;
 
-				RunsafeWorld hookWorld = hook.getWorld();
+				IWorld hookWorld = hook.getWorld();
 				RunsafeLocation location = block.getLocation();
 				if (hookWorld == null)
 				{
@@ -197,7 +197,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			String blockWorld = blockLocation.getWorld().getName();
 			for (Hook hook : hooks)
 			{
-				RunsafeWorld world = hook.getWorld();
+				IWorld world = hook.getWorld();
 				if (world != null && !blockWorld.equals(world.getName()))
 					return true;
 
@@ -231,7 +231,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			String playerName = event.getPlayer().getName();
 			for (Hook hook : hooks)
 			{
-				RunsafeWorld world = hook.getWorld();
+				IWorld world = hook.getWorld();
 				if (world != null && !blockWorldName.equals(world.getName()))
 					return;
 

@@ -1,11 +1,11 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.IntegerFunction;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.luaj.vm2.LuaError;
@@ -67,10 +67,10 @@ public class AILibrary extends Library
 		@function create Creates an AI and returns the ID for use with AI functions.
 		@param String name The name of the AI, will be shown in chat.
 		@param String group A user-group for the AI.
-		@param RunsafeWorld world The world in which the AI will appear to be in.
+		@param IWorld world The world in which the AI will appear to be in.
 		@return Integer The ID of the AI for use with AI functions.
 	 */
-	private static int createAI(String name, String group, RunsafeWorld world)
+	private static int createAI(String name, String group, IWorld world)
 	{
 		RunsafeFakePlayer newAI = new RunsafeFakePlayer(name, group);
 		newAI.setWorld(world);

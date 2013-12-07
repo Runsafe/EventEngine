@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
@@ -9,7 +10,6 @@ import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
 import org.luaj.vm2.LuaTable;
 
@@ -78,7 +78,7 @@ public class WorldLibrary extends Library
 		public List<Object> run(FunctionParameters parameters)
 		{
 			List<Object> returns = new ArrayList<Object>();
-			RunsafeWorld world = parameters.getWorld(0);
+			IWorld world = parameters.getWorld(0);
 
 			for (IPlayer player : world.getPlayers())
 				returns.add(player.getName());
