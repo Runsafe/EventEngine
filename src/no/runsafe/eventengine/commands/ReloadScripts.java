@@ -5,7 +5,7 @@ import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class ReloadScripts extends ExecutableCommand
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.
 		this.scriptManager.OnPluginEnabled(); // Clear environment and reload all scripts.
-		return (executor instanceof RunsafePlayer ? "&eReloaded!" : null);
+		return (executor instanceof IPlayer ? "&eReloaded!" : null);
 	}
 
 	private final IOutput output;
