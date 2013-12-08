@@ -1,11 +1,11 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
-import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.entity.ProjectileEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import org.bukkit.Color;
@@ -62,17 +62,17 @@ public class EffectLibrary extends Library
 		return lib;
 	}
 
-	private static void LightningStrike(RunsafeLocation location)
+	private static void LightningStrike(ILocation location)
 	{
 		location.getWorld().strikeLightningEffect(location);
 	}
 
-	private static void Explosion(RunsafeLocation location, int power, boolean setFire, boolean breakBlocks)
+	private static void Explosion(ILocation location, int power, boolean setFire, boolean breakBlocks)
 	{
 		location.getWorld().createExplosion(location, power, setFire, breakBlocks);
 	}
 
-	private void SpawnFirework(RunsafeLocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
+	private void SpawnFirework(ILocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
 	{
 		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
 

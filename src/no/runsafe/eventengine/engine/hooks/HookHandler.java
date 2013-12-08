@@ -1,12 +1,12 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
 import org.luaj.vm2.LuaTable;
@@ -129,7 +129,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 						return;
 
 				IWorld hookWorld = hook.getWorld();
-				RunsafeLocation location = block.getLocation();
+				ILocation location = block.getLocation();
 				if (hookWorld == null)
 				{
 					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
@@ -176,7 +176,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					IBlock block = event.getBlock();
 					if (block != null)
 					{
-						RunsafeLocation location = block.getLocation();
+						ILocation location = block.getLocation();
 						if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 							if (location.distance(hook.getLocation()) < 1)
 								hook.execute();
@@ -193,7 +193,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 		{
-			RunsafeLocation blockLocation = block.getLocation();
+			ILocation blockLocation = block.getLocation();
 			String blockWorld = blockLocation.getWorld().getName();
 			for (Hook hook : hooks)
 			{
@@ -226,7 +226,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		if (hooks != null)
 		{
 			IBlock block = event.getBlock();
-			RunsafeLocation blockLocation = block.getLocation();
+			ILocation blockLocation = block.getLocation();
 			String blockWorldName = blockLocation.getWorld().getName();
 			String playerName = event.getPlayer().getName();
 			for (Hook hook : hooks)

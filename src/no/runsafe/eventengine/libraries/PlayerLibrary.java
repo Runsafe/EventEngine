@@ -2,10 +2,10 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.Item;
-import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import org.luaj.vm2.LuaTable;
 
@@ -31,7 +31,7 @@ public class PlayerLibrary extends Library
 		lib.set("getLocation", new LocationFunction()
 		{
 			@Override
-			public RunsafeLocation run(FunctionParameters parameters)
+			public ILocation run(FunctionParameters parameters)
 			{
 				return parameters.getPlayer(0).getLocation();
 			}
@@ -144,7 +144,7 @@ public class PlayerLibrary extends Library
 		target.updateInventory();
 	}
 
-	private static String GetPlayerAtLocation(RunsafeLocation location)
+	private static String GetPlayerAtLocation(ILocation location)
 	{
 		for (IPlayer player : location.getWorld().getPlayers())
 			if (player.getLocation().distance(location) < 2)

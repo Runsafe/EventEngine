@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.lua.FunctionParameters;
@@ -9,7 +10,6 @@ import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.Item;
-import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
 import org.luaj.vm2.LuaTable;
 
@@ -33,7 +33,7 @@ public class WorldLibrary extends Library
 		return lib;
 	}
 
-	private static void prepareLocationForEdit(RunsafeLocation location)
+	private static void prepareLocationForEdit(ILocation location)
 	{
 		RunsafeChunk chunk = location.getChunk();
 		if (chunk.isUnloaded()) chunk.load();
@@ -44,7 +44,7 @@ public class WorldLibrary extends Library
 		@Override
 		public void run(FunctionParameters parameters)
 		{
-			RunsafeLocation location = parameters.getLocation(0);
+			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
 			IBlock block = location.getBlock();
@@ -61,7 +61,7 @@ public class WorldLibrary extends Library
 		public List<Object> run(FunctionParameters parameters)
 		{
 			List<Object> returns = new ArrayList<Object>();
-			RunsafeLocation location = parameters.getLocation(0);
+			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
 			IBlock block = location.getBlock();
