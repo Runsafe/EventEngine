@@ -1,10 +1,9 @@
 package no.runsafe.eventengine.engine;
 
 import no.runsafe.eventengine.Plugin;
-import no.runsafe.framework.api.IConsole;
-import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.internal.lua.Environment;
 import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.LuaError;
