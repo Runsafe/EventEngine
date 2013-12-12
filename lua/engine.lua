@@ -159,7 +159,7 @@ function Timer:startRepeating()
 end
 
 function Timer:start()
-    self.id = EventEngine.timer.scheduleTak(self.func, self.delay);
+    self.id = EventEngine.timer.scheduleTask(self.func, self.delay);
 end
 
 function Timer:cancel()

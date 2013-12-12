@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.IntegerFunction;
@@ -20,9 +21,10 @@ public class AILibrary extends Library
 		#LUADOC
 		@library AI
 	 */
-	public AILibrary(RunsafePlugin plugin)
+	public AILibrary(RunsafePlugin plugin, IOutput output)
 	{
 		super(plugin, "ai");
+		AILibrary.output = output;
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class AILibrary extends Library
 		if (ai.size() <= id)
 			throw new LuaError("No AI with given ID.");
 
-		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message);
+		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message, output);
 	}
 
 	/*
@@ -79,5 +81,6 @@ public class AILibrary extends Library
 		return AILibrary.ai.size() - 1;
 	}
 
+	private static IOutput output;
 	private static final List<RunsafeFakePlayer> ai = new ArrayList<RunsafeFakePlayer>();
 }
