@@ -9,6 +9,7 @@ import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
 import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
 import org.luaj.vm2.LuaTable;
@@ -47,11 +48,12 @@ public class WorldLibrary extends Library
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
-			IBlock block = location.getBlock();
-			block.set(Item.get(parameters.getInt(4)));
-
+			byte damage = 0;
 			if (parameters.hasParameter(5))
-				block.setData((byte) (int) parameters.getInt(5));
+				damage = (byte) (int) parameters.getInt(5);
+
+			IBlock block = location.getBlock();
+			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
 		}
 	}
 
@@ -64,8 +66,8 @@ public class WorldLibrary extends Library
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
-			IBlock block = location.getBlock();
-			returns.add(block.getMaterial().getTypeID());
+			Item block = location.getBlock().getMaterial();
+			returns.add(block.getType().getId());
 			returns.add(block.getData());
 
 			return returns;

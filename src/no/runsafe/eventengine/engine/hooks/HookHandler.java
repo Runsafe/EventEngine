@@ -7,6 +7,8 @@ import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.Item;
+import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.player.*;
 import org.luaj.vm2.LuaTable;
@@ -125,7 +127,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			{
 				IBlock block = event.getBlock();
 				if (hook.getData() != null)
-					if (block == null || block.getMaterial().getTypeID() != (Integer) hook.getData())
+					if (block == null || block.getMaterial().getType().getId() != (Integer) hook.getData())
 						return;
 
 				IWorld hookWorld = hook.getWorld();
@@ -153,8 +155,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					table.set("x", LuaValue.valueOf(location.getBlockX()));
 					table.set("y", LuaValue.valueOf(location.getBlockY()));
 					table.set("z", LuaValue.valueOf(location.getBlockZ()));
-					table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
-					table.set("blockData", LuaValue.valueOf(block.getData()));
+					table.set("blockID", LuaValue.valueOf(block.getMaterial().getType().getId()));
+					table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
 					hook.execute(table);
 				}
@@ -209,8 +211,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
-				table.set("blockData", LuaValue.valueOf(block.getData()));
+				table.set("blockID", LuaValue.valueOf(block.getMaterial().getType().getId()));
+				table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
 				hook.execute(table);
 			}
@@ -226,6 +228,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		if (hooks != null)
 		{
 			IBlock block = event.getBlock();
+			Item material = block.getMaterial();
 			ILocation blockLocation = block.getLocation();
 			String blockWorldName = blockLocation.getWorld().getName();
 			String playerName = event.getPlayer().getName();
@@ -241,8 +244,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getMaterial().getTypeID()));
-				table.set("blockData", LuaValue.valueOf(block.getData()));
+				table.set("blockID", LuaValue.valueOf(material.getType().getId()));
+				table.set("blockData", LuaValue.valueOf(material.getData()));
 
 				hook.execute(table);
 			}

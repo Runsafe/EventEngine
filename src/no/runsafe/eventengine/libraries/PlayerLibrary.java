@@ -5,6 +5,7 @@ import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import org.luaj.vm2.LuaTable;
@@ -154,7 +155,7 @@ public class PlayerLibrary extends Library
 
 	private static void AddItem(IPlayer player, int itemId, byte data, int amount)
 	{
-		RunsafeMeta meta = Item.get(itemId, data).getItem();
+		RunsafeMeta meta = Item.get(LegacyMaterial.getById(itemId), data).getItem();
 		meta.setAmount(amount);
 		player.give(meta);
 	}
