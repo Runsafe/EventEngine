@@ -2,15 +2,16 @@ package no.runsafe.eventengine.engine.hooks;
 
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
-import no.runsafe.framework.internal.lua.Environment;
+import no.runsafe.framework.api.lua.IGlobal;
 import org.luaj.vm2.LuaTable;
 
 public class Hook
 {
-	public Hook(HookType type, String function)
+	public Hook(HookType type, String function, IGlobal environment)
 	{
 		this.type = type;
 		this.function = function;
+		this.environment = environment;
 	}
 
 	public HookType getType()
@@ -71,13 +72,14 @@ public class Hook
 	public void execute(LuaTable arguments)
 	{
 		if (arguments != null)
-			Environment.global.get(this.getFunction()).call(arguments);
+			environment.get(this.getFunction()).call(arguments);
 		else
-			Environment.global.get(this.getFunction()).call();
+			environment.get(this.getFunction()).call();
 	}
 
 	private final HookType type;
 	private final String function;
+	private final IGlobal environment;
 	private ILocation location;
 	private IWorld world;
 	private String playerName;

@@ -25,7 +25,7 @@ public class HookingLibrary extends Library
 		return lib;
 	}
 
-	private static class RegisterHook extends VoidFunction
+	private class RegisterHook extends VoidFunction
 	{
 		@Override
 		public void run(FunctionParameters parameters)
@@ -34,7 +34,7 @@ public class HookingLibrary extends Library
 			if (type == null)
 				throw new LuaError("Invalid hook type");
 
-			Hook hook = new Hook(type, parameters.getString(1));
+			Hook hook = new Hook(type, parameters.getString(1), globals);
 
 			if (type == HookType.BLOCK_GAINS_CURRENT)
 			{

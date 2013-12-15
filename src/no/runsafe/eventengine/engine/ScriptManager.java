@@ -4,7 +4,7 @@ import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.api.log.IConsole;
-import no.runsafe.framework.internal.lua.Environment;
+import no.runsafe.framework.api.lua.IGlobal;
 import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.LuaError;
 
@@ -13,8 +13,9 @@ import java.util.Collection;
 
 public class ScriptManager implements IPluginEnabled
 {
-	public ScriptManager(Plugin eventEngine, IConsole output, IScheduler scheduler)
+	public ScriptManager(Plugin eventEngine, IGlobal environment, IConsole output, IScheduler scheduler)
 	{
+		this.environment = environment;
 		this.scheduler = scheduler;
 		scriptPath = new File(eventEngine.getDataFolder(), "scripts");
 		if (!scriptPath.exists())
@@ -72,7 +73,7 @@ public class ScriptManager implements IPluginEnabled
 
 		try
 		{
-			Environment.loadFile(script.getAbsolutePath());
+			environment.loadFile(script.getAbsolutePath());
 		}
 		catch (LuaError error)
 		{
@@ -81,6 +82,7 @@ public class ScriptManager implements IPluginEnabled
 		return null;
 	}
 
+	private final IGlobal environment;
 	private final File scriptPath;
 	private final IConsole output;
 	private final IScheduler scheduler;

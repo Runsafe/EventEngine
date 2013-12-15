@@ -6,7 +6,6 @@ import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.IntegerFunction;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
-import no.runsafe.framework.internal.lua.Environment;
 import org.luaj.vm2.LuaTable;
 
 public class TimerLibrary extends Library
@@ -28,7 +27,7 @@ public class TimerLibrary extends Library
 				return scheduler.startSyncTask(new Runnable() {
 					@Override
 					public void run() {
-						Environment.global.get(parameters.getString(0)).call();
+						globals.get(parameters.getString(0)).call();
 					}
 				}, (long) parameters.getInt(1));
 			}
@@ -41,7 +40,7 @@ public class TimerLibrary extends Library
 				return scheduler.startSyncRepeatingTask(new Runnable() {
 					@Override
 					public void run() {
-						Environment.global.get(parameters.getString(0)).call();
+						globals.get(parameters.getString(0)).call();
 					}
 				}, delay, delay);
 			}
@@ -56,5 +55,6 @@ public class TimerLibrary extends Library
 
 		return lib;
 	}
+
 	private IScheduler scheduler;
 }
