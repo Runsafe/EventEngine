@@ -5,12 +5,19 @@ import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.libraries.*;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.features.Commands;
+import no.runsafe.framework.features.Events;
+import no.runsafe.framework.features.LUAScripts;
 
 public class Plugin extends RunsafePlugin
 {
 	@Override
 	protected void PluginSetup()
 	{
+		addComponent(Events.class);
+		addComponent(Commands.class);
+		addComponent(LUAScripts.class);
+
 		addComponent(AILibrary.class);
 		addComponent(EffectLibrary.class);
 		addComponent(HookingLibrary.class);
