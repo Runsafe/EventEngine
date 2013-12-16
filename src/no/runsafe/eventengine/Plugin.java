@@ -12,7 +12,7 @@ import no.runsafe.framework.features.LUAScripts;
 public class Plugin extends RunsafePlugin
 {
 	@Override
-	protected void PluginSetup()
+	protected void pluginSetup()
 	{
 		addComponent(Events.class);
 		addComponent(Commands.class);
