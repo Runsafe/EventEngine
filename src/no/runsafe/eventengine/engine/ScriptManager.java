@@ -1,11 +1,11 @@
 package no.runsafe.eventengine.engine;
 
+import net.minecraft.util.org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.Plugin;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.lua.IGlobal;
-import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.LuaError;
 
 import java.io.File;
