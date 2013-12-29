@@ -74,7 +74,7 @@ public class EffectLibrary extends Library
 
 	private void SpawnFirework(ILocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
 	{
-		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getId());
+		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getName());
 
 		Firework firework = (Firework) ((RunsafeEntity) entity).getRaw();
 		FireworkMeta meta = firework.getFireworkMeta();
