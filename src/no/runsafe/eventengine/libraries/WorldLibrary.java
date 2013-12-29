@@ -67,7 +67,7 @@ public class WorldLibrary extends Library
 			WorldLibrary.prepareLocationForEdit(location);
 
 			Item block = location.getBlock().getMaterial();
-			returns.add(block.getType().getId());
+			returns.add(block.getItemID());
 			returns.add(block.getData());
 
 			return returns;

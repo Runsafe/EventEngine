@@ -127,7 +127,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			{
 				IBlock block = event.getBlock();
 				if (hook.getData() != null)
-					if (block == null || block.getMaterial().getType().getId() != (Integer) hook.getData())
+					if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData())
 						return;
 
 				IWorld hookWorld = hook.getWorld();
@@ -155,7 +155,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					table.set("x", LuaValue.valueOf(location.getBlockX()));
 					table.set("y", LuaValue.valueOf(location.getBlockY()));
 					table.set("z", LuaValue.valueOf(location.getBlockZ()));
-					table.set("blockID", LuaValue.valueOf(block.getMaterial().getType().getId()));
+					table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 					table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
 					hook.execute(table);
@@ -211,7 +211,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getMaterial().getType().getId()));
+				table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 				table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
 				hook.execute(table);
@@ -244,7 +244,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 				table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(material.getType().getId()));
+				table.set("blockID", LuaValue.valueOf(material.getItemID()));
 				table.set("blockData", LuaValue.valueOf(material.getData()));
 
 				hook.execute(table);
