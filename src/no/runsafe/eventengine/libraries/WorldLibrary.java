@@ -4,6 +4,7 @@ import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
+import no.runsafe.framework.api.chunk.IChunk;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
@@ -11,7 +12,6 @@ import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
-import no.runsafe.framework.minecraft.chunk.RunsafeChunk;
 import org.luaj.vm2.LuaTable;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class WorldLibrary extends Library
 
 	private static void prepareLocationForEdit(ILocation location)
 	{
-		RunsafeChunk chunk = location.getChunk();
+		IChunk chunk = location.getChunk();
 		if (chunk.isUnloaded()) chunk.load();
 	}
 
