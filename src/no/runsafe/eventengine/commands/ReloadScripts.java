@@ -4,10 +4,9 @@ import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
-
-import java.util.Map;
 
 public class ReloadScripts extends ExecutableCommand
 {
@@ -19,7 +18,7 @@ public class ReloadScripts extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.
