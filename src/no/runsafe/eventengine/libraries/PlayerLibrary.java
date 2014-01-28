@@ -136,6 +136,42 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("addPermission", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).addPermission(parameters.getString(1));
+			}
+		});
+
+		lib.set("addWorldPermission", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).addPermission(parameters.getString(1), parameters.getString(2));
+			}
+		});
+
+		lib.set("removePermission", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).removePermission(parameters.getString(1));
+			}
+		});
+
+		lib.set("removeWorldPermission", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).removePermission(parameters.getString(1), parameters.getString(2));
+			}
+		});
+
 		return lib;
 	}
 

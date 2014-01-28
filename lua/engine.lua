@@ -65,6 +65,22 @@ function Player:isOnline()
     return EventEngine.player.isOnline(self.name);
 end
 
+function Player:addPermission(permission)
+    EventEngine.player.addPermission(self.name, permission);
+end
+
+function Player:addWorldPermission(permission, world)
+    EventEngine.player.addWorldPermission(self.name, permission, world);
+end
+
+function Player:removePermission(permission)
+    EventEngine.player.removePermission(self.name, permission);
+end
+
+function Player:removeWorldPermission(permission, world)
+    EventEngine.player.removeWorldPermission(self.name, permission, world);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
