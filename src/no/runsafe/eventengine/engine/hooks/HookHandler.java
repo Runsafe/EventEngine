@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.engine.hooks;
 
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
@@ -21,6 +22,11 @@ import java.util.Map;
 
 public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent
 {
+	public HookHandler(IScheduler scheduler)
+	{
+		this.scheduler = scheduler;
+	}
+
 	public static void registerHook(Hook hook)
 	{
 		HookType type = hook.getType();
@@ -80,14 +86,22 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 			if (hooks != null)
 			{
-				for (Hook hook : hooks)
+				for (final Hook hook : hooks)
 				{
 					Map<String, String> data = (Map<String, String>) event.getData();
 					if (((String) hook.getData()).equalsIgnoreCase(String.format("%s-%s", data.get("world"), data.get("region"))))
 					{
-						LuaTable table = new LuaTable();
+						final LuaTable table = new LuaTable();
 						table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
-						hook.execute(table);
+
+						scheduler.runNow(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								hook.execute(table);
+							}
+						});
 					}
 				}
 			}
@@ -253,4 +267,5 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	}
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
+	private final IScheduler scheduler;
 }
