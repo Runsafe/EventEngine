@@ -172,6 +172,15 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("removePotionEffects", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).removeBuffs();
+			}
+		});
+
 		return lib;
 	}
 

@@ -81,6 +81,10 @@ function Player:removeWorldPermission(permission, world)
     EventEngine.player.removeWorldPermission(self.name, permission, world);
 end
 
+function Player:removePotionEffects()
+    EventEngine.player.removePotionEffects(self.name);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
