@@ -147,7 +147,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				IBlock block = event.getBlock();
 				if (hook.getData() != null)
 					if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData())
-						return;
+						continue;
 
 				debug.debugFine("Block is not null");
 
