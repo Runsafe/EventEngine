@@ -12,6 +12,7 @@ import no.runsafe.framework.api.lua.VoidFunction;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
+import no.runsafe.framework.minecraft.Sound;
 import org.luaj.vm2.LuaTable;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class WorldLibrary extends Library
 		lib.set("setBlock", new SetBlock());
 		lib.set("getBlock", new GetBlock());
 		lib.set("getPlayers", new GetPlayers());
+		lib.set("playSound", new PlaySound());
 		return lib;
 	}
 
@@ -54,6 +56,20 @@ public class WorldLibrary extends Library
 
 			IBlock block = location.getBlock();
 			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
+		}
+	}
+
+	private static class PlaySound extends VoidFunction
+	{
+		@Override
+		public void run(FunctionParameters parameters)
+		{
+			ILocation location = parameters.getLocation(0);
+			location.playSound(
+					Sound.Get(parameters.getString(4)),
+					parameters.getFloat(5),
+					parameters.getFloat(6)
+			);
 		}
 	}
 

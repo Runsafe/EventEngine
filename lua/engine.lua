@@ -133,6 +133,10 @@ function Location:getClosestPlayer()
     return Player:new(EventEngine.player.getPlayerAtLocation(self.world, self.x, self.y, self.z));
 end
 
+function Location:playSound(sound, volume, pitch)
+    EventEngine.world.playSound(self.world, self.x, self.y, self.z, sound, volume, pitch);
+end
+
 function Location:setBlock(blockID, data)
     EventEngine.world.setBlock(self.world, self.x, self.y, self.z, blockID, data);
 end
