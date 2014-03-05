@@ -7,6 +7,8 @@ import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
+import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.extension.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.Item;
@@ -22,9 +24,10 @@ import java.util.Map;
 
 public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent
 {
-	public HookHandler(IScheduler scheduler)
+	public HookHandler(IScheduler scheduler, IDebug debug)
 	{
 		this.scheduler = scheduler;
+		this.debug = debug;
 	}
 
 	public static void registerHook(Hook hook)
@@ -133,25 +136,33 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	@Override
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
+		debug.debugFine("Interact event detected");
 		List<Hook> hooks = HookHandler.getHooks(HookType.INTERACT);
 
 		if (hooks != null)
 		{
+			debug.debugFine("Hooks not null");
 			for (Hook hook : hooks)
 			{
+				debug.debugFine("Processing hook...");
 				IBlock block = event.getBlock();
 				if (hook.getData() != null)
 					if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData())
 						return;
 
+				debug.debugFine("Block is not null");
+
 				IWorld hookWorld = hook.getWorld();
 				ILocation location = block.getLocation();
 				if (hookWorld == null)
 				{
+					debug.debugFine("Hook world is null, using location");
 					if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 					{
+						debug.debugFine("Correct world!");
 						if (location.distance(hook.getLocation()) < 1)
 						{
+							debug.debugFine("Distance is less than 1");
 							LuaTable table = new LuaTable();
 							if (event.getPlayer() != null)
 								table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
@@ -162,6 +173,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				}
 				else if (hookWorld.getName().equals(block.getWorld().getName()))
 				{
+					debug.debugFine("Hook world is null, sending location data");
 					LuaTable table = new LuaTable();
 					if (event.getPlayer() != null)
 						table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
@@ -268,4 +280,5 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
 	private final IScheduler scheduler;
+	private final IDebug debug;
 }
