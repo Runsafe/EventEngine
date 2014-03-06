@@ -120,6 +120,7 @@ public class WorldLibrary extends Library
 			{
 				IChest chest = (IChest) block;
 				IPlayer player = parameters.getPlayer(4);
+				player.sendColouredMessage("Chest is emptying..");
 
 				for (RunsafeMeta item : chest.getInventory().getContents())
 					player.give(item);
