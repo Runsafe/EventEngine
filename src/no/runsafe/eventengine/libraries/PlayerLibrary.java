@@ -3,6 +3,7 @@ package no.runsafe.eventengine.libraries;
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
@@ -12,9 +13,10 @@ import org.luaj.vm2.LuaTable;
 
 public class PlayerLibrary extends Library
 {
-	public PlayerLibrary(RunsafePlugin plugin)
+	public PlayerLibrary(RunsafePlugin plugin, IScheduler scheduler)
 	{
 		super(plugin, "player");
+		this.scheduler = scheduler;
 	}
 
 	@Override
@@ -184,9 +186,16 @@ public class PlayerLibrary extends Library
 		lib.set("closeInventory", new VoidFunction()
 		{
 			@Override
-			protected void run(FunctionParameters parameters)
+			protected void run(final FunctionParameters parameters)
 			{
-				parameters.getPlayer(0).closeInventory();
+				scheduler.runNow(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						parameters.getPlayer(0).closeInventory();
+					}
+				});
 			}
 		});
 
@@ -213,4 +222,6 @@ public class PlayerLibrary extends Library
 		meta.setAmount(amount);
 		player.give(meta);
 	}
+
+	private final IScheduler scheduler;
 }
