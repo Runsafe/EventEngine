@@ -4,6 +4,7 @@ import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
+import no.runsafe.framework.api.block.IChest;
 import no.runsafe.framework.api.chunk.IChunk;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
@@ -13,6 +14,7 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.Sound;
+import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import org.luaj.vm2.LuaTable;
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class WorldLibrary extends Library
 		lib.set("getBlock", new GetBlock());
 		lib.set("getPlayers", new GetPlayers());
 		lib.set("playSound", new PlaySound());
+		lib.set("cloneChestToPlayer", new CloneChestToPlayer());
 		return lib;
 	}
 
@@ -102,6 +105,25 @@ public class WorldLibrary extends Library
 				returns.add(player.getName());
 
 			return returns;
+		}
+	}
+
+	private static class CloneChestToPlayer extends VoidFunction
+	{
+		@Override
+		public void run(FunctionParameters parameters)
+		{
+			ILocation location = parameters.getLocation(0);
+
+			IBlock block = location.getBlock();
+			if (block instanceof IChest)
+			{
+				IChest chest = (IChest) block;
+				IPlayer player = parameters.getPlayer(4);
+
+				for (RunsafeMeta item : chest.getInventory().getContents())
+					player.give(item);
+			}
 		}
 	}
 }

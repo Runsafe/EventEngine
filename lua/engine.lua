@@ -161,6 +161,10 @@ function Location:explosion(power, breakBlocks, fire)
     EventEngine.effects.explosion(self.world, self.x, self.y, self.z, power, breakBlocks, fire);
 end
 
+function Location:cloneChestToPlayer(player)
+    EventEngine.world.cloneChestToPlayer(self.world, self.x, self.y, self.z, player);
+end
+
 -- AI Object
 AI = class('AI');
 function AI:initialize(name, group, world)
