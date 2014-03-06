@@ -117,7 +117,7 @@ public class WorldLibrary extends Library
 			IPlayer player = parameters.getPlayer(4);
 
 			IBlock block = location.getBlock();
-			player.sendColouredMessage(block.getClass().getName());
+			player.sendColouredMessage(block instanceof IChest ? "Yes" : "no");
 
 			if (block instanceof IChest)
 			{
