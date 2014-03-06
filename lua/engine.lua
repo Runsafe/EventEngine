@@ -86,7 +86,7 @@ function Player:removePotionEffects()
 end
 
 function Player:closeInventory()
-    EventEngine.player.closeInventory();
+    EventEngine.player.closeInventory(self.name);
 end
 
 -- World object
