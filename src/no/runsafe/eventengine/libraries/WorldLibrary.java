@@ -114,13 +114,14 @@ public class WorldLibrary extends Library
 		public void run(FunctionParameters parameters)
 		{
 			ILocation location = parameters.getLocation(0);
+			IPlayer player = parameters.getPlayer(4);
 
 			IBlock block = location.getBlock();
+			player.sendColouredMessage(block.getClass().getName());
+
 			if (block instanceof IChest)
 			{
 				IChest chest = (IChest) block;
-				IPlayer player = parameters.getPlayer(4);
-				player.sendColouredMessage("Chest is emptying..");
 
 				for (RunsafeMeta item : chest.getInventory().getContents())
 					player.give(item);
