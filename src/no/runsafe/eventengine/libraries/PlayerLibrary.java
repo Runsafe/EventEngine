@@ -181,6 +181,15 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("closeInventory", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).closeInventory();
+			}
+		});
+
 		return lib;
 	}
 

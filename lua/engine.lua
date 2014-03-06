@@ -85,6 +85,10 @@ function Player:removePotionEffects()
     EventEngine.player.removePotionEffects(self.name);
 end
 
+function Player:closeInventory()
+    EventEngine.player.closeInventory();
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
