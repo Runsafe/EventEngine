@@ -188,14 +188,14 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(final FunctionParameters parameters)
 			{
-				scheduler.runNow(new Runnable()
+				scheduler.startSyncTask(new Runnable()
 				{
 					@Override
 					public void run()
 					{
 						parameters.getPlayer(0).closeInventory();
 					}
-				});
+				}, 1L);
 			}
 		});
 
