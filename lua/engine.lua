@@ -89,6 +89,10 @@ function Player:closeInventory()
     EventEngine.player.closeInventory(self.name);
 end
 
+function Player:setVelocity(x, y, z)
+    EventEngine.player.setVelocity(self.name, x, y, z);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)

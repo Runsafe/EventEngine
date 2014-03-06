@@ -9,6 +9,7 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
+import org.bukkit.util.Vector;
 import org.luaj.vm2.LuaTable;
 
 public class PlayerLibrary extends Library
@@ -196,6 +197,19 @@ public class PlayerLibrary extends Library
 						parameters.getPlayer(0).closeInventory();
 					}
 				}, 1L);
+			}
+		});
+
+		lib.set("setVelocity", new VoidFunction()
+		{
+			@Override
+			protected void run(final FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).setVelocity(new Vector(
+						parameters.getDouble(1),
+						parameters.getDouble(2),
+						parameters.getDouble(3)
+				));
 			}
 		});
 
