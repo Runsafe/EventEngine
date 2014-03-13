@@ -227,7 +227,7 @@ function Entity:spawnMinecart(itemID, dataValue)
 end
 
 function Entity:spawnControlledEntity(entityType)
-    self.entityID = EventEngine.mobs.spawnControlledEntity(entityType, self.world, self.x, self.y, self.z));
+    self.entityID = EventEngine.mobs.spawnControlledEntity(entityType, self.world, self.x, self.y, self.z);
 end
 
 function Entity:goTo(loc, speed)
