@@ -20,7 +20,8 @@ public class PathfinderGoToTarget extends PathfinderGoal
 	public void c()
 	{
 		EntityGoal goal = EntityDriver.getTarget(entity.getId());
-		entity.getNavigation().a(goal.getX(), goal.getY(), goal.getZ(), goal.getSpeed());
+		if (goal != null)
+			entity.getNavigation().a(goal.getX(), goal.getY(), goal.getZ(), goal.getSpeed());
 	}
 
 	private final EntityInsentient entity;
