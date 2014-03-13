@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.events.CustomEvent;
+import no.runsafe.eventengine.handlers.SeatbeltHandler;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IScheduler;
@@ -210,6 +211,24 @@ public class PlayerLibrary extends Library
 						parameters.getDouble(2),
 						parameters.getDouble(3)
 				));
+			}
+		});
+
+		lib.set("lockMount", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				SeatbeltHandler.lockPlayer(parameters.getPlayer(0));
+			}
+		});
+
+		lib.set("unlockMount", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				SeatbeltHandler.unlockPlayer(parameters.getPlayer(0));
 			}
 		});
 

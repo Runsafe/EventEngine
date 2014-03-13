@@ -3,6 +3,7 @@ package no.runsafe.eventengine;
 import no.runsafe.eventengine.commands.ReloadScripts;
 import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
+import no.runsafe.eventengine.handlers.SeatbeltHandler;
 import no.runsafe.eventengine.libraries.*;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.log.IDebug;
@@ -22,6 +23,8 @@ public class EventEngine extends RunsafePlugin
 		addComponent(Events.class);
 		addComponent(Commands.class);
 		addComponent(LUAScripts.class);
+
+		addComponent(SeatbeltHandler.class);
 
 		addComponent(AILibrary.class);
 		addComponent(EffectLibrary.class);
