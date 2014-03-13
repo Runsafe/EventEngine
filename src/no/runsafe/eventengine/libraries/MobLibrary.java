@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MobLibrary extends Library
 {
-	protected MobLibrary(RunsafePlugin plugin)
+	public MobLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "mobs");
 	}
