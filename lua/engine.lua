@@ -204,3 +204,26 @@ function Timer:cancel()
     end
     self.id = nil;
 end
+
+-- Entity object
+Entity = class('Entity');
+function Entity:initialize(location)
+    self.world = location.world;
+    self.x = location.x;
+    self.y = location.y;
+    self.z = location.z;
+end
+
+function Entity:spawn(entityType)
+    self.entityID = EventEngine.mobs.spawnEntity(entityType, self.world, self.x, self.y, self.z);
+end
+
+function Entity:spawnMinecart(itemID, dataValue)
+    self.entityID = EventEngine.mobs.spawnCustomMinecart(itemID, dataValue, self.world, self.x, self.y, self.z);
+end
+
+function Entity:despawn()
+    if self.entityID ~= nil then
+        EventEngine.mobs.despawnEntity(self.entityID);
+    end
+end
