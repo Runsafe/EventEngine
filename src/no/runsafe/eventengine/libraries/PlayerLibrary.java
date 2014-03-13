@@ -213,6 +213,15 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("dismount", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).leaveVehicle();
+			}
+		});
+
 		return lib;
 	}
 

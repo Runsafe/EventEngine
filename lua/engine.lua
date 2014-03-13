@@ -93,6 +93,10 @@ function Player:setVelocity(x, y, z)
     EventEngine.player.setVelocity(self.name, x, y, z);
 end
 
+function Player:dismount()
+    EventEngine.player.dismount(self.name);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
@@ -224,6 +228,24 @@ end
 
 function Entity:despawn()
     if self.entityID ~= nil then
-        EventEngine.mobs.despawnEntity(self.entityID);
+        EventEngine.mobs.despawnEntity(self.world, self.entityID);
+    end
+end
+
+function Entity:putOnPlayer(player)
+    if self.entityID ~= nil then
+        EventEngine.mobs.putOnPlayer(self.world, self.entityID, player);
+    end
+end
+
+function Entity:putPlayerOn(player)
+    if self.entityID ~= nil then
+        EventEngine.mobs.putPlayerOn(self.world, self.entityID, player);
+    end
+end
+
+function Entity:dismount()
+    if self.entityID ~= nil then
+        EventEngine.mobs.dismount(self.world, self.entityID);
     end
 end

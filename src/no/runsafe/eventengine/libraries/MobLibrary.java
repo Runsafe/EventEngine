@@ -54,6 +54,40 @@ public class MobLibrary extends Library
 					entity.remove();
 			}
 		});
+
+		lib.set("putPlayerOn", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				if (entity != null)
+					entity.setPassenger(parameters.getPlayer(2));
+			}
+		});
+
+		lib.set("putOnPlayer", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				if (entity != null)
+					parameters.getPlayer(2).setPassenger(entity);
+			}
+		});
+
+		lib.set("dismount", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				if (entity != null)
+					entity.leaveVehicle();
+			}
+		});
+
 		return lib;
 	}
 }
