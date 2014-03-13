@@ -2,16 +2,12 @@ package no.runsafe.eventengine.libraries;
 
 import net.minecraft.server.v1_7_R1.EntityMinecartAbstract;
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import org.luaj.vm2.LuaTable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MobLibrary extends Library
 {
