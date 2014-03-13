@@ -5,15 +5,20 @@ import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.libraries.*;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.features.Commands;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.LUAScripts;
 
 public class Plugin extends RunsafePlugin
 {
+	public static IDebug Debugger = null;
+
 	@Override
 	protected void pluginSetup()
 	{
+		Debugger = getComponent(IDebug.class);
+
 		addComponent(Events.class);
 		addComponent(Commands.class);
 		addComponent(LUAScripts.class);
