@@ -1,7 +1,7 @@
 package no.runsafe.eventengine.engine;
 
 import net.minecraft.util.org.apache.commons.io.FileUtils;
-import no.runsafe.eventengine.Plugin;
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.api.log.IConsole;
@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class ScriptManager implements IPluginEnabled
 {
-	public ScriptManager(Plugin eventEngine, IGlobal environment, IConsole output, IScheduler scheduler)
+	public ScriptManager(EventEngine eventEngine, IGlobal environment, IConsole output, IScheduler scheduler)
 	{
 		this.environment = environment;
 		this.scheduler = scheduler;

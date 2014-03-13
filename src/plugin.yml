@@ -1,5 +1,5 @@
 name: EventEngine
-main: no.runsafe.eventengine.Plugin
+main: no.runsafe.eventengine.EventEngine
 version: 1.0.@BUILD@
 author: Kruithne
 description: Event engine
