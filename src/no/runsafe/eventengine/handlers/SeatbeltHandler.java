@@ -25,18 +25,7 @@ public class SeatbeltHandler implements IVehicleExit
 		console.logInformation("Vehicle exit event detected");
 		final ILivingEntity rider = event.getExiter();
 		if (players.contains(rider.getUniqueId()))
-		{
-			console.logInformation("Player ID is in the lock list");
-			scheduler.startSyncTask(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					console.logInformation("Remounting");
-					event.getVehicle().setPassenger(rider);
-				}
-			}, 1L);
-		}
+			event.cancel();
 	}
 
 	public static void lockPlayer(IPlayer player)
