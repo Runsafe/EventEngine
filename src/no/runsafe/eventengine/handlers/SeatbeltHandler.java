@@ -30,7 +30,7 @@ public class SeatbeltHandler implements IVehicleExit
 				{
 					event.getVehicle().setPassenger(rider);
 				}
-			}, 1L);
+			}, 10L);
 		}
 	}
 
