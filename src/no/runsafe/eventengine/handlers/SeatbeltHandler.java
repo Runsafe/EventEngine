@@ -35,7 +35,7 @@ public class SeatbeltHandler implements IVehicleExit
 					console.logInformation("Remounting");
 					event.getVehicle().setPassenger(rider);
 				}
-			}, 10L);
+			}, 1L);
 		}
 	}
 
