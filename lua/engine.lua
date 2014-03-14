@@ -257,3 +257,9 @@ function Entity:dismount()
         EventEngine.mobs.dismount(self.world, self.entityID);
     end
 end
+
+function Entity:addEffect(effect, duration, amp, amb)
+    if self.entityID ~= nil then
+        EventEngine.mobs.addEffect(self.world, self.entityID, effect, duration, amp, amb);
+    end
+end

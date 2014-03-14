@@ -55,6 +55,25 @@ public class MobLibrary extends Library
 			}
 		});
 
+		lib.set("addEffect", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				if (entity != null)
+				{
+					EntityLiving living = (EntityLiving) ObjectUnwrapper.getMinecraft(entity);
+					living.addEffect(new MobEffect(
+							MobEffectList.byId[parameters.getInt(2)].id,
+							parameters.getInt(3),
+							parameters.getInt(4),
+							parameters.getBool(5)
+					));
+				}
+			}
+		});
+
 		lib.set("putPlayerOn", new VoidFunction()
 		{
 			@Override
