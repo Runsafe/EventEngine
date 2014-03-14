@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.handlers;
 
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.entity.ILivingEntity;
 import no.runsafe.framework.api.event.vehicle.IVehicleExit;
 import no.runsafe.framework.api.player.IPlayer;
@@ -10,15 +11,27 @@ import java.util.List;
 
 public class SeatbeltHandler implements IVehicleExit
 {
-	@Override
-	public void OnVehicleExit(RunsafeVehicleExitEvent event)
+	public SeatbeltHandler(IScheduler scheduler)
 	{
-		ILivingEntity rider = event.getExiter();
+		this.scheduler = scheduler;
+	}
+
+	@Override
+	public void OnVehicleExit(final RunsafeVehicleExitEvent event)
+	{
+		final ILivingEntity rider = event.getExiter();
 		if (rider instanceof IPlayer)
 		{
 			String playerName = ((IPlayer) rider).getName();
 			if (players.contains(playerName))
-				event.cancel();
+				scheduler.startSyncTask(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						event.getVehicle().setPassenger(rider);
+					}
+				}, 1L);
 		}
 	}
 
@@ -33,4 +46,5 @@ public class SeatbeltHandler implements IVehicleExit
 	}
 
 	private static final List<String> players = new ArrayList<String>(0);
+	private final IScheduler scheduler;
 }
