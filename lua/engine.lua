@@ -234,6 +234,19 @@ function Entity:spawnMinecart(itemID, dataValue)
     self.entityID = EventEngine.mobs.spawnCustomMinecart(itemID, dataValue, self.world, self.x, self.y, self.z);
 end
 
+function Entity:get()
+    self.entityID = EventEngine.mobs.getEntity(self.world, self.x, self.y, self.z);
+    if self.entityID == 0 then
+        self.entityID = nil;
+    end
+end
+
+function Entity:setItem(item)
+    if self.entityID ~= nil then
+        EventEngine.mobs.setItem(self.world, self.entityID, item);
+    end
+end
+
 function Entity:despawn()
     if self.entityID ~= nil then
         EventEngine.mobs.despawnEntity(self.world, self.entityID);

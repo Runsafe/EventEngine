@@ -2,10 +2,13 @@ package no.runsafe.eventengine.libraries;
 
 import net.minecraft.server.v1_7_R1.*;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
+import no.runsafe.framework.minecraft.entity.RunsafeEntity;
+import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import org.luaj.vm2.LuaTable;
 
@@ -26,6 +29,32 @@ public class MobLibrary extends Library
 			public Integer run(FunctionParameters parameters)
 			{
 				return no.runsafe.framework.minecraft.entity.EntityType.getTypeByName(parameters.getString(0)).spawn(parameters.getLocation(1)).getEntityId();
+			}
+		});
+
+		lib.set("getEntity", new IntegerFunction()
+		{
+			@Override
+			public Integer run(FunctionParameters parameters)
+			{
+				ILocation location =  parameters.getLocation(0);
+				double lastDistance = -1;
+				RunsafeEntity lastEntity = null;
+
+				for (RunsafeEntity entity : location.getChunk().getEntities())
+				{
+					ILocation entityLocation = entity.getLocation();
+					if (entityLocation == null)
+						continue;
+
+					double entityDistance = entityLocation.distance(location);
+					if (lastDistance == -1 || entityDistance < lastDistance)
+					{
+						lastDistance = entityDistance;
+						lastEntity = entity;
+					}
+				}
+				return lastEntity != null ? lastEntity.getEntityId() : 0;
 			}
 		});
 
@@ -52,6 +81,20 @@ public class MobLibrary extends Library
 				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
 				if (entity != null)
 					entity.remove();
+			}
+		});
+
+		lib.set("setItem", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				if (entity != null && entity.getEntityType() == PassiveEntity.ItemFrame)
+				{
+					RunsafeItemFrame itemFrame = (RunsafeItemFrame) entity;
+					itemFrame.setItem(no.runsafe.framework.minecraft.Item.get(parameters.getString(2)).getItem());
+				}
 			}
 		});
 
