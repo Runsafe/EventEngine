@@ -173,6 +173,10 @@ function Location:lightningStrike()
     EventEngine.effects.strikeLightning(self.world, self.x, self.y, self.z);
 end
 
+function Location:playEffect(effect, speed, particles, amount)
+    EventEngine.effects.playEffect(self.world, self.x, self.y, self.z, effect, speed, particles, amount);
+end
+
 function Location:firework(type, colour, fade, flicker, trail)
     EventEngine.effects.firework(self.world, self.x, self.y, self.z, type, colour, fade, flicker, trail);
 end

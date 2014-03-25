@@ -6,6 +6,7 @@ import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
+import no.runsafe.framework.minecraft.WorldEffect;
 import no.runsafe.framework.minecraft.entity.ProjectileEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import org.bukkit.Color;
@@ -35,6 +36,21 @@ public class EffectLibrary extends Library
 				LightningStrike(parameters.getLocation(0));
 			}
 		});
+
+		lib.set("playEffect", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getLocation(0).playEffect(
+						WorldEffect.valueOf(parameters.getString(4)),
+						parameters.getFloat(5),
+						parameters.getInt(6),
+						parameters.getDouble(7)
+				);
+			}
+		});
+
 		lib.set("explosion", new VoidFunction()
 		{
 			@Override
