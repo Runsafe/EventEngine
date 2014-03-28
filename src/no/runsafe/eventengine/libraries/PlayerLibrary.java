@@ -262,6 +262,22 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("hasItemWithName", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				String requiredName = parameters.getString(1);
+				for (RunsafeMeta item : parameters.getPlayer(0).getInventory().getContents())
+				{
+					String displayName = item.getDisplayName();
+					if (displayName != null && displayName.equals(requiredName))
+						return true;
+				}
+				return false;
+			}
+		});
+
 		return lib;
 	}
 

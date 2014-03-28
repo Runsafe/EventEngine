@@ -113,6 +113,10 @@ function Player:hasItem(item, amount)
     return EventEngine.player.hasItem(self.name, item, amount);
 end
 
+function Player:hasItemWithName(itemName)
+    return EventEngine.player.hasItemWithName(self.name, itemName);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
