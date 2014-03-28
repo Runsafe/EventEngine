@@ -10,15 +10,17 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
+import no.runsafe.worldguardbridge.IRegionControl;
 import org.bukkit.util.Vector;
 import org.luaj.vm2.LuaTable;
 
 public class PlayerLibrary extends Library
 {
-	public PlayerLibrary(RunsafePlugin plugin, IScheduler scheduler)
+	public PlayerLibrary(RunsafePlugin plugin, IScheduler scheduler, IRegionControl regionControl)
 	{
 		super(plugin, "player");
 		this.scheduler = scheduler;
+		this.regionControl = regionControl;
 	}
 
 	@Override
@@ -241,6 +243,25 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("isInRegion", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				String checkRegion = parameters.getString(1) + '-' + parameters.getString(2);
+				return regionControl.getApplicableRegions(parameters.getPlayer(0)).contains(checkRegion);
+			}
+		});
+
+		lib.set("hasItem", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				return parameters.getPlayer(0).hasItem(Item.get(parameters.getString(1)), parameters.getInt(2));
+			}
+		});
+
 		return lib;
 	}
 
@@ -266,4 +287,5 @@ public class PlayerLibrary extends Library
 	}
 
 	private final IScheduler scheduler;
+	private final IRegionControl regionControl;
 }

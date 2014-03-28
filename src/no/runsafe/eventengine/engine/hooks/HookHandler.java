@@ -12,7 +12,10 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.extension.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
+import no.runsafe.framework.minecraft.event.entity.RunsafeEntityDamageEvent;
 import no.runsafe.framework.minecraft.event.player.*;
+import org.luaj.vm2.LuaDouble;
+import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 
@@ -21,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent
 {
 	public HookHandler(IScheduler scheduler, IDebug debug)
 	{
@@ -277,6 +280,35 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
 				table.set("blockID", LuaValue.valueOf(material.getItemID()));
 				table.set("blockData", LuaValue.valueOf(material.getData()));
+
+				hook.execute(table);
+			}
+		}
+	}
+
+	@Override
+	public void OnPlayerDamage(IPlayer player, RunsafeEntityDamageEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DAMAGE);
+
+		if (hooks != null)
+		{
+			IWorld damageWorld = player.getWorld();
+
+			LuaString playerName = LuaValue.valueOf(player.getName());
+			LuaString damageCause = LuaValue.valueOf(event.getCause().name());
+			LuaValue damage = LuaValue.valueOf(event.getDamage());
+
+			for (Hook hook : hooks)
+			{
+				IWorld world = hook.getWorld();
+				if (world == null || !world.isWorld(damageWorld))
+					return;
+
+				LuaTable table = new LuaTable();
+				table.set("player", playerName);
+				table.set("damage", damage);
+				table.set("cause", damageCause);
 
 				hook.execute(table);
 			}

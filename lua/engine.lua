@@ -105,6 +105,14 @@ function Player:unlockMount()
     EventEngine.player.unlockMount(self.name);
 end
 
+function Player:isInRegion(world, region)
+    return EventEngine.player.isInRegion(self.name, world, region);
+end
+
+function Player:hasItem(item, amount)
+    return EventEngine.player.hasItem(self.name, item, amount);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
