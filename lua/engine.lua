@@ -169,6 +169,10 @@ function Location:setBlock(blockID, data)
     EventEngine.world.setBlock(self.world, self.x, self.y, self.z, blockID, data);
 end
 
+function Location:setSign(lineOne, lineTwo, lineThree, lineFour)
+    EventEngine.world.setSign(self.world, self.x, self.y, self.z, lineOne, lineTwo, lineThree, lineFour);
+end
+
 function Location:getBlock()
     return EventEngine.world.getBlock(self.world, self.x, self.y, self.z);
 end

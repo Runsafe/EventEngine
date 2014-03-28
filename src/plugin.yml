@@ -2,6 +2,7 @@ name: EventEngine
 main: no.runsafe.eventengine.EventEngine
 version: 1.0.@BUILD@
 author: Kruithne
+depend: [RunsafeWorldGuardBridge]
 description: Event engine
 commands:
   reloadscripts:

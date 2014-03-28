@@ -5,6 +5,7 @@ import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.block.IChest;
+import no.runsafe.framework.api.block.ISign;
 import no.runsafe.framework.api.chunk.IChunk;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
@@ -36,6 +37,7 @@ public class WorldLibrary extends Library
 		lib.set("getPlayers", new GetPlayers());
 		lib.set("playSound", new PlaySound());
 		lib.set("cloneChestToPlayer", new CloneChestToPlayer());
+		lib.set("setSign", new SetSign());
 		return lib;
 	}
 
@@ -59,6 +61,28 @@ public class WorldLibrary extends Library
 
 			IBlock block = location.getBlock();
 			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
+		}
+	}
+
+	private static class SetSign extends VoidFunction
+	{
+		@Override
+		public void run(FunctionParameters parameters)
+		{
+			ILocation location = parameters.getLocation(0);
+			WorldLibrary.prepareLocationForEdit(location);
+
+			IBlock block = location.getBlock();
+			if (block instanceof ISign)
+			{
+				ISign sign = (ISign) block;
+				sign.setLines(
+						parameters.getString(4),
+						parameters.getString(5),
+						parameters.getString(6),
+						parameters.getString(7)
+				);
+			}
 		}
 	}
 
