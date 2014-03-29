@@ -82,6 +82,7 @@ public class WorldLibrary extends Library
 						parameters.getString(6),
 						parameters.getString(7)
 				);
+				sign.update(true);
 			}
 		}
 	}
