@@ -113,7 +113,9 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				parameters.getPlayer(0).clearInventory();
+				IPlayer player = parameters.getPlayer(0);
+				player.clearInventory();
+				player.getEquipment().clear();
 			}
 		});
 
