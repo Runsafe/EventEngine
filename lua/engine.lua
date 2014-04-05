@@ -127,6 +127,10 @@ function World:getPlayers()
     return EventEngine.world.getPlayers(self.name);
 end
 
+function World:removeItems()
+    EventEngine.world.removeItems(self.name);
+end
+
 function World:broadcast(message)
     local players = {self:getPlayers()};
     for index, playerName in pairs(players) do

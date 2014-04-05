@@ -7,6 +7,7 @@ import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.block.IChest;
 import no.runsafe.framework.api.block.ISign;
 import no.runsafe.framework.api.chunk.IChunk;
+import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
@@ -15,6 +16,7 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.Sound;
+import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import org.luaj.vm2.LuaTable;
 
@@ -38,6 +40,7 @@ public class WorldLibrary extends Library
 		lib.set("playSound", new PlaySound());
 		lib.set("cloneChestToPlayer", new CloneChestToPlayer());
 		lib.set("setSign", new SetSign());
+		lib.set("removeItems", new RemoveItems());
 		return lib;
 	}
 
@@ -149,6 +152,18 @@ public class WorldLibrary extends Library
 				for (RunsafeMeta item : chest.getInventory().getContents())
 					player.give(item);
 			}
+		}
+	}
+
+	private static class RemoveItems extends VoidFunction
+	{
+		@Override
+		public void run(FunctionParameters parameters)
+		{
+			IWorld world = parameters.getWorld(0);
+			for (IEntity entity : world.getEntities())
+				if (entity.getEntityType() == PassiveEntity.DroppedItem)
+					entity.remove();
 		}
 	}
 }
