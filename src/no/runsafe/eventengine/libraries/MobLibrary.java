@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import net.minecraft.server.v1_7_R2.*;
+import net.minecraft.server.v1_7_R3.*;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
@@ -9,7 +9,7 @@ import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
