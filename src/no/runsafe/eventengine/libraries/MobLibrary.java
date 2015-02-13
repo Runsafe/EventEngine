@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import net.minecraft.server.v1_7_R3.*;
+import net.minecraft.server.v1_8_R1.*;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
