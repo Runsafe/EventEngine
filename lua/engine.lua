@@ -85,6 +85,10 @@ function Player:removePotionEffects()
     EventEngine.player.removePotionEffects(self.name);
 end
 
+function Player:addPotionEffect(effect, amp, duration)
+    EventEngine.player.addPotionEffect(self.name, effect, amp, duration);
+end
+
 function Player:closeInventory()
     EventEngine.player.closeInventory(self.name);
 end

@@ -8,6 +8,7 @@ import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
+import no.runsafe.framework.minecraft.Buff;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.worldguardbridge.IRegionControl;
@@ -186,6 +187,15 @@ public class PlayerLibrary extends Library
 			protected void run(FunctionParameters parameters)
 			{
 				parameters.getPlayer(0).removeBuffs();
+			}
+		});
+
+		lib.set("addPotionEffect", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).addBuff(Buff.getFromName(parameters.getString(1)).amplification(parameters.getInt(2)).duration(parameters.getInt(3)));
 			}
 		});
 
