@@ -123,9 +123,10 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 		{
+			IPlayer player = event.getEntity();
+
 			for (Hook hook : hooks)
 			{
-				IPlayer player = event.getEntity();
 				IWorld hookWorld = hook.getWorld();
 				if (hookWorld.getName().equals(player.getWorldName()))
 				{
