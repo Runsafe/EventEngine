@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent, IPlayerDropItemEvent
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent, IPlayerDropItemEvent, IPlayerPickupItemEvent
 {
 	public HookHandler(IScheduler scheduler, IDebug debug)
 	{
@@ -345,6 +345,32 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerDropItem(RunsafePlayerDropItemEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_DROP);
+
+		if (hooks != null)
+		{
+			IPlayer player = event.getPlayer();
+			RunsafeMeta item = event.getItem().getItemStack();
+
+			for (Hook hook : hooks)
+			{
+				IWorld hookWorld = hook.getWorld();
+				if (hookWorld.isWorld(player.getWorld()))
+				{
+					LuaTable table = new LuaTable();
+					table.set("player", player.getName());
+					table.set("itemID", item.getItemId());
+					table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
+
+					hook.execute(table);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void OnPlayerPickupItemEvent(RunsafePlayerPickupItemEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_PICKUP);
 
 		if (hooks != null)
 		{
