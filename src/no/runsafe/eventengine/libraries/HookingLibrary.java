@@ -75,7 +75,7 @@ public class HookingLibrary extends Library
 				if (parameters.parameterCount() > 2)
 					hook.setWorld(parameters.getWorld(2));
 			}
-			else if (type == HookType.PLAYER_DAMAGE || type == HookType.PLAYER_DEATH)
+			else if (type == HookType.PLAYER_DAMAGE || type == HookType.PLAYER_DEATH || type == HookType.PLAYER_ITEM_DROP)
 			{
 				hook.setWorld(parameters.getWorld(2));
 			}

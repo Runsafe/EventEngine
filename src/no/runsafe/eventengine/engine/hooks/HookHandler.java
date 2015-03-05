@@ -11,9 +11,11 @@ import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.extension.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.Item;
+import no.runsafe.framework.minecraft.entity.RunsafeItem;
 import no.runsafe.framework.minecraft.event.block.RunsafeBlockRedstoneEvent;
 import no.runsafe.framework.minecraft.event.entity.RunsafeEntityDamageEvent;
 import no.runsafe.framework.minecraft.event.player.*;
+import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import org.luaj.vm2.LuaDouble;
 import org.luaj.vm2.LuaString;
 import org.luaj.vm2.LuaTable;
@@ -24,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent, IPlayerDropItemEvent
 {
 	public HookHandler(IScheduler scheduler, IDebug debug)
 	{
@@ -334,6 +336,32 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				table.set("cause", damageCause);
 
 				hook.execute(table);
+			}
+		}
+	}
+
+	@Override
+	public void OnPlayerDropItem(RunsafePlayerDropItemEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_DROP);
+
+		if (hooks != null)
+		{
+			IPlayer player = event.getPlayer();
+			RunsafeMeta item = event.getItem().getItemStack();
+
+			for (Hook hook : hooks)
+			{
+				IWorld hookWorld = hook.getWorld();
+				if (hookWorld.isWorld(player.getWorld()))
+				{
+					LuaTable table = new LuaTable();
+					table.set("player", player.getName());
+					table.set("itemID", item.getItemId());
+					table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
+
+					hook.execute(table);
+				}
 			}
 		}
 	}
