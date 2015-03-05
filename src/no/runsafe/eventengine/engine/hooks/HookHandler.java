@@ -345,24 +345,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_DROP);
 
 		if (hooks != null)
-		{
-			IPlayer player = event.getPlayer();
-			RunsafeMeta item = event.getItem().getItemStack();
-
 			for (Hook hook : hooks)
-			{
-				IWorld hookWorld = hook.getWorld();
-				if (hookWorld.isWorld(player.getWorld()))
-				{
-					LuaTable table = new LuaTable();
-					table.set("player", player.getName());
-					table.set("itemID", item.getItemId());
-					table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
-
-					hook.execute(table);
-				}
-			}
-		}
+				handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
 	}
 
 	@Override
@@ -371,23 +355,21 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_PICKUP);
 
 		if (hooks != null)
-		{
-			IPlayer player = event.getPlayer();
-			RunsafeMeta item = event.getItem().getItemStack();
-
 			for (Hook hook : hooks)
-			{
-				IWorld hookWorld = hook.getWorld();
-				if (hookWorld.isWorld(player.getWorld()))
-				{
-					LuaTable table = new LuaTable();
-					table.set("player", player.getName());
-					table.set("itemID", item.getItemId());
-					table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
+				handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
+	}
 
-					hook.execute(table);
-				}
-			}
+	private void handleItemHook(Hook hook, IPlayer player, RunsafeMeta item)
+	{
+		IWorld hookWorld = hook.getWorld();
+		if (hookWorld.isWorld(player.getWorld()))
+		{
+			LuaTable table = new LuaTable();
+			table.set("player", player.getName());
+			table.set("itemID", item.getItemId());
+			table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
+
+			hook.execute(table);
 		}
 	}
 
