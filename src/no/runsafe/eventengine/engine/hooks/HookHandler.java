@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent
+public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent
 {
 	public HookHandler(IScheduler scheduler, IDebug debug)
 	{
@@ -109,6 +109,28 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 							}
 						});
 					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
+	{
+		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DEATH);
+
+		if (hooks != null)
+		{
+			for (Hook hook : hooks)
+			{
+				IPlayer player = event.getEntity();
+				IWorld hookWorld = hook.getWorld();
+				if (hookWorld.getName().equals(player.getWorldName()))
+				{
+					LuaTable table = new LuaTable();
+					table.set("player", LuaValue.valueOf(player.getName()));
+
+					hook.execute(table);
 				}
 			}
 		}
