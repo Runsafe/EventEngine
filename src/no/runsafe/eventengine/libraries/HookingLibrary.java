@@ -46,7 +46,7 @@ public class HookingLibrary extends Library
 			}
 			else if (type == HookType.CHAT_MESSAGE)
 			{
-				hook.setData(parameters.getString(2));
+				hook.setWorld(parameters.getWorld(2));
 			}
 			else if (type == HookType.INTERACT)
 			{

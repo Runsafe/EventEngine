@@ -61,13 +61,15 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		if (hooks != null)
 		{
+			IPlayer player = event.getPlayer();
 			for (Hook hook : hooks)
 			{
-				String data = (String) hook.getData();
-				if (data != null && data.equalsIgnoreCase(event.getMessage()))
+				if (hook.getWorld().isWorld(player.getWorld()))
 				{
 					LuaTable table = new LuaTable();
-					table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+					table.set("player", LuaValue.valueOf(player.getName()));
+					table.set("message", LuaValue.valueOf(event.getMessage()));
+
 					hook.execute(table);
 				}
 			}
