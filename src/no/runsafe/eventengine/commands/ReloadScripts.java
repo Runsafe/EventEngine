@@ -2,6 +2,7 @@ package no.runsafe.eventengine.commands;
 
 import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
+import no.runsafe.eventengine.libraries.TimerLibrary;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
@@ -22,6 +23,7 @@ public class ReloadScripts extends ExecutableCommand
 	{
 		this.output.logWarning("Reloading lua engine.");
 		HookHandler.clearHooks(); // Clear any hooks scripts have made.
+		TimerLibrary.disableTimers(); // Clear any timers still running.
 		this.scriptManager.OnPluginEnabled(); // Clear environment and reload all scripts.
 		return (executor instanceof IPlayer ? "&eReloaded!" : null);
 	}

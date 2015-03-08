@@ -8,12 +8,15 @@ import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
 import org.luaj.vm2.LuaTable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TimerLibrary extends Library
 {
 	public TimerLibrary(RunsafePlugin plugin, IScheduler scheduler)
 	{
 		super(plugin, "timer");
-		this.scheduler = scheduler;
+		TimerLibrary.scheduler = scheduler;
 	}
 
 	@Override
@@ -24,12 +27,16 @@ public class TimerLibrary extends Library
 		lib.set("scheduleTask", new IntegerFunction() {
 			@Override
 			public Integer run(final FunctionParameters parameters) {
-				return scheduler.startSyncTask(new Runnable() {
+				int timerID = scheduler.startSyncTask(new Runnable() {
 					@Override
 					public void run() {
 						globals.get(parameters.getString(0)).call();
 					}
 				}, (long) parameters.getInt(1));
+
+				timers.add(timerID);
+
+				return timerID;
 			}
 		});
 
@@ -37,12 +44,16 @@ public class TimerLibrary extends Library
 			@Override
 			public Integer run(final FunctionParameters parameters) {
 				long delay = parameters.getInt(1);
-				return scheduler.startSyncRepeatingTask(new Runnable() {
+				int timerID = scheduler.startSyncRepeatingTask(new Runnable() {
 					@Override
 					public void run() {
 						globals.get(parameters.getString(0)).call();
 					}
 				}, delay, delay);
+
+				timers.add(timerID);
+
+				return timerID;
 			}
 		});
 
@@ -56,5 +67,14 @@ public class TimerLibrary extends Library
 		return lib;
 	}
 
-	private IScheduler scheduler;
+	public static void disableTimers()
+	{
+		for (int timerID : timers)
+			scheduler.cancelTask(timerID);
+
+		timers.clear();
+	}
+
+	private static List<Integer> timers = new ArrayList<Integer>();
+	private static IScheduler scheduler;
 }
