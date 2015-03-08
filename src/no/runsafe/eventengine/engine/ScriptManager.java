@@ -44,20 +44,17 @@ public class ScriptManager implements IPluginEnabled
 		int failed = 0;
 
 		Collection<File> files = FileUtils.listFiles(scriptPath, new String[]{"lua"}, true);
-		if (files != null)
+		for (File file : files)
 		{
-			for (File file : files)
+			String output = this.runScript(file);
+			if (output != null)
 			{
-				String output = this.runScript(file);
-				if (output != null)
-				{
-					this.output.logError(output);
-					failed++;
-				}
-				else
-				{
-					succeeded++;
-				}
+				this.output.logError(output);
+				failed++;
+			}
+			else
+			{
+				succeeded++;
 			}
 		}
 
