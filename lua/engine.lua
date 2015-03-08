@@ -21,6 +21,10 @@ function Player:sendMessage(message)
     EventEngine.player.sendMessage(self.name, message);
 end
 
+function Player:setMode(mode)
+    EventEngine.player.setMode(self.name, mode);
+end
+
 function Player:setHealth(health)
     EventEngine.player.setHealth(self.name, health);
 end

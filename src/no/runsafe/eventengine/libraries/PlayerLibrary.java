@@ -11,6 +11,7 @@ import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Buff;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
+import no.runsafe.framework.minecraft.player.GameMode;
 import no.runsafe.worldguardbridge.IRegionControl;
 import org.bukkit.util.Vector;
 import org.luaj.vm2.LuaTable;
@@ -262,6 +263,17 @@ public class PlayerLibrary extends Library
 			{
 				String checkRegion = parameters.getString(1) + '-' + parameters.getString(2);
 				return regionControl.getApplicableRegions(parameters.getPlayer(0)).contains(checkRegion);
+			}
+		});
+
+		lib.set("setMode", new VoidFunction()
+		{
+			@Override
+			protected void run(final FunctionParameters parameters)
+			{
+				GameMode mode = GameMode.search(parameters.getString(1));
+				if (mode != null)
+					mode.apply(parameters.getPlayer(0));
 			}
 		});
 
