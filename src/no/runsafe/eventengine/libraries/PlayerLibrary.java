@@ -146,6 +146,15 @@ public class PlayerLibrary extends Library
 			}
 		});
 
+		lib.set("hasPermission", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				return parameters.getPlayer(0).hasPermission(parameters.getString(1));
+			}
+		});
+
 		lib.set("addPermission", new VoidFunction()
 		{
 			@Override
