@@ -53,6 +53,10 @@ function Player:isDead()
     return EventEngine.player.isDead(self.name);
 end
 
+function Player:removeItemByName(itemName)
+    EventEngine.player.removeItemByName(self.name, itemName);
+end
+
 function Player:sendEvent(event)
     EventEngine.player.sendEvent(self.name, event);
 end

@@ -10,11 +10,15 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Buff;
 import no.runsafe.framework.minecraft.Item;
+import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.GameMode;
 import no.runsafe.worldguardbridge.IRegionControl;
 import org.bukkit.util.Vector;
 import org.luaj.vm2.LuaTable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerLibrary extends Library
 {
@@ -283,6 +287,34 @@ public class PlayerLibrary extends Library
 				GameMode mode = GameMode.search(parameters.getString(1));
 				if (mode != null)
 					mode.apply(parameters.getPlayer(0));
+			}
+		});
+
+		lib.set("removeItemByName", new VoidFunction()
+		{
+			@Override
+			protected void run(final FunctionParameters parameters)
+			{
+				IPlayer player = parameters.getPlayer(0);
+				RunsafeInventory inventory = player.getInventory();
+				String itemName = parameters.getString(1);
+				List<Integer> removeItems = new ArrayList<Integer>();
+
+				int curr = 0;
+				while (curr < inventory.getSize())
+				{
+					RunsafeMeta item = inventory.getItemInSlot(curr);
+					if (item != null)
+					{
+						String displayName = item.hasDisplayName() ? item.getDisplayName() : item.getNormalName();
+						if (itemName.equals(displayName))
+							removeItems.add(curr);
+					}
+					curr++;
+				}
+
+				for (int slot : removeItems)
+					inventory.removeItemInSlot(slot);
 			}
 		});
 
