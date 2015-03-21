@@ -338,6 +338,8 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 				LuaTable table = new LuaTable();
 				table.set("player", playerName);
+				table.set("playerHealth", player.getHealth());
+				table.set("playerMaxHealth", player.getMaxHealth());
 				table.set("damage", damage);
 				table.set("cause", damageCause);
 
