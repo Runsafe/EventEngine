@@ -13,6 +13,7 @@ import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.GameMode;
+import no.runsafe.framework.text.ChatColour;
 import no.runsafe.worldguardbridge.IRegionControl;
 import org.bukkit.util.Vector;
 import org.luaj.vm2.LuaTable;
@@ -306,7 +307,7 @@ public class PlayerLibrary extends Library
 					RunsafeMeta item = inventory.getItemInSlot(curr);
 					if (item != null)
 					{
-						String displayName = item.hasDisplayName() ? item.getDisplayName() : item.getNormalName();
+						String displayName = item.hasDisplayName() ? item.getDisplayName() : ChatColour.Strip(item.getNormalName());
 						if (itemName.equals(displayName))
 							removeItems.add(curr);
 					}
