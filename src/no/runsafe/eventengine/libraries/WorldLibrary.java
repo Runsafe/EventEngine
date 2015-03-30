@@ -44,6 +44,7 @@ public class WorldLibrary extends Library
 		lib.set("setSign", new SetSign());
 		lib.set("removeItems", new RemoveItems());
 		lib.set("getPlayersInRegion", new GetPlayersInRegion());
+		lib.set("setTime", new SetTime());
 		return lib;
 	}
 
@@ -67,6 +68,16 @@ public class WorldLibrary extends Library
 
 			IBlock block = location.getBlock();
 			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
+		}
+	}
+
+	private static class SetTime extends VoidFunction
+	{
+		@Override
+		public void run(FunctionParameters parameters)
+		{
+			IWorld world = parameters.getWorld(0);
+			world.setTime(parameters.getInt(1));
 		}
 	}
 

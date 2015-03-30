@@ -151,6 +151,10 @@ function World:removeItems()
     EventEngine.world.removeItems(self.name);
 end
 
+function World:setTime(time)
+    EventEngine.world.setTime(self.name, time);
+end
+
 function World:broadcast(message)
     local players = {self:getPlayers()};
     for index, playerName in pairs(players) do
