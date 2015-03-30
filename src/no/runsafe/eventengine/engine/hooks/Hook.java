@@ -71,10 +71,23 @@ public class Hook
 
 	public void execute(LuaTable arguments)
 	{
+		String scriptFunction = getFunction();
+		boolean isStringFunction = scriptFunction.startsWith("return ");
+
 		if (arguments != null)
-			environment.get(this.getFunction()).call(arguments);
+		{
+			if (isStringFunction)
+				environment.get("dostring").call(scriptFunction).call(arguments);
+			else
+				environment.get(this.getFunction()).call(arguments);
+		}
 		else
-			environment.get(this.getFunction()).call();
+		{
+			if (isStringFunction)
+				environment.get("dostring").call(scriptFunction).call();
+			else
+				environment.get(this.getFunction()).call();
+		}
 	}
 
 	private final HookType type;
