@@ -1,15 +1,20 @@
 package no.runsafe.eventengine.engine;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import net.minecraft.util.org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.lua.IGlobal;
+import org.bukkit.util.FileUtil;
 import org.luaj.vm2.LuaError;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 public class ScriptManager implements IPluginEnabled
 {
@@ -43,19 +48,37 @@ public class ScriptManager implements IPluginEnabled
 		int succeeded = 0;
 		int failed = 0;
 
-		Collection<File> files = FileUtils.listFiles(scriptPath, new String[]{"lua"}, true);
-		for (File file : files)
+		File loadList = FileUtils.getFile(scriptPath, "scripts.list");
+
+		if (loadList.exists())
 		{
-			String output = this.runScript(file);
-			if (output != null)
+			try
 			{
-				this.output.logError(output);
-				failed++;
+				List<String> scripts = Files.readLines(loadList, Charsets.UTF_8);
+
+				for (String script : scripts)
+				{
+					String output = this.runScript(FileUtils.getFile(scriptPath, script));
+					if (output != null)
+					{
+						this.output.logError(output);
+						failed++;
+					}
+					else
+					{
+						this.output.logInformation("Script loaded: " + script);
+						succeeded++;
+					}
+				}
 			}
-			else
+			catch (IOException e)
 			{
-				succeeded++;
+				this.output.logWarning("Unable to read content from script list.");
 			}
+		}
+		else
+		{
+			this.output.logWarning("No script list file found in the scripts bin.");
 		}
 
 		this.output.logInformation("%d lua script(s) loaded.", succeeded);
@@ -65,7 +88,7 @@ public class ScriptManager implements IPluginEnabled
 
 	private String runScript(File script)
 	{
-		if (!script.isFile())
+		if (!script.exists() || !script.isFile())
 			return null;
 
 		try
