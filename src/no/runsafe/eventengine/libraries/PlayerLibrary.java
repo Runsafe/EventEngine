@@ -42,6 +42,7 @@ public class PlayerLibrary extends Library
 				parameters.getPlayer(0).setHealth(0.0D);
 			}
 		});
+
 		lib.set("getLocation", new LocationFunction()
 		{
 			@Override
@@ -288,6 +289,16 @@ public class PlayerLibrary extends Library
 				GameMode mode = GameMode.search(parameters.getString(1));
 				if (mode != null)
 					mode.apply(parameters.getPlayer(0));
+			}
+		});
+
+		lib.set("removeItem", new VoidFunction()
+		{
+			@Override
+			protected void run(final FunctionParameters parameters)
+			{
+				IPlayer player = parameters.getPlayer(0);
+				player.removeItem(Item.get(parameters.getString(1)), parameters.getInt(2));
 			}
 		});
 

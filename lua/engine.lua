@@ -133,6 +133,10 @@ function Player:hasItemWithName(itemName)
     return EventEngine.player.hasItemWithName(self.name, itemName);
 end
 
+function Player:removeItem(item, amount)
+    EventEngine.player.removeItem(self.name, item, amount);
+end
+
 -- World object
 World = class('World');
 function World:initialize(name)
