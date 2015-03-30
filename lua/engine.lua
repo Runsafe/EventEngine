@@ -143,6 +143,10 @@ function World:getPlayers()
     return EventEngine.world.getPlayers(self.name);
 end
 
+function World:getPlayersInRegion(region)
+    return EventEngine.world.getPlayersInRegion(self.name, region);
+end
+
 function World:removeItems()
     EventEngine.world.removeItems(self.name);
 end

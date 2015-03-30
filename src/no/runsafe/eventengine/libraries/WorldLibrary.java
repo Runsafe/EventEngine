@@ -18,6 +18,7 @@ import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.Sound;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
+import no.runsafe.worldguardbridge.IRegionControl;
 import org.luaj.vm2.LuaTable;
 
 import java.util.ArrayList;
@@ -25,9 +26,10 @@ import java.util.List;
 
 public class WorldLibrary extends Library
 {
-	public WorldLibrary(RunsafePlugin plugin)
+	public WorldLibrary(RunsafePlugin plugin, IRegionControl regionControl)
 	{
 		super(plugin, "world");
+		WorldLibrary.regionControl = regionControl;
 	}
 
 	@Override
@@ -41,6 +43,7 @@ public class WorldLibrary extends Library
 		lib.set("cloneChestToPlayer", new CloneChestToPlayer());
 		lib.set("setSign", new SetSign());
 		lib.set("removeItems", new RemoveItems());
+		lib.set("getPlayersInRegion", new GetPlayersInRegion());
 		return lib;
 	}
 
@@ -136,6 +139,22 @@ public class WorldLibrary extends Library
 		}
 	}
 
+	private static class GetPlayersInRegion extends RunsafeLuaFunction
+	{
+
+		@Override
+		public List<Object> run (FunctionParameters parameters)
+		{
+			List<Object> returns = new ArrayList<Object>();
+			IWorld world = parameters.getWorld(0);
+
+			for (IPlayer player : regionControl.getPlayersInRegion(world, parameters.getString(1)))
+				returns.add(player.getName());
+
+			return returns;
+		}
+	}
+
 	private static class CloneChestToPlayer extends VoidFunction
 	{
 		@Override
@@ -166,4 +185,6 @@ public class WorldLibrary extends Library
 					entity.remove();
 		}
 	}
+
+	private static IRegionControl regionControl;
 }
