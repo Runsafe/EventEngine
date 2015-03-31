@@ -132,7 +132,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				AddItem(parameters.getPlayer(0), parameters.getString(1), parameters.getInt(3));
+				AddItem(parameters.getPlayer(0), parameters.getString(1), parameters.getInt(2));
 			}
 		});
 		lib.set("getPlayerAtLocation", new StringFunction()
