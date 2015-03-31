@@ -335,7 +335,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected boolean run(FunctionParameters parameters)
 			{
-				return parameters.getPlayer(0).hasItem(Item.get(parameters.getString(1)), parameters.getInt(2));
+				return parameters.getPlayer(0).hasItemStrict(Item.get(parameters.getString(1)), parameters.getInt(2));
 			}
 		});
 
