@@ -132,7 +132,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				AddItem(parameters.getPlayer(0), parameters.getInt(1), parameters.getByte(2), parameters.getInt(3));
+				AddItem(parameters.getPlayer(0), parameters.getString(1), parameters.getInt(3));
 			}
 		});
 		lib.set("getPlayerAtLocation", new StringFunction()
@@ -372,9 +372,9 @@ public class PlayerLibrary extends Library
 		return null;
 	}
 
-	private static void AddItem(IPlayer player, int itemId, byte data, int amount)
+	private static void AddItem(IPlayer player,String item, int amount)
 	{
-		RunsafeMeta meta = Item.get(LegacyMaterial.getById(itemId), data).getItem();
+		RunsafeMeta meta = Item.get(item).getItem();
 		meta.setAmount(amount);
 		player.give(meta);
 	}
