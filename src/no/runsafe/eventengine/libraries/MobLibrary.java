@@ -58,6 +58,16 @@ public class MobLibrary extends Library
 			}
 		});
 
+		lib.set("isAlive", new BooleanFunction()
+		{
+			@Override
+			protected boolean run(FunctionParameters parameters)
+			{
+				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				return entity != null && !entity.isDead();
+			}
+		});
+
 		lib.set("spawnCustomMinecart", new IntegerFunction()
 		{
 			@Override

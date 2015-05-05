@@ -328,3 +328,11 @@ function Entity:addEffect(effect, duration, amp, amb)
         EventEngine.mobs.addEffect(self.world, self.entityID, effect, duration, amp, amb);
     end
 end
+
+function Entity:isAlive()
+    if self.entityID ~= nil then
+        return EventEngine.mobs.isAlive(self.world, self.entityID);
+    end
+    
+    return false;
+end
