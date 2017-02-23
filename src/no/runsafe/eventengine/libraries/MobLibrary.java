@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import net.minecraft.server.v1_7_R3.*;
+import net.minecraft.server.v1_8_R3.*;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
@@ -9,7 +9,7 @@ import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
@@ -78,7 +78,7 @@ public class MobLibrary extends Library
 				EntityMinecartAbstract ema = (EntityMinecartAbstract) craftEntity.getHandle();
 
 				ema.k(parameters.getInt(0));
-				ema.l(parameters.getInt(1));
+				//ema.l(parameters.getInt(1)); //TODO: Figure out what this was for and fix it
 				return entity.getEntityId();
 			}
 		});
@@ -121,7 +121,8 @@ public class MobLibrary extends Library
 							MobEffectList.byId[parameters.getInt(2)].id,
 							parameters.getInt(3),
 							parameters.getInt(4),
-							parameters.getBool(5)
+							parameters.getBool(5),
+							true//TODO: figure out what this does
 					));
 				}
 			}
