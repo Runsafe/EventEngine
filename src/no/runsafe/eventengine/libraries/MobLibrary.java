@@ -73,12 +73,18 @@ public class MobLibrary extends Library
 			@Override
 			public Integer run(FunctionParameters parameters)
 			{
+				//Create minecart
 				IEntity entity = PassiveEntity.Minecart.spawn(parameters.getLocation(2));
 				CraftEntity craftEntity = ObjectUnwrapper.convert(entity);
 				EntityMinecartAbstract ema = (EntityMinecartAbstract) craftEntity.getHandle();
 
-				ema.k(parameters.getInt(0));
-				//ema.l(parameters.getInt(1)); //TODO: Figure out what this was for and fix it
+				//Create block that sits in minecart
+				ema.k(parameters.getInt(0)); //Set Block Data Value
+				//ema.l(parameters.getInt(1)); //Set Block ID
+				// TODO: Fix block ID not working.
+
+				//TODO: Implement block offset
+
 				return entity.getEntityId();
 			}
 		});
@@ -122,7 +128,7 @@ public class MobLibrary extends Library
 							parameters.getInt(3),
 							parameters.getInt(4),
 							parameters.getBool(5),
-							true//TODO: figure out what this does
+							true
 					));
 				}
 			}
