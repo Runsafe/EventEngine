@@ -1,15 +1,22 @@
 package no.runsafe.eventengine.libraries;
 
 import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.EntityMinecartAbstract;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.*;
+import no.runsafe.framework.internal.extension.block.RunsafeBlock;
 import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
+import no.runsafe.framework.minecraft.material.RunsafeMaterialData;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.Material;
+import org.bukkit.entity.Minecart;
+import org.bukkit.material.MaterialData;
 import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
@@ -76,14 +83,19 @@ public class MobLibrary extends Library
 				//Create minecart
 				IEntity entity = PassiveEntity.Minecart.spawn(parameters.getLocation(2));
 				CraftEntity craftEntity = ObjectUnwrapper.convert(entity);
-				EntityMinecartAbstract ema = (EntityMinecartAbstract) craftEntity.getHandle();
+				Minecart ema = (Minecart) craftEntity.getHandle();
 
-				//Create block that sits in minecart
-				ema.k(parameters.getInt(0)); //Set Block Data Value
-				//ema.l(parameters.getInt(1)); //Set Block ID
-				// TODO: Fix block ID not working.
+				//Create block in minecart
+				ema.setDisplayBlock(
+						new MaterialData(
+							parameters.getInt(0),
+							parameters.getByte(1)
+						)
+				);
 
-				//TODO: Implement block offset
+				//Set block offset
+				if(parameters.getInt(2)!=null)
+					ema.setDisplayBlockOffset(parameters.getInt(2));
 
 				return entity.getEntityId();
 			}
