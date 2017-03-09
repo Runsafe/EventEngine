@@ -2,7 +2,7 @@ package no.runsafe.eventengine.engine;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import net.minecraft.util.org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
