@@ -9,9 +9,7 @@ import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
 import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.Minecart;
-import org.bukkit.material.MaterialData;
+import no.runsafe.framework.minecraft.entity.RunsafeMinecart;
 import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
@@ -70,29 +68,33 @@ public class MobLibrary extends Library
 			}
 		});
 
+		/*
+		 * Spawns a custom minecart with a block in it.
+		 * @param 0 Block value of block to sit in minecart.
+		 * @param 1 Data value of block to sit in minecart.
+		 * @param 2 Block offset of block to sit in minecart.
+		 */
 		lib.set("spawnCustomMinecart", new IntegerFunction()
 		{
 			@Override
 			public Integer run(FunctionParameters parameters)
 			{
 				//Create minecart
-				IEntity entity = PassiveEntity.Minecart.spawn(parameters.getLocation(2));
-				CraftEntity craftEntity = ObjectUnwrapper.convert(entity);
-				Minecart ema = (Minecart) craftEntity.getHandle();
+				RunsafeMinecart minecart = (RunsafeMinecart) PassiveEntity.Minecart.spawn(parameters.getLocation(0));
 
 				//Create block in minecart
-				ema.setDisplayBlock(
-						new MaterialData(
-							parameters.getInt(0),
-							parameters.getByte(1)
+				minecart.setDisplayBlock(
+						new org.bukkit.material.MaterialData(
+								parameters.getInt(0),
+								parameters.getByte(1)
 						)
 				);
 
 				//Set block offset
 				if(parameters.getInt(2)!=null)
-					ema.setDisplayBlockOffset(parameters.getInt(2));
+					minecart.setDisplayBlockOffset(parameters.getInt(2));
 
-				return entity.getEntityId();
+				return minecart.getEntityId();
 			}
 		});
 
