@@ -21,6 +21,10 @@ function Player:sendMessage(message)
     EventEngine.player.sendMessage(self.name, message);
 end
 
+function Player:sendTitle(player, title, subtitle)
+    EventEngine.player.sendTitle(player.name, title, subtitle);
+end
+
 function Player:setMode(mode)
     EventEngine.player.setMode(self.name, mode);
 end

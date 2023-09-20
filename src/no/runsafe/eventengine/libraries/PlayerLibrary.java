@@ -68,6 +68,14 @@ public class PlayerLibrary extends Library
 				parameters.getPlayer(0).sendColouredMessage(parameters.getString(1));
 			}
 		});
+		lib.set("sendTitle", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).sendTitle(parameters.getString(1),parameters.getString(2));
+			}
+		});
 		lib.set("setHealth", new VoidFunction()
 		{
 			@Override
