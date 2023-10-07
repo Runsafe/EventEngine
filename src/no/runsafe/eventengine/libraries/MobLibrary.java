@@ -1,6 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_12_R1.*;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
@@ -133,7 +133,7 @@ public class MobLibrary extends Library
 				{
 					EntityLiving living = (EntityLiving) ObjectUnwrapper.getMinecraft(entity);
 					living.addEffect(new MobEffect(
-							MobEffectList.byId[parameters.getInt(2)].id,
+							MobEffectList.fromId(parameters.getInt(2)),
 							parameters.getInt(3),
 							parameters.getInt(4),
 							parameters.getBool(5),
