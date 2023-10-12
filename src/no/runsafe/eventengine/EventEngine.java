@@ -27,6 +27,7 @@ public class EventEngine extends RunsafePlugin
 		addComponent(SeatbeltHandler.class);
 
 		addComponent(AILibrary.class);
+		addComponent(BossBarLibrary.class);
 		addComponent(EffectLibrary.class);
 		addComponent(HookingLibrary.class);
 		addComponent(PlayerLibrary.class);
