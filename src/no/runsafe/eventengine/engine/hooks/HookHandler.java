@@ -7,6 +7,7 @@ import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.extension.block.RunsafeBlock;
@@ -36,7 +37,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	{
 		HookType type = hook.getType();
 		if (!HookHandler.hooks.containsKey(type))
-			HookHandler.hooks.put(type, new ArrayList<Hook>());
+			HookHandler.hooks.put(type, new ArrayList<>());
 
 		HookHandler.hooks.get(type).add(hook);
 	}
@@ -107,14 +108,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 						final LuaTable table = new LuaTable();
 						table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
-						scheduler.runNow(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								hook.execute(table);
-							}
-						});
+						scheduler.runNow(() -> hook.execute(table));
 					}
 				}
 			}
@@ -382,7 +376,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		}
 	}
 
-	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<HookType, List<Hook>>();
+	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<>();
 	private final IScheduler scheduler;
 	private final IDebug debug;
 }

@@ -3,15 +3,21 @@ package no.runsafe.eventengine.engine.hooks;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.lua.IGlobal;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Hook
 {
-	public Hook(HookType type, String function, IGlobal environment)
+	public Hook(HookType type, String function, IGlobal environment, Logger logger)
 	{
 		this.type = type;
 		this.function = function;
 		this.environment = environment;
+		this.logger = logger;
 	}
 
 	public HookType getType()
@@ -71,28 +77,59 @@ public class Hook
 
 	public void execute(LuaTable arguments)
 	{
+		LuaValue handler = getHandler();
+		if (handler == null)
+		{
+			return;
+		}
+		try
+		{
+			if (arguments != null)
+			{
+				handler.call(arguments);
+				return;
+			}
+			handler.call();
+		}
+		catch (LuaError error)
+		{
+			this.logger.log(
+				Level.WARNING,
+				"LuaError: %s in event hook %s",
+				new Object[]
+				{
+					error.getMessage(),
+					getFunction()
+				}
+			);
+		}
+	}
+
+	public LuaValue getHandler()
+	{
 		String scriptFunction = getFunction();
 		boolean isStringFunction = scriptFunction.startsWith("return ");
-
-		if (arguments != null)
+		try
 		{
-			if (isStringFunction)
-				environment.get("dostring").call(scriptFunction).call(arguments);
-			else
-				environment.get(this.getFunction()).call(arguments);
+            return isStringFunction
+					? environment.get("dostring").call(scriptFunction)
+					: environment.get(scriptFunction);
 		}
-		else
+		catch(LuaError e)
 		{
-			if (isStringFunction)
-				environment.get("dostring").call(scriptFunction).call();
-			else
-				environment.get(this.getFunction()).call();
+			logger.log(
+				Level.WARNING,
+				"LuaError %s trying to get Lua event handler script %s",
+				new Object[]{ e.getMessage(), scriptFunction }
+			);
+			return null;
 		}
 	}
 
 	private final HookType type;
 	private final String function;
 	private final IGlobal environment;
+	private final Logger logger;
 	private ILocation location;
 	private IWorld world;
 	private String playerName;

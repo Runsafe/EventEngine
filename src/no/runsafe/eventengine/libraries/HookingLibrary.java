@@ -10,11 +10,14 @@ import no.runsafe.framework.api.lua.VoidFunction;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 
+import java.util.logging.Logger;
+
 public class HookingLibrary extends Library
 {
 	public HookingLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "hooks");
+		logger = plugin.getLogger();
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public class HookingLibrary extends Library
 			if (type == null)
 				throw new LuaError("Invalid hook type");
 
-			Hook hook = new Hook(type, parameters.getString(1), globals);
+			Hook hook = new Hook(type, parameters.getString(1), globals, logger);
 
 			if (type == HookType.BLOCK_GAINS_CURRENT)
 			{
@@ -83,4 +86,6 @@ public class HookingLibrary extends Library
 			HookHandler.registerHook(hook);
 		}
 	}
+
+	private final Logger logger;
 }
