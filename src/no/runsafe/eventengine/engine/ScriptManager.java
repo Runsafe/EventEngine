@@ -3,6 +3,8 @@ package no.runsafe.eventengine.engine;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
+import no.runsafe.eventengine.engine.hooks.HookHandler;
+import no.runsafe.eventengine.engine.hooks.HookType;
 import org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.IScheduler;
@@ -103,7 +105,9 @@ public class ScriptManager implements IPluginEnabled
 
 		try
 		{
+			HookHandler.setContext(script.getAbsolutePath());
 			environment.loadFile(script.getAbsolutePath());
+			HookHandler.setContext(null);
 		}
 		catch (LuaError error)
 		{

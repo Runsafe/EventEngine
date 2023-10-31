@@ -95,7 +95,7 @@ public class Hook
 		{
 			this.logger.log(
 				Level.WARNING,
-				"LuaError: " + error.getMessage() + " in event hook " + getFunction()
+				"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
 			);
 		}
 	}
@@ -120,6 +120,11 @@ public class Hook
 		}
 	}
 
+	public void setContext(String context)
+	{
+		this.context = context == null ? "(unknown)" : context;
+	}
+
 	private final HookType type;
 	private final String function;
 	private final IGlobal environment;
@@ -128,4 +133,5 @@ public class Hook
 	private IWorld world;
 	private String playerName;
 	private Object data;
+	private String context = "(unspecified)";
 }

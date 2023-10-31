@@ -33,8 +33,14 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		this.debug = debug;
 	}
 
+	public static void setContext(String context)
+	{
+		HookHandler.context = context;
+	}
+
 	public static void registerHook(Hook hook)
 	{
+		hook.setContext(context);
 		HookType type = hook.getType();
 		if (!HookHandler.hooks.containsKey(type))
 			HookHandler.hooks.put(type, new ArrayList<>());
@@ -377,6 +383,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	}
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<>();
+	private static String context;
 	private final IScheduler scheduler;
 	private final IDebug debug;
 }
