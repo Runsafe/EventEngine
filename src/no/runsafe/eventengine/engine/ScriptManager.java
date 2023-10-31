@@ -1,6 +1,7 @@
 package no.runsafe.eventengine.engine;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.EventEngine;
@@ -49,36 +50,45 @@ public class ScriptManager implements IPluginEnabled
 		int failed = 0;
 
 		File loadList = FileUtils.getFile(scriptPath, "scripts.list");
-
-		if (loadList.exists())
-		{
-			try
-			{
-				List<String> scripts = Files.readLines(loadList, Charsets.UTF_8);
-
-				for (String script : scripts)
-				{
-					String output = this.runScript(FileUtils.getFile(scriptPath, script));
-					if (output != null)
-					{
-						this.output.logError(output);
-						failed++;
-					}
-					else
-					{
-						this.output.logInformation("Script loaded: " + script);
-						succeeded++;
-					}
-				}
-			}
-			catch (IOException e)
-			{
-				this.output.logWarning("Unable to read content from script list.");
-			}
-		}
-		else
+		if (loadList == null || !loadList.exists())
 		{
 			this.output.logWarning("No script list file found in the scripts bin.");
+			return;
+		}
+
+		List<String> scripts;
+		try
+		{
+			scripts = Files.readLines(loadList, Charsets.UTF_8);
+		}
+		catch (IOException e)
+		{
+			this.output.logWarning("Unable to read content from script list.");
+			return;
+		}
+		for (String script : scripts)
+		{
+			if (Strings.isNullOrEmpty(script))
+			{
+				continue;
+			}
+			File file = FileUtils.getFile(scriptPath, script);
+			if (file == null || !file.exists())
+			{
+				this.output.logWarning("Script not found: " + script);
+				continue;
+			}
+			String output = this.runScript(file);
+			if (output != null)
+			{
+				this.output.logError(output);
+				failed++;
+			}
+			else
+			{
+				this.output.logInformation("Script loaded: " + script);
+				succeeded++;
+			}
 		}
 
 		this.output.logInformation("%d lua script(s) loaded.", succeeded);

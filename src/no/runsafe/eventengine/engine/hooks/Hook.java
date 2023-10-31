@@ -95,12 +95,7 @@ public class Hook
 		{
 			this.logger.log(
 				Level.WARNING,
-				"LuaError: %s in event hook %s",
-				new Object[]
-				{
-					error.getMessage(),
-					getFunction()
-				}
+				"LuaError: " + error.getMessage() + " in event hook " + getFunction()
 			);
 		}
 	}
@@ -119,8 +114,7 @@ public class Hook
 		{
 			logger.log(
 				Level.WARNING,
-				"LuaError %s trying to get Lua event handler script %s",
-				new Object[]{ e.getMessage(), scriptFunction }
+				"LuaError " + e.getMessage() + " trying to get Lua event handler script"
 			);
 			return null;
 		}
