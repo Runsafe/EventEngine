@@ -1,22 +1,21 @@
 package no.runsafe.eventengine.engine;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
-import com.google.common.io.Files;
-import no.runsafe.eventengine.engine.hooks.HookHandler;
-import no.runsafe.eventengine.engine.hooks.HookType;
-import org.apache.commons.io.FileUtils;
 import no.runsafe.eventengine.EventEngine;
+import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IPluginEnabled;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.lua.IGlobal;
-import org.bukkit.util.FileUtil;
+import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.LuaError;
 
+import javax.annotation.Nullable;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScriptManager implements IPluginEnabled
@@ -48,72 +47,102 @@ public class ScriptManager implements IPluginEnabled
 
 	private void loadScripts()
 	{
+		List<File> scripts = readFileList();
+		if (scripts == null)
+		{
+			return;
+		}
+
 		int succeeded = 0;
-		int failed = 0;
-
-		File loadList = FileUtils.getFile(scriptPath, "scripts.list");
-		if (loadList == null || !loadList.exists())
+		for (File file : scripts)
 		{
-			this.output.logWarning("No script list file found in the scripts bin.");
-			return;
-		}
-
-		List<String> scripts;
-		try
-		{
-			scripts = Files.readLines(loadList, Charsets.UTF_8);
-		}
-		catch (IOException e)
-		{
-			this.output.logWarning("Unable to read content from script list.");
-			return;
-		}
-		for (String script : scripts)
-		{
-			if (Strings.isNullOrEmpty(script))
+			if(this.runScript(file))
 			{
-				continue;
-			}
-			File file = FileUtils.getFile(scriptPath, script);
-			if (file == null || !file.exists())
-			{
-				this.output.logWarning("Script not found: " + script);
-				continue;
-			}
-			String output = this.runScript(file);
-			if (output != null)
-			{
-				this.output.logError(output);
-				failed++;
-			}
-			else
-			{
-				this.output.logInformation("Script loaded: " + script);
 				succeeded++;
 			}
 		}
 
+		int failed = scripts.size() - succeeded;
 		this.output.logInformation("%d lua script(s) loaded.", succeeded);
 		if (failed > 0)
+		{
 			this.output.logError("%d lua script(s) failed to load.", failed);
+		}
 	}
 
-	private String runScript(File script)
+	@Nullable
+	private List<File> readFileList()
 	{
-		if (!script.exists() || !script.isFile())
-			return null;
-
 		try
 		{
+			File loadList = FileUtils.getFile(scriptPath, "scripts.list");
+			if (loadList == null || !loadList.exists())
+			{
+				this.output.logWarning("No script list file found in the scripts bin.");
+				return null;
+			}
+
+			List<File> scripts = new ArrayList<>();
+			FileReader fileList = new FileReader(loadList);
+			BufferedReader reader = new BufferedReader(fileList);
+			String line = reader.readLine();
+			while (line != null)
+			{
+				String script = line.trim();
+				if (!Strings.isNullOrEmpty(script) && !script.startsWith("#"))
+				{
+					File file = probeFile(script);
+					if (file != null)
+					{
+						scripts.add(file);
+					}
+				}
+				line = reader.readLine();
+			}
+			return scripts;
+		}
+		catch (IOException e)
+		{
+			this.output.logWarning("Unable to read content from script list.");
+			return null;
+		}
+	}
+
+	@Nullable
+	private File probeFile(String script)
+	{
+		try
+		{
+			File file = FileUtils.getFile(scriptPath, script);
+			if (file == null || !file.exists())
+			{
+				this.output.logWarning("Script not found: " + script);
+				return null;
+			}
+			return file;
+		}
+		catch (Exception e)
+		{
+			this.output.logWarning("Unable to read " + script + ": " + e.getMessage());
+			return null;
+		}
+	}
+
+	private boolean runScript(File script)
+	{
+		try
+		{
+			this.output.logInformation("Loading script: " + script.getName());
 			HookHandler.setContext(script.getAbsolutePath());
 			environment.loadFile(script.getAbsolutePath());
 			HookHandler.setContext(null);
+			return true;
 		}
 		catch (LuaError error)
 		{
-			return "Lua Error: " + error.getMessage();
+			this.output.logError("Lua Error: " + error.getMessage());
+			return false;
 		}
-		return null;
 	}
 
 	private final IGlobal environment;
