@@ -12,7 +12,7 @@ import no.runsafe.framework.features.Commands;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.LUAScripts;
 
-public class EventEngine extends RunsafeConfigurablePlugin
+public class EventEngine extends RunsafePlugin
 {
 	public static IDebug Debugger = null;
 
