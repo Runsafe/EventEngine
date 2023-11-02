@@ -5,13 +5,14 @@ import no.runsafe.eventengine.engine.ScriptManager;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.handlers.SeatbeltHandler;
 import no.runsafe.eventengine.libraries.*;
+import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.features.Commands;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.LUAScripts;
 
-public class EventEngine extends RunsafePlugin
+public class EventEngine extends RunsafeConfigurablePlugin
 {
 	public static IDebug Debugger = null;
 
