@@ -34,6 +34,7 @@ public class EventEngine extends RunsafePlugin
 		addComponent(WorldLibrary.class);
 		addComponent(TimerLibrary.class);
 		addComponent(MobLibrary.class);
+		addComponent(DebugLibrary.class);
 
 		this.addComponent(ScriptManager.class);
 		this.addComponent(HookHandler.class);
