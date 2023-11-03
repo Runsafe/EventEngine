@@ -412,30 +412,3 @@ end
 function BossBar:isVisible()
     return EventEngine.bossbar.isVisible(self.id);
 end
-
--- Debug logger Object
-Debug = class("Debug");
-function Debug:initialize()
-end
-
-function Debug:severe(message)
-    EventEngine.debug.severe(message);
-end
-function Debug:warning(message)
-    EventEngine.debug.warning(message);
-end
-function Debug:info(message)
-    EventEngine.debug.info(message);
-end
-function Debug:fine(message)
-    EventEngine.debug.fine(message);
-end
-function Debug:finer(message)
-    EventEngine.debug.finer(message);
-end
-function Debug:finest(message)
-    EventEngine.debug.finest(message);
-end
-function Debug:config(message)
-    EventEngine.debug.config(message);
-end

@@ -79,7 +79,7 @@ public class WorldLibrary extends Library
 			if (parameters.hasParameter(5))
 				damage = (byte) (int) parameters.getInt(5);
 
-			debug.debugFine(
+			debug.debugFiner(
 				"Setting %d,%d,%d@%s to %d:%d",
 				location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName(),
 				itemId, damage
@@ -93,8 +93,9 @@ public class WorldLibrary extends Library
 				console.logWarning("Script invocation tried setting a block to an invalid item id %d", itemId);
 				return;
 			}
-			debug.debugFiner("Item is %s", item.getItem(), item.getData());
+			debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
 			block.set(item);
+			debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
 		}
 	}
 
