@@ -24,7 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent, IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent, IPlayerDropItemEvent, IPlayerPickupItemEvent
+public class HookHandler
+	implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent,
+	           IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent,
+	           IPlayerDropItemEvent, IPlayerPickupItemEvent
 {
 	public HookHandler(IDebug debug)
 	{
@@ -40,16 +43,14 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	{
 		hook.setContext(context);
 		HookType type = hook.getType();
-		if (!HookHandler.hooks.containsKey(type))
-			HookHandler.hooks.put(type, new ArrayList<>());
+		if (!HookHandler.hooks.containsKey(type)) HookHandler.hooks.put(type, new ArrayList<>());
 
 		HookHandler.hooks.get(type).add(hook);
 	}
 
 	private static List<Hook> getHooks(HookType type)
 	{
-		if (HookHandler.hooks.containsKey(type))
-			return HookHandler.hooks.get(type);
+		if (HookHandler.hooks.containsKey(type)) return HookHandler.hooks.get(type);
 
 		return null;
 	}
@@ -63,24 +64,20 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.CHAT_MESSAGE);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		IPlayer player = event.getPlayer();
 		IWorld playerWorld = player.getWorld();
 
-		if (playerWorld == null)
-			return;
+		if (playerWorld == null) return;
 
 		String message = event.getMessage();
-    // ignore empty messages
-		if (Strings.isNullOrEmpty(message))
-			return;
+		// ignore empty messages
+		if (Strings.isNullOrEmpty(message)) return;
 
 		for (Hook hook : hooks)
 		{
-			if (!hook.getWorld().isWorld(player.getWorld()))
-				continue;
+			if (!hook.getWorld().isWorld(player.getWorld())) continue;
 
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(player.getName()));
@@ -98,16 +95,18 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 
 		switch (eventType)
 		{
-			case "region.enter": type = HookType.REGION_ENTER; break;
-			case "region.leave": type = HookType.REGION_LEAVE; break;
+			case "region.enter":
+				type = HookType.REGION_ENTER;
+				break;
+			case "region.leave":
+				type = HookType.REGION_LEAVE;
+				break;
 		}
 
-		if (type == null)
-			return;
+		if (type == null) return;
 
 		List<Hook> hooks = HookHandler.getHooks(type);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		for (final Hook hook : hooks)
 		{
@@ -125,15 +124,13 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DEATH);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
-    IPlayer player = event.getEntity();
+		IPlayer player = event.getEntity();
 		for (Hook hook : hooks)
 		{
 			IWorld hookWorld = hook.getWorld();
-			if (!hookWorld.isWorld(player.getWorld()))
-				continue;
+			if (!hookWorld.isWorld(player.getWorld())) continue;
 
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(player.getName()));
@@ -156,12 +153,10 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	private void playerLogEvent(IPlayer player, HookType type)
 	{
 		List<Hook> hooks = HookHandler.getHooks(type);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
-			if (hook.getPlayerName().equalsIgnoreCase(player.getName()))
-				hook.execute();
+			if (hook.getPlayerName().equalsIgnoreCase(player.getName())) hook.execute();
 	}
 
 	@Override
@@ -170,8 +165,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		debug.debugFine("Interact event detected");
 		List<Hook> hooks = HookHandler.getHooks(HookType.INTERACT);
 
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		debug.debugFine("Hooks not null");
 		for (Hook hook : hooks)
@@ -179,8 +173,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 			debug.debugFine("Processing hook...");
 			IBlock block = event.getBlock();
 			if (hook.getData() != null)
-				if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData())
-					continue;
+				if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData()) continue;
 
 			debug.debugFine("Block is not null");
 
@@ -194,12 +187,10 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 					return;
 				}
 				debug.debugFine("Correct world!");
-				if (!(location.distance(hook.getLocation()) < 1))
-					return;
+				if (!(location.distance(hook.getLocation()) < 1)) return;
 				debug.debugFine("Distance is less than 1");
 				LuaTable table = new LuaTable();
-				if (event.getPlayer() != null)
-					table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+				if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
 				table.set("x", LuaValue.valueOf(location.getBlockX()));
 				table.set("y", LuaValue.valueOf(location.getBlockY()));
@@ -210,13 +201,11 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 				hook.execute(table);
 				return;
 			}
-			if (!hookWorld.getName().equals(block.getWorld().getName()))
-				continue;
+			if (!hookWorld.getName().equals(block.getWorld().getName())) continue;
 
 			debug.debugFine("Hook world is not null, sending location data");
 			LuaTable table = new LuaTable();
-			if (event.getPlayer() != null)
-				table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+			if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
 			table.set("x", LuaValue.valueOf(location.getBlockX()));
 			table.set("y", LuaValue.valueOf(location.getBlockY()));
@@ -231,22 +220,18 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	@Override
 	public void OnBlockRedstoneEvent(RunsafeBlockRedstoneEvent event)
 	{
-		if (event.getNewCurrent() <= 0 || event.getOldCurrent() != 0)
-			return;
+		if (event.getNewCurrent() <= 0 || event.getOldCurrent() != 0) return;
 
 		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_GAINS_CURRENT);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
 		{
 			IBlock block = event.getBlock();
-			if (block == null)
-				continue;
+			if (block == null) continue;
 			ILocation location = block.getLocation();
 			if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
-				if (location.distance(hook.getLocation()) < 1)
-					hook.execute();
+				if (location.distance(hook.getLocation()) < 1) hook.execute();
 		}
 	}
 
@@ -254,20 +239,17 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public boolean OnBlockBreak(IPlayer player, IBlock block)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
-		if (hooks == null || hooks.isEmpty())
-			return true;
+		if (hooks == null || hooks.isEmpty()) return true;
 
 		ILocation blockLocation = block.getLocation();
 		String blockWorld = blockLocation.getWorld().getName();
 		for (Hook hook : hooks)
 		{
 			IWorld world = hook.getWorld();
-			if (world != null && !blockWorld.equals(world.getName()))
-				return true;
+			if (world != null && !blockWorld.equals(world.getName())) return true;
 
 			LuaTable table = new LuaTable();
-			if (player != null)
-				table.set("player", LuaValue.valueOf(player.getName()));
+			if (player != null) table.set("player", LuaValue.valueOf(player.getName()));
 
 			table.set("world", LuaValue.valueOf(blockWorld));
 			table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
@@ -285,8 +267,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerLeftClick(RunsafePlayerClickEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.LEFT_CLICK_BLOCK);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		IBlock block = event.getBlock();
 		Item material = block.getMaterial();
@@ -296,8 +277,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		for (Hook hook : hooks)
 		{
 			IWorld world = hook.getWorld();
-			if (world != null && !blockWorldName.equals(world.getName()))
-				return;
+			if (world != null && !blockWorldName.equals(world.getName())) return;
 
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(playerName));
@@ -316,8 +296,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerDamage(IPlayer player, RunsafeEntityDamageEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DAMAGE);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		IWorld damageWorld = player.getWorld();
 
@@ -328,8 +307,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 		for (Hook hook : hooks)
 		{
 			IWorld world = hook.getWorld();
-			if (world == null || !world.isWorld(damageWorld))
-				return;
+			if (world == null || !world.isWorld(damageWorld)) return;
 
 			LuaTable table = new LuaTable();
 			table.set("player", playerName);
@@ -346,8 +324,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerDropItem(RunsafePlayerDropItemEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_DROP);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
 			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
@@ -357,8 +334,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	public void OnPlayerPickupItemEvent(RunsafePlayerPickupItemEvent event)
 	{
 		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_PICKUP);
-		if (hooks == null || hooks.isEmpty())
-			return;
+		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
 			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
@@ -367,8 +343,7 @@ public class HookHandler implements IPlayerChatEvent, IPlayerCustomEvent, IPlaye
 	private void handleItemHook(Hook hook, IPlayer player, RunsafeMeta item)
 	{
 		IWorld hookWorld = hook.getWorld();
-		if (!hookWorld.isWorld(player.getWorld()))
-			return;
+		if (!hookWorld.isWorld(player.getWorld())) return;
 		LuaTable table = new LuaTable();
 		table.set("player", player.getName());
 		table.set("itemID", item.getItemId());

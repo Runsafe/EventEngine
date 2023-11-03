@@ -2,6 +2,7 @@ package no.runsafe.eventengine.engine.hooks;
 
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.IGlobal;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
@@ -12,12 +13,13 @@ import java.util.logging.Logger;
 
 public class Hook
 {
-	public Hook(HookType type, String function, IGlobal environment, Logger logger)
+	public Hook(HookType type, String function, IGlobal environment, Logger logger, IDebug debug)
 	{
 		this.type = type;
 		this.function = function;
 		this.environment = environment;
 		this.logger = logger;
+		this.debug = debug;
 	}
 
 	public HookType getType()
@@ -80,15 +82,18 @@ public class Hook
 		LuaValue handler = getHandler();
 		if (handler == null)
 		{
+			debug.debugFine("There is no handler, not invoking hook");
 			return;
 		}
 		try
 		{
 			if (arguments != null)
 			{
+				debug.debugFine("Invoking hook with arguments: %s", arguments);
 				handler.call(arguments);
 				return;
 			}
+			debug.debugFine("Invoking hook without arguments");
 			handler.call();
 		}
 		catch (LuaError error)
@@ -106,11 +111,11 @@ public class Hook
 		boolean isStringFunction = scriptFunction.startsWith("return ");
 		try
 		{
-            return isStringFunction
-					? environment.get("dostring").call(scriptFunction)
-					: environment.get(scriptFunction);
+			return isStringFunction
+				? environment.get("dostring").call(scriptFunction)
+				: environment.get(scriptFunction);
 		}
-		catch(LuaError e)
+		catch (LuaError e)
 		{
 			logger.log(
 				Level.WARNING,
@@ -129,6 +134,7 @@ public class Hook
 	private final String function;
 	private final IGlobal environment;
 	private final Logger logger;
+	private final IDebug debug;
 	private ILocation location;
 	private IWorld world;
 	private String playerName;

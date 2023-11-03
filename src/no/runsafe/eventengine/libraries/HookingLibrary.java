@@ -4,6 +4,7 @@ import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
@@ -14,10 +15,11 @@ import java.util.logging.Logger;
 
 public class HookingLibrary extends Library
 {
-	public HookingLibrary(RunsafePlugin plugin)
+	public HookingLibrary(RunsafePlugin plugin, IDebug debugger)
 	{
 		super(plugin, "hooks");
 		logger = plugin.getLogger();
+		debug = debugger;
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class HookingLibrary extends Library
 			{
 				throw new LuaError("Invalid hook type " + typeArgument);
 			}
-			Hook hook = new Hook(type, parameters.getString(1), globals, logger);
+			Hook hook = new Hook(type, parameters.getString(1), globals, logger, debug);
 
 			if (type == HookType.BLOCK_GAINS_CURRENT)
 			{
@@ -86,4 +88,5 @@ public class HookingLibrary extends Library
 	}
 
 	private final Logger logger;
+	private final IDebug debug;
 }
