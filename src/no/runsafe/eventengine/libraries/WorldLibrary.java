@@ -8,6 +8,8 @@ import no.runsafe.framework.api.block.IChest;
 import no.runsafe.framework.api.block.ISign;
 import no.runsafe.framework.api.chunk.IChunk;
 import no.runsafe.framework.api.entity.IEntity;
+import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
@@ -26,10 +28,21 @@ import java.util.List;
 
 public class WorldLibrary extends Library
 {
-	public WorldLibrary(RunsafePlugin plugin, IRegionControl regionControl)
+	private static IDebug debug;
+	private static IConsole console;
+
+	public WorldLibrary(RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console)
 	{
 		super(plugin, "world");
 		WorldLibrary.regionControl = regionControl;
+		if (debug == null)
+		{
+			debug = debugger;
+		}
+		if (WorldLibrary.console == null)
+		{
+			WorldLibrary.console = console;
+		}
 	}
 
 	@Override
@@ -61,13 +74,27 @@ public class WorldLibrary extends Library
 		{
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
-
+			int itemId = parameters.getInt(4);
 			byte damage = 0;
 			if (parameters.hasParameter(5))
 				damage = (byte) (int) parameters.getInt(5);
 
+			debug.debugFine(
+				"Setting %.2f,%.2f,%.2f@%s to %d:%d",
+				location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName(),
+				itemId, damage
+			);
+
 			IBlock block = location.getBlock();
-			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
+			org.bukkit.Material material = LegacyMaterial.getById(itemId);
+			Item item = Item.get(material, damage);
+			if (item == null)
+			{
+				console.logWarning("Script invocation tried setting a block to an invalid item id %d", itemId);
+				return;
+			}
+			debug.debugFiner("Item is %s", item.getItem(), item.getData());
+			block.set(item);
 		}
 	}
 
