@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
@@ -35,6 +36,10 @@ public class HookingLibrary extends Library
 		@Override
 		public void run(FunctionParameters parameters)
 		{
+			EventEngine.Debugger.debugFiner(
+				"Setting block on thread #%d %s",
+				Thread.currentThread().getId(), Thread.currentThread().getName()
+			);
 			HookType type;
 			String typeArgument = parameters.getString(0);
 			try
@@ -45,7 +50,9 @@ public class HookingLibrary extends Library
 			{
 				throw new LuaError("Invalid hook type " + typeArgument);
 			}
-			Hook hook = new Hook(type, parameters.getString(1), globals, logger, debug);
+			String function = parameters.getString(1);
+			Hook hook = new Hook(type, function, globals, logger, debug);
+			EventEngine.Debugger.debugFine("Registering %s hook %s", type, function);
 
 			if (type == HookType.BLOCK_GAINS_CURRENT)
 			{

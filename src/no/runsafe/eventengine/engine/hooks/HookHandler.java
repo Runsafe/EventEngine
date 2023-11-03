@@ -162,6 +162,10 @@ public class HookHandler
 	@Override
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
+		debug.debugFiner(
+			"Setting block on thread #%d %s",
+			Thread.currentThread().getId(), Thread.currentThread().getName()
+		);
 		debug.debugFine("Interact event detected");
 		List<Hook> hooks = HookHandler.getHooks(HookType.INTERACT);
 

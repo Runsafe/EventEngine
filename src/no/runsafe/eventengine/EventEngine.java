@@ -19,7 +19,10 @@ public class EventEngine extends RunsafePlugin
 	protected void pluginSetup()
 	{
 		Debugger = getComponent(IDebug.class);
-
+		Debugger.debugFiner(
+			"Setting block on thread #%d %s",
+			Thread.currentThread().getId(), Thread.currentThread().getName()
+		);
 		addComponent(Events.class);
 		addComponent(Commands.class);
 		addComponent(LUAScripts.class);

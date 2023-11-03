@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
@@ -80,6 +81,10 @@ public class EffectLibrary extends Library
 
 	private static void LightningStrike(ILocation location)
 	{
+		EventEngine.Debugger.debugFiner(
+			"Setting block on thread #%d %s",
+			Thread.currentThread().getId(), Thread.currentThread().getName()
+		);
 		location.getWorld().strikeLightningEffect(location);
 	}
 
