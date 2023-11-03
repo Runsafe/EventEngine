@@ -1,9 +1,12 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.eventengine.EventEngine;
+import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.IGlobal;
+import org.bukkit.Bukkit;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -85,24 +88,30 @@ public class Hook
 			debug.debugFine("There is no handler, not invoking hook");
 			return;
 		}
-		try
-		{
-			if (arguments != null)
-			{
-				debug.debugFine("Invoking hook with arguments: %s", arguments);
-				handler.call(arguments);
-				return;
-			}
-			debug.debugFine("Invoking hook without arguments");
-			handler.call();
-		}
-		catch (LuaError error)
-		{
-			this.logger.log(
-				Level.WARNING,
-				"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
-			);
-		}
+		Bukkit.getScheduler().runTaskLater(
+			RunsafePlugin.getPlugin(EventEngine.class),
+			() -> {
+				try
+				{
+					if (arguments != null)
+					{
+						debug.debugFine("Invoking hook with arguments: %s", arguments);
+						handler.call(arguments);
+						return;
+					}
+					debug.debugFine("Invoking hook without arguments");
+					handler.call();
+				}
+				catch (LuaError error)
+				{
+					this.logger.log(
+						Level.WARNING,
+						"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
+					);
+				}
+			},
+			1
+		);
 	}
 
 	public LuaValue getHandler()
