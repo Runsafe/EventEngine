@@ -80,7 +80,7 @@ public class WorldLibrary extends Library
 				damage = (byte) (int) parameters.getInt(5);
 
 			debug.debugFine(
-				"Setting %.2f,%.2f,%.2f@%s to %d:%d",
+				"Setting %d,%d,%d@%s to %d:%d",
 				location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName(),
 				itemId, damage
 			);
