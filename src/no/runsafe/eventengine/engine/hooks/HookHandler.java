@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
+import no.runsafe.framework.api.event.IAsyncEvent;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class HookHandler
 	implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent,
 	           IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent,
-	           IPlayerDropItemEvent, IPlayerPickupItemEvent
+	           IPlayerDropItemEvent, IPlayerPickupItemEvent, IAsyncEvent
 {
 	public HookHandler(IDebug debug)
 	{
