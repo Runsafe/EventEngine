@@ -80,6 +80,10 @@ public class WorldLibrary extends Library
 		@Override
 		public void run(FunctionParameters parameters)
 		{
+			debug.debugFiner(
+				"Setting block on thread #%d %s",
+				Thread.currentThread().getId(), Thread.currentThread().getName()
+			);
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 			int itemId = parameters.getInt(4);
@@ -102,11 +106,9 @@ public class WorldLibrary extends Library
 				return;
 			}
 
-			scheduler.startSyncTask(() -> {
-				debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
-				block.set(item);
-				debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
-			}, 2L);
+			debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
+			block.set(item);
+			debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
 		}
 	}
 
