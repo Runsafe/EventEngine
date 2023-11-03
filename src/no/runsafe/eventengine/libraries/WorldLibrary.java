@@ -2,6 +2,7 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.block.IChest;
@@ -30,8 +31,11 @@ public class WorldLibrary extends Library
 {
 	private static IDebug debug;
 	private static IConsole console;
+	private static IScheduler scheduler;
 
-	public WorldLibrary(RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console)
+	public WorldLibrary(
+		RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console, IScheduler scheduler
+	)
 	{
 		super(plugin, "world");
 		WorldLibrary.regionControl = regionControl;
@@ -42,6 +46,10 @@ public class WorldLibrary extends Library
 		if (WorldLibrary.console == null)
 		{
 			WorldLibrary.console = console;
+		}
+		if (WorldLibrary.scheduler == null)
+		{
+			WorldLibrary.scheduler = scheduler;
 		}
 	}
 
@@ -93,9 +101,12 @@ public class WorldLibrary extends Library
 				console.logWarning("Script invocation tried setting a block to an invalid item id %d", itemId);
 				return;
 			}
-			debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
-			block.set(item);
-			debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
+
+			scheduler.startSyncTask(() -> {
+				debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
+				block.set(item);
+				debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
+			}, 2L);
 		}
 	}
 
