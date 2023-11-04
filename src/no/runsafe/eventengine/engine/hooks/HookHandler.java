@@ -179,15 +179,15 @@ public class HookHandler
 			Thread.currentThread().getId(),
 			Thread.currentThread().getName()
 		);
-		EventEngine.Debugger.debugFine("Interact event detected");
+		EventEngine.Debugger.debugFiner("Interact event detected");
 		List<Hook> hooks = getHooks(HookType.INTERACT);
 
 		if (hooks == null || hooks.isEmpty()) return;
 
-		EventEngine.Debugger.debugFine("Hooks not null");
+		EventEngine.Debugger.debugFiner("Hooks not null");
 		for (Hook hook : hooks)
 		{
-			EventEngine.Debugger.debugFine("Processing hook...");
+			EventEngine.Debugger.debugFiner("Processing hook...");
 			IBlock block = event.getBlock();
 			if (hook.getData() != null)
 			{
@@ -208,20 +208,20 @@ public class HookHandler
 				}
 			}
 
-			EventEngine.Debugger.debugFine("Block is not null");
+			EventEngine.Debugger.debugFiner("Block is not null");
 
 			IWorld hookWorld = hook.getWorld();
 			ILocation location = block.getLocation();
 			if (hookWorld == null)
 			{
-				EventEngine.Debugger.debugFine("Hook world is null, using location");
+				EventEngine.Debugger.debugFiner("Hook world is null, using location");
 				if (!location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 				{
 					return;
 				}
-				EventEngine.Debugger.debugFine("Correct world!");
+				EventEngine.Debugger.debugFiner("Correct world!");
 				if (!(location.distance(hook.getLocation()) < 1)) return;
-				EventEngine.Debugger.debugFine("Distance is less than 1");
+				EventEngine.Debugger.debugFiner("Distance is less than 1");
 				LuaTable table = new LuaTable();
 				if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
@@ -236,7 +236,7 @@ public class HookHandler
 			}
 			if (!hookWorld.getName().equals(block.getWorld().getName())) continue;
 
-			EventEngine.Debugger.debugFine("Hook world is not null, sending location data");
+			EventEngine.Debugger.debugFiner("Hook world is not null, sending location data");
 			LuaTable table = new LuaTable();
 			if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 

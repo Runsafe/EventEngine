@@ -86,7 +86,7 @@ public class Hook
 		LuaValue handler = getHandler();
 		if (handler == null)
 		{
-			EventEngine.Debugger.debugFine("There is no handler, not invoking hook");
+			EventEngine.Debugger.debugFiner("There is no handler, not invoking hook");
 			return;
 		}
 		try
