@@ -391,12 +391,12 @@ public class HookHandler
 
 	private ITimer execute(Hook hook, LuaTable arguments)
 	{
-		return scheduler.createSyncTimer(() -> hook.execute(arguments), 1L);
+		return scheduler.createSyncTimer(() -> hook.execute(arguments), 4L);
 	}
 
 	private ITimer execute(Hook hook)
 	{
-		return scheduler.createSyncTimer(hook::execute, 1L);
+		return scheduler.createSyncTimer(hook::execute, 4L);
 	}
 
 	private final IScheduler scheduler;
