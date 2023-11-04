@@ -16,10 +16,19 @@ public class EventEngine extends RunsafePlugin
 	public static IDebug Debugger = null;
 
 	@Override
+	protected void initializePlugin()
+	{
+		super.initializePlugin();
+		Debugger = output;
+	}
+
+	@Override
 	protected void pluginSetup()
 	{
-		Debugger = getComponent(IDebug.class);
-
+		Debugger.debugFiner(
+			"Running on thread #%d %s",
+			Thread.currentThread().getId(), Thread.currentThread().getName()
+		);
 		addComponent(Events.class);
 		addComponent(Commands.class);
 		addComponent(LUAScripts.class);
@@ -34,6 +43,7 @@ public class EventEngine extends RunsafePlugin
 		addComponent(WorldLibrary.class);
 		addComponent(TimerLibrary.class);
 		addComponent(MobLibrary.class);
+		addComponent(DebugLibrary.class);
 
 		this.addComponent(ScriptManager.class);
 		this.addComponent(HookHandler.class);

@@ -2,12 +2,15 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.block.IChest;
 import no.runsafe.framework.api.block.ISign;
 import no.runsafe.framework.api.chunk.IChunk;
 import no.runsafe.framework.api.entity.IEntity;
+import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.RunsafeLuaFunction;
@@ -26,10 +29,28 @@ import java.util.List;
 
 public class WorldLibrary extends Library
 {
-	public WorldLibrary(RunsafePlugin plugin, IRegionControl regionControl)
+	private static IDebug debug;
+	private static IConsole console;
+//	private static IScheduler scheduler;
+
+	public WorldLibrary(
+		RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console, IScheduler scheduler
+	)
 	{
 		super(plugin, "world");
 		WorldLibrary.regionControl = regionControl;
+		if (debug == null)
+		{
+			debug = debugger;
+		}
+		if (WorldLibrary.console == null)
+		{
+			WorldLibrary.console = console;
+		}
+//		if (WorldLibrary.scheduler == null)
+//		{
+//			WorldLibrary.scheduler = scheduler;
+//		}
 	}
 
 	@Override
@@ -59,15 +80,42 @@ public class WorldLibrary extends Library
 		@Override
 		public void run(FunctionParameters parameters)
 		{
+			debug.debugFiner(
+				"Setting block on thread #%d %s",
+				Thread.currentThread().getId(), Thread.currentThread().getName()
+			);
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
-
+			int itemId = parameters.getInt(4);
 			byte damage = 0;
 			if (parameters.hasParameter(5))
 				damage = (byte) (int) parameters.getInt(5);
 
+			debug.debugFiner(
+				"Setting %d,%d,%d@%s to %d:%d",
+				location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName(),
+				itemId, damage
+			);
+
 			IBlock block = location.getBlock();
-			block.set(Item.get(LegacyMaterial.getById(parameters.getInt(4)), damage));
+			org.bukkit.Material material = LegacyMaterial.getById(itemId);
+			Item item = Item.get(material, damage);
+			if (item == null)
+			{
+				console.logWarning("Script invocation tried setting a block to an invalid item id %d", itemId);
+				return;
+			}
+
+			debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
+			try
+			{
+				block.set(item);
+			}
+			catch(Exception e)
+			{
+				debug.debugWarning("block.set threw an exception: %s", e.getMessage());
+			}
+			debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
 		}
 	}
 

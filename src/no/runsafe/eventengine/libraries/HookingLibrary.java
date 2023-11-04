@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.eventengine.engine.hooks.HookHandler;
 import no.runsafe.eventengine.engine.hooks.HookType;
@@ -33,52 +34,62 @@ public class HookingLibrary extends Library
 		@Override
 		public void run(FunctionParameters parameters)
 		{
+			EventEngine.Debugger.debugFiner("Registering hook on thread #%d %s", Thread.currentThread().getId(),
+			                                Thread.currentThread().getName()
+			);
 			HookType type;
 			String typeArgument = parameters.getString(0);
 			try
 			{
 				type = HookType.valueOf(typeArgument);
 			}
-			catch(IllegalArgumentException e)
+			catch (IllegalArgumentException e)
 			{
 				throw new LuaError("Invalid hook type " + typeArgument);
 			}
-			Hook hook = new Hook(type, parameters.getString(1), globals, logger);
+			String function = parameters.getString(1);
+			Hook hook = new Hook(type, function, globals, logger);
+			EventEngine.Debugger.debugFine("Registering %s hook %s", type, function);
 
-			if (type == HookType.BLOCK_GAINS_CURRENT)
+			switch (type)
 			{
-				hook.setLocation(parameters.getLocation(2));
-			} else if (type == HookType.REGION_ENTER || type == HookType.REGION_LEAVE)
-			{
-				hook.setData(parameters.getString(2));
-			} else if (type == HookType.CHAT_MESSAGE)
-			{
-				hook.setWorld(parameters.getWorld(2));
-			} else if (type == HookType.INTERACT)
-			{
-				int parCount = parameters.parameterCount();
-				if (parCount == 3)
-				{
+				case BLOCK_GAINS_CURRENT:
+					hook.setLocation(parameters.getLocation(2));
+					break;
+				case REGION_ENTER:
+				case REGION_LEAVE:
+					hook.setData(parameters.getString(2));
+					break;
+				case INTERACT:
+					int parCount = parameters.parameterCount();
+					if (parCount == 3)
+					{
+						hook.setWorld(parameters.getWorld(2));
+					} else if (parCount == 4)
+					{
+						hook.setData(parameters.getInt(2));
+						hook.setWorld(parameters.getWorld(3));
+					} else if (parCount > 4)
+					{
+						hook.setData(parameters.getInt(2));
+						hook.setLocation(parameters.getLocation(3));
+					}
+					break;
+				case PLAYER_LOGIN:
+				case PLAYER_LOGOUT:
+					hook.setPlayerName(parameters.getString(2));
+					break;
+				case BLOCK_BREAK:
+				case LEFT_CLICK_BLOCK:
+					if (parameters.parameterCount() > 2) hook.setWorld(parameters.getWorld(2));
+					break;
+				case CHAT_MESSAGE:
+				case PLAYER_DAMAGE:
+				case PLAYER_DEATH:
+				case PLAYER_ITEM_DROP:
+				case PLAYER_ITEM_PICKUP:
 					hook.setWorld(parameters.getWorld(2));
-				} else if (parCount == 4)
-				{
-					hook.setData(parameters.getInt(2));
-					hook.setWorld(parameters.getWorld(3));
-				} else if (parCount > 4)
-				{
-					hook.setData(parameters.getInt(2));
-					hook.setLocation(parameters.getLocation(3));
-				}
-			} else if (type == HookType.PLAYER_LOGIN || type == HookType.PLAYER_LOGOUT)
-			{
-				hook.setPlayerName(parameters.getString(2));
-			} else if (type == HookType.BLOCK_BREAK || type == HookType.LEFT_CLICK_BLOCK)
-			{
-				if (parameters.parameterCount() > 2)
-					hook.setWorld(parameters.getWorld(2));
-			} else if (type == HookType.PLAYER_DAMAGE || type == HookType.PLAYER_DEATH || type == HookType.PLAYER_ITEM_DROP || type == HookType.PLAYER_ITEM_PICKUP)
-			{
-				hook.setWorld(parameters.getWorld(2));
+					break;
 			}
 
 			HookHandler.registerHook(hook);

@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.engine.hooks;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.lua.IGlobal;
@@ -80,15 +81,18 @@ public class Hook
 		LuaValue handler = getHandler();
 		if (handler == null)
 		{
+			EventEngine.Debugger.debugFine("There is no handler, not invoking hook");
 			return;
 		}
 		try
 		{
 			if (arguments != null)
 			{
+				EventEngine.Debugger.debugFine("Invoking hook with arguments: %s", arguments);
 				handler.call(arguments);
 				return;
 			}
+			EventEngine.Debugger.debugFine("Invoking hook without arguments");
 			handler.call();
 		}
 		catch (LuaError error)
@@ -106,11 +110,11 @@ public class Hook
 		boolean isStringFunction = scriptFunction.startsWith("return ");
 		try
 		{
-            return isStringFunction
-					? environment.get("dostring").call(scriptFunction)
-					: environment.get(scriptFunction);
+			return isStringFunction
+				? environment.get("dostring").call(scriptFunction)
+				: environment.get(scriptFunction);
 		}
-		catch(LuaError e)
+		catch (LuaError e)
 		{
 			logger.log(
 				Level.WARNING,
