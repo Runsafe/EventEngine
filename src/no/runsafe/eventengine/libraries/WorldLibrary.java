@@ -2,7 +2,6 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
-import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
 import no.runsafe.framework.api.block.IChest;
@@ -31,10 +30,9 @@ public class WorldLibrary extends Library
 {
 	private static IDebug debug;
 	private static IConsole console;
-//	private static IScheduler scheduler;
 
 	public WorldLibrary(
-		RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console, IScheduler scheduler
+		RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console
 	)
 	{
 		super(plugin, "world");
@@ -47,10 +45,6 @@ public class WorldLibrary extends Library
 		{
 			WorldLibrary.console = console;
 		}
-//		if (WorldLibrary.scheduler == null)
-//		{
-//			WorldLibrary.scheduler = scheduler;
-//		}
 	}
 
 	@Override
@@ -82,19 +76,17 @@ public class WorldLibrary extends Library
 		{
 			debug.debugFiner(
 				"Setting block on thread #%d %s",
-				Thread.currentThread().getId(), Thread.currentThread().getName()
+				Thread.currentThread().getId(),
+				Thread.currentThread().getName()
 			);
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 			int itemId = parameters.getInt(4);
 			byte damage = 0;
-			if (parameters.hasParameter(5))
-				damage = (byte) (int) parameters.getInt(5);
+			if (parameters.hasParameter(5)) damage = (byte) (int) parameters.getInt(5);
 
-			debug.debugFiner(
-				"Setting %d,%d,%d@%s to %d:%d",
-				location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName(),
-				itemId, damage
+			debug.debugFiner("Setting %d,%d,%d@%s to %d:%d", location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+			                 location.getWorld().getName(), itemId, damage
 			);
 
 			IBlock block = location.getBlock();
@@ -111,7 +103,7 @@ public class WorldLibrary extends Library
 			{
 				block.set(item);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				debug.debugWarning("block.set threw an exception: %s", e.getMessage());
 			}
@@ -141,11 +133,8 @@ public class WorldLibrary extends Library
 			if (block instanceof ISign)
 			{
 				ISign sign = (ISign) block;
-				sign.setLines(
-					parameters.getString(4),
-					parameters.getString(5),
-					parameters.getString(6),
-					parameters.getString(7)
+				sign.setLines(parameters.getString(4), parameters.getString(5), parameters.getString(6),
+				              parameters.getString(7)
 				);
 				sign.update(true);
 			}
@@ -158,11 +147,7 @@ public class WorldLibrary extends Library
 		public void run(FunctionParameters parameters)
 		{
 			ILocation location = parameters.getLocation(0);
-			location.playSound(
-				Sound.Get(parameters.getString(4)),
-				parameters.getFloat(5),
-				parameters.getFloat(6)
-			);
+			location.playSound(Sound.Get(parameters.getString(4)), parameters.getFloat(5), parameters.getFloat(6));
 		}
 	}
 
@@ -240,8 +225,7 @@ public class WorldLibrary extends Library
 		{
 			IWorld world = parameters.getWorld(0);
 			for (IEntity entity : world.getEntities())
-				if (entity.getEntityType() == PassiveEntity.DroppedItem)
-					entity.remove();
+				if (entity.getEntityType() == PassiveEntity.DroppedItem) entity.remove();
 		}
 	}
 

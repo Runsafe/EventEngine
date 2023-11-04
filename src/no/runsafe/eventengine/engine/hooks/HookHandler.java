@@ -3,12 +3,13 @@ package no.runsafe.eventengine.engine.hooks;
 import com.google.common.base.Strings;
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
+import no.runsafe.framework.api.event.IAsyncEvent;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
-import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.extension.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.Item;
@@ -28,10 +29,16 @@ import java.util.Map;
 public class HookHandler
 	implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent,
 	           IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent,
-	           IPlayerDropItemEvent, IPlayerPickupItemEvent
+	           IPlayerDropItemEvent, IPlayerPickupItemEvent, IAsyncEvent
 {
+	public HookHandler(IScheduler scheduler)
+	{
+		this.scheduler = scheduler;
+	}
+
 	public static void setContext(String context)
 	{
+		EventEngine.Debugger.debugInfo("context(%s)", context);
 		HookHandler.context = context;
 	}
 
@@ -39,27 +46,27 @@ public class HookHandler
 	{
 		hook.setContext(context);
 		HookType type = hook.getType();
-		if (!HookHandler.hooks.containsKey(type)) HookHandler.hooks.put(type, new ArrayList<>());
-
-		HookHandler.hooks.get(type).add(hook);
+		if (!hooks.containsKey(type))
+			hooks.put(type, new ArrayList<>());
+		EventEngine.Debugger.debugInfo("Registering hook for event %s: %s", type, hook.getFunction());
+		hooks.get(type).add(hook);
 	}
 
 	private static List<Hook> getHooks(HookType type)
 	{
-		if (HookHandler.hooks.containsKey(type)) return HookHandler.hooks.get(type);
-
-		return null;
+		return hooks.getOrDefault(type, null);
 	}
 
 	public static void clearHooks()
 	{
-		HookHandler.hooks.clear();
+		EventEngine.Debugger.debugInfo("Clearing all event hooks");
+		hooks.clear();
 	}
 
 	@Override
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.CHAT_MESSAGE);
+		List<Hook> hooks = getHooks(HookType.CHAT_MESSAGE);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		IPlayer player = event.getPlayer();
@@ -78,7 +85,7 @@ public class HookHandler
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(player.getName()));
 			table.set("message", LuaValue.valueOf(message));
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
@@ -101,7 +108,7 @@ public class HookHandler
 
 		if (type == null) return;
 
-		List<Hook> hooks = HookHandler.getHooks(type);
+		List<Hook> hooks = getHooks(type);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (final Hook hook : hooks)
@@ -112,14 +119,14 @@ public class HookHandler
 
 			final LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DEATH);
+		List<Hook> hooks = getHooks(HookType.PLAYER_DEATH);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		IPlayer player = event.getEntity();
@@ -130,65 +137,65 @@ public class HookHandler
 
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(player.getName()));
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
 	@Override
 	public void OnPlayerJoinEvent(RunsafePlayerJoinEvent event)
 	{
-		this.playerLogEvent(event.getPlayer(), HookType.PLAYER_LOGIN);
+		playerLogEvent(event.getPlayer(), HookType.PLAYER_LOGIN);
 	}
 
 	@Override
 	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
-		this.playerLogEvent(event.getPlayer(), HookType.PLAYER_LOGOUT);
+		playerLogEvent(event.getPlayer(), HookType.PLAYER_LOGOUT);
 	}
 
 	private void playerLogEvent(IPlayer player, HookType type)
 	{
-		List<Hook> hooks = HookHandler.getHooks(type);
+		List<Hook> hooks = getHooks(type);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
-			if (hook.getPlayerName().equalsIgnoreCase(player.getName())) hook.execute();
+			if (hook.getPlayerName().equalsIgnoreCase(player.getName()))
+				execute(hook);
 	}
 
 	@Override
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
-		IDebug debug = EventEngine.Debugger;
-		debug.debugFiner("Checking interact event on thread #%d %s", Thread.currentThread().getId(),
+		EventEngine.Debugger.debugFiner("Checking interact event on thread #%d %s", Thread.currentThread().getId(),
 		                 Thread.currentThread().getName()
 		);
-		debug.debugFine("Interact event detected");
-		List<Hook> hooks = HookHandler.getHooks(HookType.INTERACT);
+		EventEngine.Debugger.debugFine("Interact event detected");
+		List<Hook> hooks = getHooks(HookType.INTERACT);
 
 		if (hooks == null || hooks.isEmpty()) return;
 
-		debug.debugFine("Hooks not null");
+		EventEngine.Debugger.debugFine("Hooks not null");
 		for (Hook hook : hooks)
 		{
-			debug.debugFine("Processing hook...");
+			EventEngine.Debugger.debugFine("Processing hook...");
 			IBlock block = event.getBlock();
 			if (hook.getData() != null)
 				if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData()) continue;
 
-			debug.debugFine("Block is not null");
+			EventEngine.Debugger.debugFine("Block is not null");
 
 			IWorld hookWorld = hook.getWorld();
 			ILocation location = block.getLocation();
 			if (hookWorld == null)
 			{
-				debug.debugFine("Hook world is null, using location");
+				EventEngine.Debugger.debugFine("Hook world is null, using location");
 				if (!location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 				{
 					return;
 				}
-				debug.debugFine("Correct world!");
+				EventEngine.Debugger.debugFine("Correct world!");
 				if (!(location.distance(hook.getLocation()) < 1)) return;
-				debug.debugFine("Distance is less than 1");
+				EventEngine.Debugger.debugFine("Distance is less than 1");
 				LuaTable table = new LuaTable();
 				if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
@@ -198,12 +205,12 @@ public class HookHandler
 				table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 				table.set("blockData", LuaValue.valueOf((block).getData()));
 
-				hook.execute(table);
+				execute(hook, table);
 				return;
 			}
 			if (!hookWorld.getName().equals(block.getWorld().getName())) continue;
 
-			debug.debugFine("Hook world is not null, sending location data");
+			EventEngine.Debugger.debugFine("Hook world is not null, sending location data");
 			LuaTable table = new LuaTable();
 			if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 
@@ -213,7 +220,7 @@ public class HookHandler
 			table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 			table.set("blockData", LuaValue.valueOf((block).getData()));
 
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
@@ -222,7 +229,7 @@ public class HookHandler
 	{
 		if (event.getNewCurrent() <= 0 || event.getOldCurrent() != 0) return;
 
-		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_GAINS_CURRENT);
+		List<Hook> hooks = getHooks(HookType.BLOCK_GAINS_CURRENT);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
@@ -231,14 +238,14 @@ public class HookHandler
 			if (block == null) continue;
 			ILocation location = block.getLocation();
 			if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
-				if (location.distance(hook.getLocation()) < 1) hook.execute();
+				if (location.distance(hook.getLocation()) < 1) execute(hook);
 		}
 	}
 
 	@Override
 	public boolean OnBlockBreak(IPlayer player, IBlock block)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.BLOCK_BREAK);
+		List<Hook> hooks = getHooks(HookType.BLOCK_BREAK);
 		if (hooks == null || hooks.isEmpty()) return true;
 
 		ILocation blockLocation = block.getLocation();
@@ -258,7 +265,7 @@ public class HookHandler
 			table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 			table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
-			hook.execute(table);
+			execute(hook, table);
 		}
 		return true;
 	}
@@ -266,7 +273,7 @@ public class HookHandler
 	@Override
 	public void OnPlayerLeftClick(RunsafePlayerClickEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.LEFT_CLICK_BLOCK);
+		List<Hook> hooks = getHooks(HookType.LEFT_CLICK_BLOCK);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		IBlock block = event.getBlock();
@@ -288,14 +295,14 @@ public class HookHandler
 			table.set("blockID", LuaValue.valueOf(material.getItemID()));
 			table.set("blockData", LuaValue.valueOf(material.getData()));
 
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
 	@Override
 	public void OnPlayerDamage(IPlayer player, RunsafeEntityDamageEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_DAMAGE);
+		List<Hook> hooks = getHooks(HookType.PLAYER_DAMAGE);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		IWorld damageWorld = player.getWorld();
@@ -316,14 +323,14 @@ public class HookHandler
 			table.set("damage", damage);
 			table.set("cause", damageCause);
 
-			hook.execute(table);
+			execute(hook, table);
 		}
 	}
 
 	@Override
 	public void OnPlayerDropItem(RunsafePlayerDropItemEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_DROP);
+		List<Hook> hooks = getHooks(HookType.PLAYER_ITEM_DROP);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
@@ -333,7 +340,7 @@ public class HookHandler
 	@Override
 	public void OnPlayerPickupItemEvent(RunsafePlayerPickupItemEvent event)
 	{
-		List<Hook> hooks = HookHandler.getHooks(HookType.PLAYER_ITEM_PICKUP);
+		List<Hook> hooks = getHooks(HookType.PLAYER_ITEM_PICKUP);
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
@@ -349,8 +356,20 @@ public class HookHandler
 		table.set("itemID", item.getItemId());
 		table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
 
-		hook.execute(table);
+		execute(hook, table);
 	}
+
+	private void execute(Hook hook, LuaTable arguments)
+	{
+		scheduler.startSyncTask(() -> hook.execute(arguments), 1L);
+	}
+
+	private void execute(Hook hook)
+	{
+		scheduler.startSyncTask(hook::execute, 1L);
+	}
+
+	private final IScheduler scheduler;
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<>();
 	private static String context;
