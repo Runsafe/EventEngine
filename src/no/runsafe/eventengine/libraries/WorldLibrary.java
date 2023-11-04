@@ -31,7 +31,7 @@ public class WorldLibrary extends Library
 {
 	private static IDebug debug;
 	private static IConsole console;
-	private static IScheduler scheduler;
+//	private static IScheduler scheduler;
 
 	public WorldLibrary(
 		RunsafePlugin plugin, IRegionControl regionControl, IDebug debugger, IConsole console, IScheduler scheduler
@@ -47,10 +47,10 @@ public class WorldLibrary extends Library
 		{
 			WorldLibrary.console = console;
 		}
-		if (WorldLibrary.scheduler == null)
-		{
-			WorldLibrary.scheduler = scheduler;
-		}
+//		if (WorldLibrary.scheduler == null)
+//		{
+//			WorldLibrary.scheduler = scheduler;
+//		}
 	}
 
 	@Override
@@ -107,7 +107,14 @@ public class WorldLibrary extends Library
 			}
 
 			debug.debugFiner("Item is %s with data %d", material.name(), item.getData());
-			block.set(item);
+			try
+			{
+				block.set(item);
+			}
+			catch(Exception e)
+			{
+				debug.debugWarning("block.set threw an exception: %s", e.getMessage());
+			}
 			debug.debugFiner("block is now %s:%d", block.getMaterial().getName(), block.getData());
 		}
 	}

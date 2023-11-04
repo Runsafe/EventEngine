@@ -1,10 +1,10 @@
 package no.runsafe.eventengine.engine.hooks;
 
 import com.google.common.base.Strings;
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
-import no.runsafe.framework.api.event.IAsyncEvent;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
 import no.runsafe.framework.api.event.player.*;
@@ -30,11 +30,6 @@ public class HookHandler
 	           IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent,
 	           IPlayerDropItemEvent, IPlayerPickupItemEvent
 {
-	public HookHandler(IDebug debug)
-	{
-		this.debug = debug;
-	}
-
 	public static void setContext(String context)
 	{
 		HookHandler.context = context;
@@ -163,6 +158,7 @@ public class HookHandler
 	@Override
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
+		IDebug debug = EventEngine.Debugger;
 		debug.debugFiner(
 			"Setting block on thread #%d %s",
 			Thread.currentThread().getId(), Thread.currentThread().getName()
@@ -359,5 +355,4 @@ public class HookHandler
 
 	private static final HashMap<HookType, List<Hook>> hooks = new HashMap<>();
 	private static String context;
-	private final IDebug debug;
 }
