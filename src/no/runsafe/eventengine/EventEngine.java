@@ -20,15 +20,15 @@ public class EventEngine extends RunsafePlugin
 	{
 		super.initializePlugin();
 		Debugger = output;
+		Debugger.debugFiner(
+			"Running on thread #%d %s",
+			Thread.currentThread().getId(), Thread.currentThread().getName()
+		);
 	}
 
 	@Override
 	protected void pluginSetup()
 	{
-		Debugger.debugFiner(
-			"Running on thread #%d %s",
-			Thread.currentThread().getId(), Thread.currentThread().getName()
-		);
 		addComponent(Events.class);
 		addComponent(Commands.class);
 		addComponent(LUAScripts.class);
