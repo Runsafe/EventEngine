@@ -160,7 +160,7 @@ public class HookHandler
 	{
 		IDebug debug = EventEngine.Debugger;
 		debug.debugFiner(
-			"Setting block on thread #%d %s",
+			"Checking interact event on thread #%d %s",
 			Thread.currentThread().getId(), Thread.currentThread().getName()
 		);
 		debug.debugFine("Interact event detected");

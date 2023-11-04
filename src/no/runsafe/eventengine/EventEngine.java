@@ -16,11 +16,17 @@ public class EventEngine extends RunsafePlugin
 	public static IDebug Debugger = null;
 
 	@Override
+	protected void initializePlugin()
+	{
+		super.initializePlugin();
+		Debugger = output;
+	}
+
+	@Override
 	protected void pluginSetup()
 	{
-		Debugger = getComponent(IDebug.class);
 		Debugger.debugFiner(
-			"Setting block on thread #%d %s",
+			"Running on thread #%d %s",
 			Thread.currentThread().getId(), Thread.currentThread().getName()
 		);
 		addComponent(Events.class);

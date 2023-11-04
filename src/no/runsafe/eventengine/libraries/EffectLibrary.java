@@ -82,7 +82,7 @@ public class EffectLibrary extends Library
 	private static void LightningStrike(ILocation location)
 	{
 		EventEngine.Debugger.debugFiner(
-			"Setting block on thread #%d %s",
+			"Thundering on thread #%d %s",
 			Thread.currentThread().getId(), Thread.currentThread().getName()
 		);
 		location.getWorld().strikeLightningEffect(location);

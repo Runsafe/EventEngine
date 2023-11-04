@@ -37,7 +37,7 @@ public class HookingLibrary extends Library
 		public void run(FunctionParameters parameters)
 		{
 			EventEngine.Debugger.debugFiner(
-				"Setting block on thread #%d %s",
+				"Registering hook on thread #%d %s",
 				Thread.currentThread().getId(), Thread.currentThread().getName()
 			);
 			HookType type;
