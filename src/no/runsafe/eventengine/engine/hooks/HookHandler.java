@@ -96,6 +96,11 @@ public class HookHandler
 	@Override
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
+		EventEngine.Debugger.debugFiner(
+			"Checking custom event on thread #%d %s",
+			Thread.currentThread().getId(),
+			Thread.currentThread().getName()
+		);
 		HookType type = null;
 		String eventType = event.getEvent();
 
@@ -169,8 +174,10 @@ public class HookHandler
 	@Override
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
-		EventEngine.Debugger.debugFiner("Checking interact event on thread #%d %s", Thread.currentThread().getId(),
-		                 Thread.currentThread().getName()
+		EventEngine.Debugger.debugFiner(
+			"Checking interact event on thread #%d %s",
+			Thread.currentThread().getId(),
+			Thread.currentThread().getName()
 		);
 		EventEngine.Debugger.debugFine("Interact event detected");
 		List<Hook> hooks = getHooks(HookType.INTERACT);
