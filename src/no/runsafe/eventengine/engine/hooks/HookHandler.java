@@ -4,8 +4,10 @@ import com.google.common.base.Strings;
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IScheduler;
+import no.runsafe.framework.api.ITimer;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.block.IBlock;
+import no.runsafe.framework.api.event.CancellableEvent;
 import no.runsafe.framework.api.event.IAsyncEvent;
 import no.runsafe.framework.api.event.block.IBlockBreak;
 import no.runsafe.framework.api.event.block.IBlockRedstone;
@@ -85,7 +87,8 @@ public class HookHandler
 			LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(player.getName()));
 			table.set("message", LuaValue.valueOf(message));
-			execute(hook, table);
+			ITimer timer = execute(hook, table);
+			event.addCancellationHandle(timer::cancel);
 		}
 	}
 
@@ -220,7 +223,8 @@ public class HookHandler
 			table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 			table.set("blockData", LuaValue.valueOf((block).getData()));
 
-			execute(hook, table);
+			ITimer timer = execute(hook, table);
+			event.addCancellationHandle(timer::cancel);
 		}
 	}
 
@@ -295,7 +299,8 @@ public class HookHandler
 			table.set("blockID", LuaValue.valueOf(material.getItemID()));
 			table.set("blockData", LuaValue.valueOf(material.getData()));
 
-			execute(hook, table);
+			ITimer timer = execute(hook, table);
+			event.addCancellationHandle(timer::cancel);
 		}
 	}
 
@@ -323,7 +328,8 @@ public class HookHandler
 			table.set("damage", damage);
 			table.set("cause", damageCause);
 
-			execute(hook, table);
+			ITimer timer = execute(hook, table);
+			event.addCancellationHandle(timer::cancel);
 		}
 	}
 
@@ -334,7 +340,7 @@ public class HookHandler
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
-			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
+			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack(), event);
 	}
 
 	@Override
@@ -344,10 +350,10 @@ public class HookHandler
 		if (hooks == null || hooks.isEmpty()) return;
 
 		for (Hook hook : hooks)
-			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack());
+			handleItemHook(hook, event.getPlayer(), event.getItem().getItemStack(), event);
 	}
 
-	private void handleItemHook(Hook hook, IPlayer player, RunsafeMeta item)
+	private void handleItemHook(Hook hook, IPlayer player, RunsafeMeta item, CancellableEvent event)
 	{
 		IWorld hookWorld = hook.getWorld();
 		if (!hookWorld.isWorld(player.getWorld())) return;
@@ -356,17 +362,18 @@ public class HookHandler
 		table.set("itemID", item.getItemId());
 		table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
 
-		execute(hook, table);
+		ITimer hookTrigger = execute(hook, table);
+		event.addCancellationHandle(hookTrigger::cancel);
 	}
 
-	private void execute(Hook hook, LuaTable arguments)
+	private ITimer execute(Hook hook, LuaTable arguments)
 	{
-		scheduler.startSyncTask(() -> hook.execute(arguments), 1L);
+		return scheduler.createSyncTimer(() -> hook.execute(arguments), 1L);
 	}
 
-	private void execute(Hook hook)
+	private ITimer execute(Hook hook)
 	{
-		scheduler.startSyncTask(hook::execute, 1L);
+		return scheduler.createSyncTimer(hook::execute, 1L);
 	}
 
 	private final IScheduler scheduler;
