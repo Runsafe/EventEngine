@@ -28,7 +28,7 @@ import java.util.Map;
 public class HookHandler
 	implements IPlayerChatEvent, IPlayerCustomEvent, IPlayerJoinEvent, IPlayerQuitEvent, IPlayerInteractEvent,
 	           IBlockRedstone, IBlockBreak, IPlayerLeftClickBlockEvent, IPlayerDamageEvent, IPlayerDeathEvent,
-	           IPlayerDropItemEvent, IPlayerPickupItemEvent, IAsyncEvent
+	           IPlayerDropItemEvent, IPlayerPickupItemEvent
 {
 	public HookHandler(IDebug debug)
 	{

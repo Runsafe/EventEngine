@@ -88,9 +88,9 @@ public class Hook
 			debug.debugFine("There is no handler, not invoking hook");
 			return;
 		}
-		Bukkit.getScheduler().runTaskLater(
-			RunsafePlugin.getPlugin(EventEngine.class),
-			() -> {
+//		Bukkit.getScheduler().runTaskLater(
+//			RunsafePlugin.getPlugin(EventEngine.class),
+//			() -> {
 				try
 				{
 					if (arguments != null)
@@ -109,9 +109,9 @@ public class Hook
 						"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
 					);
 				}
-			},
-			1
-		);
+//			},
+//			1
+//		);
 	}
 
 	public LuaValue getHandler()
