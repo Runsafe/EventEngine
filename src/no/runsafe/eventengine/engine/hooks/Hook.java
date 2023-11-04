@@ -78,6 +78,11 @@ public class Hook
 
 	public void execute(LuaTable arguments)
 	{
+		EventEngine.Debugger.debugFiner(
+			"Executing hook on thread #%d %s",
+			Thread.currentThread().getId(),
+			Thread.currentThread().getName()
+		);
 		LuaValue handler = getHandler();
 		if (handler == null)
 		{

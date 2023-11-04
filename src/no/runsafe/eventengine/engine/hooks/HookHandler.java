@@ -190,7 +190,23 @@ public class HookHandler
 			EventEngine.Debugger.debugFine("Processing hook...");
 			IBlock block = event.getBlock();
 			if (hook.getData() != null)
-				if (block == null || block.getMaterial().getItemID() != (Integer) hook.getData()) continue;
+			{
+				if (block == null)
+				{
+					EventEngine.Debugger.debugFiner("block is null, ignoring event...");
+					continue;
+				}
+				int blockItemId = block.getMaterial().getItemID();
+				int hookItemId = (int) hook.getData();
+				if (blockItemId != hookItemId)
+				{
+					EventEngine.Debugger.debugFiner(
+						"Item id %d of block does not match hook registration for %d, ignoring event...",
+						blockItemId, hookItemId
+					);
+					continue;
+				}
+			}
 
 			EventEngine.Debugger.debugFine("Block is not null");
 
