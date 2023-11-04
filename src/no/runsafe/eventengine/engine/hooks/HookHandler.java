@@ -159,9 +159,8 @@ public class HookHandler
 	public void OnPlayerInteractEvent(RunsafePlayerInteractEvent event)
 	{
 		IDebug debug = EventEngine.Debugger;
-		debug.debugFiner(
-			"Checking interact event on thread #%d %s",
-			Thread.currentThread().getId(), Thread.currentThread().getName()
+		debug.debugFiner("Checking interact event on thread #%d %s", Thread.currentThread().getId(),
+		                 Thread.currentThread().getName()
 		);
 		debug.debugFine("Interact event detected");
 		List<Hook> hooks = HookHandler.getHooks(HookType.INTERACT);

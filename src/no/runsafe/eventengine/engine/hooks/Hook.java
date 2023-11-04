@@ -1,12 +1,9 @@
 package no.runsafe.eventengine.engine.hooks;
 
 import no.runsafe.eventengine.EventEngine;
-import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
-import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.IGlobal;
-import org.bukkit.Bukkit;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -16,13 +13,12 @@ import java.util.logging.Logger;
 
 public class Hook
 {
-	public Hook(HookType type, String function, IGlobal environment, Logger logger, IDebug debug)
+	public Hook(HookType type, String function, IGlobal environment, Logger logger)
 	{
 		this.type = type;
 		this.function = function;
 		this.environment = environment;
 		this.logger = logger;
-		this.debug = debug;
 	}
 
 	public HookType getType()
@@ -85,33 +81,27 @@ public class Hook
 		LuaValue handler = getHandler();
 		if (handler == null)
 		{
-			debug.debugFine("There is no handler, not invoking hook");
+			EventEngine.Debugger.debugFine("There is no handler, not invoking hook");
 			return;
 		}
-//		Bukkit.getScheduler().runTaskLater(
-//			RunsafePlugin.getPlugin(EventEngine.class),
-//			() -> {
-				try
-				{
-					if (arguments != null)
-					{
-						debug.debugFine("Invoking hook with arguments: %s", arguments);
-						handler.call(arguments);
-						return;
-					}
-					debug.debugFine("Invoking hook without arguments");
-					handler.call();
-				}
-				catch (LuaError error)
-				{
-					this.logger.log(
-						Level.WARNING,
-						"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
-					);
-				}
-//			},
-//			1
-//		);
+		try
+		{
+			if (arguments != null)
+			{
+				EventEngine.Debugger.debugFine("Invoking hook with arguments: %s", arguments);
+				handler.call(arguments);
+				return;
+			}
+			EventEngine.Debugger.debugFine("Invoking hook without arguments");
+			handler.call();
+		}
+		catch (LuaError error)
+		{
+			this.logger.log(
+				Level.WARNING,
+				"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
+			);
+		}
 	}
 
 	public LuaValue getHandler()
@@ -143,7 +133,6 @@ public class Hook
 	private final String function;
 	private final IGlobal environment;
 	private final Logger logger;
-	private final IDebug debug;
 	private ILocation location;
 	private IWorld world;
 	private String playerName;

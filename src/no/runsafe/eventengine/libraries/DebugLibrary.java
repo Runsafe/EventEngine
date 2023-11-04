@@ -2,13 +2,10 @@ package no.runsafe.eventengine.libraries;
 
 import no.runsafe.eventengine.EventEngine;
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
 import org.luaj.vm2.LuaTable;
-
-import java.awt.*;
 
 public class DebugLibrary extends Library
 {
