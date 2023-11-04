@@ -7,7 +7,6 @@ import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.internal.LegacyMaterial;
 import no.runsafe.framework.minecraft.Buff;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
@@ -16,6 +15,7 @@ import no.runsafe.framework.minecraft.player.GameMode;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.worldguardbridge.IRegionControl;
 import org.bukkit.util.Vector;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				parameters.getPlayer(0).sendTitle(parameters.getString(1),parameters.getString(2));
+				parameters.getPlayer(0).sendTitle(parameters.getString(1), parameters.getString(2));
 			}
 		});
 		lib.set("setHealth", new VoidFunction()
@@ -219,7 +219,8 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				parameters.getPlayer(0).addBuff(Buff.getFromName(parameters.getString(1)).amplification(parameters.getInt(2)).duration(parameters.getInt(3)));
+				parameters.getPlayer(0).addBuff(
+					Buff.getFromName(parameters.getString(1)).amplification(parameters.getInt(2)).duration(parameters.getInt(3)));
 			}
 		});
 
@@ -228,14 +229,7 @@ public class PlayerLibrary extends Library
 			@Override
 			protected void run(final FunctionParameters parameters)
 			{
-				scheduler.startSyncTask(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						parameters.getPlayer(0).closeInventory();
-					}
-				}, 1L);
+				scheduler.startSyncTask(() -> parameters.getPlayer(0).closeInventory(), 1L);
 			}
 		});
 
@@ -245,9 +239,9 @@ public class PlayerLibrary extends Library
 			protected void run(final FunctionParameters parameters)
 			{
 				parameters.getPlayer(0).setVelocity(new Vector(
-						parameters.getDouble(1),
-						parameters.getDouble(2),
-						parameters.getDouble(3)
+					parameters.getDouble(1),
+					parameters.getDouble(2),
+					parameters.getDouble(3)
 				));
 			}
 		});
@@ -318,7 +312,7 @@ public class PlayerLibrary extends Library
 				IPlayer player = parameters.getPlayer(0);
 				RunsafeInventory inventory = player.getInventory();
 				String itemName = parameters.getString(1);
-				List<Integer> removeItems = new ArrayList<Integer>();
+				List<Integer> removeItems = new ArrayList<>();
 
 				int curr = 0;
 				while (curr < inventory.getSize())
@@ -375,14 +369,24 @@ public class PlayerLibrary extends Library
 	private static String GetPlayerAtLocation(ILocation location)
 	{
 		for (IPlayer player : location.getWorld().getPlayers())
-			if (player.getLocation().distance(location) < 2)
+		{
+			ILocation playerLocation = player.getLocation();
+			if (playerLocation == null)
+				continue;
+			if (location.distance(playerLocation) < 2)
 				return player.getName();
+		}
 		return null;
 	}
 
-	private static void AddItem(IPlayer player,String item, int amount)
+	private static void AddItem(IPlayer player, String item, int amount)
 	{
-		RunsafeMeta meta = Item.get(item).getItem();
+		Item itemType = Item.get(item);
+		if (itemType == null)
+		{
+			throw new LuaError("Item " + item + " does not exist, unable to give");
+		}
+		RunsafeMeta meta = itemType.getItem();
 		meta.setAmount(amount);
 		player.give(meta);
 	}

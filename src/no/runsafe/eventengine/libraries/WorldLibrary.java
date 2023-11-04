@@ -94,10 +94,10 @@ public class WorldLibrary extends Library
 			{
 				ISign sign = (ISign) block;
 				sign.setLines(
-						parameters.getString(4),
-						parameters.getString(5),
-						parameters.getString(6),
-						parameters.getString(7)
+					parameters.getString(4),
+					parameters.getString(5),
+					parameters.getString(6),
+					parameters.getString(7)
 				);
 				sign.update(true);
 			}
@@ -111,9 +111,9 @@ public class WorldLibrary extends Library
 		{
 			ILocation location = parameters.getLocation(0);
 			location.playSound(
-					Sound.Get(parameters.getString(4)),
-					parameters.getFloat(5),
-					parameters.getFloat(6)
+				Sound.Get(parameters.getString(4)),
+				parameters.getFloat(5),
+				parameters.getFloat(6)
 			);
 		}
 	}
@@ -123,7 +123,7 @@ public class WorldLibrary extends Library
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			List<Object> returns = new ArrayList<Object>();
+			List<Object> returns = new ArrayList<>();
 			ILocation location = parameters.getLocation(0);
 			WorldLibrary.prepareLocationForEdit(location);
 
@@ -140,7 +140,7 @@ public class WorldLibrary extends Library
 		@Override
 		public List<Object> run(FunctionParameters parameters)
 		{
-			List<Object> returns = new ArrayList<Object>();
+			List<Object> returns = new ArrayList<>();
 			IWorld world = parameters.getWorld(0);
 
 			for (IPlayer player : world.getPlayers())
@@ -154,9 +154,9 @@ public class WorldLibrary extends Library
 	{
 
 		@Override
-		public List<Object> run (FunctionParameters parameters)
+		public List<Object> run(FunctionParameters parameters)
 		{
-			List<Object> returns = new ArrayList<Object>();
+			List<Object> returns = new ArrayList<>();
 			IWorld world = parameters.getWorld(0);
 
 			for (IPlayer player : regionControl.getPlayersInRegion(world, parameters.getString(1)))

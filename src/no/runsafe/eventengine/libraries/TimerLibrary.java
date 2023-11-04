@@ -24,32 +24,28 @@ public class TimerLibrary extends Library
 	{
 		LuaTable lib = new LuaTable();
 
-		lib.set("scheduleTask", new IntegerFunction() {
+		lib.set("scheduleTask", new IntegerFunction()
+		{
 			@Override
-			public Integer run(final FunctionParameters parameters) {
-				int timerID = scheduler.startSyncTask(new Runnable() {
-					@Override
-					public void run() {
-						globals.get(parameters.getString(0)).call();
-					}
-				}, (long) parameters.getInt(1));
-
+			public Integer run(final FunctionParameters parameters)
+			{
+				int timerID = scheduler.startSyncTask(
+					() -> globals.get(parameters.getString(0)).call(), (long) parameters.getInt(1)
+				);
 				timers.add(timerID);
-
 				return timerID;
 			}
 		});
 
-		lib.set("scheduleRepeatingTask", new IntegerFunction() {
+		lib.set("scheduleRepeatingTask", new IntegerFunction()
+		{
 			@Override
-			public Integer run(final FunctionParameters parameters) {
+			public Integer run(final FunctionParameters parameters)
+			{
 				long delay = parameters.getInt(1);
-				int timerID = scheduler.startSyncRepeatingTask(new Runnable() {
-					@Override
-					public void run() {
-						globals.get(parameters.getString(0)).call();
-					}
-				}, delay, delay);
+				int timerID = scheduler.startSyncRepeatingTask(
+					() -> globals.get(parameters.getString(0)).call(), delay, delay
+				);
 
 				timers.add(timerID);
 
@@ -57,9 +53,11 @@ public class TimerLibrary extends Library
 			}
 		});
 
-		lib.set("cancelTask", new VoidFunction() {
+		lib.set("cancelTask", new VoidFunction()
+		{
 			@Override
-			protected void run(FunctionParameters parameters) {
+			protected void run(FunctionParameters parameters)
+			{
 				scheduler.cancelTask(parameters.getInt(0));
 			}
 		});
@@ -75,6 +73,6 @@ public class TimerLibrary extends Library
 		timers.clear();
 	}
 
-	private static List<Integer> timers = new ArrayList<Integer>();
+	private static final List<Integer> timers = new ArrayList<>();
 	private static IScheduler scheduler;
 }

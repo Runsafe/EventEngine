@@ -10,6 +10,7 @@ import no.runsafe.framework.minecraft.entity.PassiveEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
 import no.runsafe.framework.minecraft.entity.RunsafeMinecart;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
@@ -28,7 +29,8 @@ public class MobLibrary extends Library
 			@Override
 			public Integer run(FunctionParameters parameters)
 			{
-				return no.runsafe.framework.minecraft.entity.EntityType.getTypeByName(parameters.getString(0)).spawn(parameters.getLocation(1)).getEntityId();
+				return no.runsafe.framework.minecraft.entity.EntityType.getTypeByName(parameters.getString(0)).spawn(
+					parameters.getLocation(1)).getEntityId();
 			}
 		});
 
@@ -37,7 +39,7 @@ public class MobLibrary extends Library
 			@Override
 			public Integer run(FunctionParameters parameters)
 			{
-				ILocation location =  parameters.getLocation(0);
+				ILocation location = parameters.getLocation(0);
 				double lastDistance = -1;
 				RunsafeEntity lastEntity = null;
 
@@ -84,14 +86,14 @@ public class MobLibrary extends Library
 
 				//Create block in minecart
 				minecart.setDisplayBlock(
-						new org.bukkit.material.MaterialData(
-								parameters.getInt(0),
-								parameters.getByte(1)
-						)
+					new org.bukkit.material.MaterialData(
+						parameters.getInt(0),
+						parameters.getByte(1)
+					)
 				);
 
 				//Set block offset
-				if(parameters.getInt(2)!=null)
+				if (parameters.getInt(2) != null)
 					minecart.setDisplayBlockOffset(parameters.getInt(2));
 
 				return minecart.getEntityId();
@@ -118,7 +120,13 @@ public class MobLibrary extends Library
 				if (entity != null && entity.getEntityType() == PassiveEntity.ItemFrame)
 				{
 					RunsafeItemFrame itemFrame = (RunsafeItemFrame) entity;
-					itemFrame.setItem(no.runsafe.framework.minecraft.Item.get(parameters.getString(2)).getItem());
+					String itemName = parameters.getString(2);
+					no.runsafe.framework.minecraft.Item item = no.runsafe.framework.minecraft.Item.get(itemName);
+					if (item == null)
+					{
+						throw new LuaError("Script specified an invalid item name " + itemName);
+					}
+					itemFrame.setItem(item.getItem());
 				}
 			}
 		});
@@ -128,16 +136,21 @@ public class MobLibrary extends Library
 			@Override
 			protected void run(FunctionParameters parameters)
 			{
-				IEntity entity = parameters.getWorld(0).getEntityById(parameters.getInt(1));
+				int entityId = parameters.getInt(1);
+				IEntity entity = parameters.getWorld(0).getEntityById(entityId);
 				if (entity != null)
 				{
 					EntityLiving living = (EntityLiving) ObjectUnwrapper.getMinecraft(entity);
+					if (living == null)
+					{
+						throw new LuaError("Entity with id " + entityId + " does not exist");
+					}
 					living.addEffect(new MobEffect(
-							MobEffectList.fromId(parameters.getInt(2)),
-							parameters.getInt(3),
-							parameters.getInt(4),
-							parameters.getBool(5),
-							true
+						MobEffectList.fromId(parameters.getInt(2)),
+						parameters.getInt(3),
+						parameters.getInt(4),
+						parameters.getBool(5),
+						true
 					));
 				}
 			}

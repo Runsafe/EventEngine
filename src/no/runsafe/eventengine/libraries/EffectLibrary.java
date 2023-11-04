@@ -43,10 +43,10 @@ public class EffectLibrary extends Library
 			protected void run(FunctionParameters parameters)
 			{
 				parameters.getLocation(0).playEffect(
-						WorldEffect.valueOf(parameters.getString(4)),
-						parameters.getFloat(5),
-						parameters.getInt(6),
-						parameters.getDouble(7)
+					WorldEffect.valueOf(parameters.getString(4)),
+					parameters.getFloat(5),
+					parameters.getInt(6),
+					parameters.getDouble(7)
 				);
 			}
 		});
@@ -88,7 +88,9 @@ public class EffectLibrary extends Library
 		location.getWorld().createExplosion(location, power, setFire, breakBlocks);
 	}
 
-	private void SpawnFirework(ILocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power)
+	private void SpawnFirework(
+		ILocation location, FireworkEffect.Type type, Color color, Color fade, boolean flicker, boolean trail, int power
+	)
 	{
 		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getName());
 
@@ -104,7 +106,7 @@ public class EffectLibrary extends Library
 		firework.setFireworkMeta(meta);
 	}
 
-	private static final HashMap<Integer, Color> colourID = new HashMap<Integer, Color>();
+	private static final HashMap<Integer, Color> colourID = new HashMap<>();
 
 	static
 	{

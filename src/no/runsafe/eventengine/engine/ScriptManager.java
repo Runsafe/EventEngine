@@ -35,14 +35,7 @@ public class ScriptManager implements IPluginEnabled
 	@Override
 	public void OnPluginEnabled()
 	{
-		scheduler.startSyncTask(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				loadScripts();
-			}
-		}, 1);
+		scheduler.startSyncTask(this::loadScripts, 1);
 	}
 
 	private void loadScripts()
@@ -56,7 +49,7 @@ public class ScriptManager implements IPluginEnabled
 		int succeeded = 0;
 		for (File file : scripts)
 		{
-			if(this.runScript(file))
+			if (this.runScript(file))
 			{
 				succeeded++;
 			}

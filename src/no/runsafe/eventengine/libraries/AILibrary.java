@@ -82,5 +82,5 @@ public class AILibrary extends Library
 	}
 
 	private static IOutput output;
-	private static final List<RunsafeFakePlayer> ai = new ArrayList<RunsafeFakePlayer>();
+	private static final List<RunsafeFakePlayer> ai = new ArrayList<>();
 }

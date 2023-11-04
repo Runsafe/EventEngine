@@ -1,11 +1,21 @@
 <component name="ProjectDictionaryState">
   <dictionary name="mortenn">
     <words>
+      <w>bossbar</w>
+      <w>buildfile</w>
+      <w>despawn</w>
       <w>dofile</w>
+      <w>dostring</w>
       <w>eventengine</w>
+      <w>joda</w>
+      <w>kruithne</w>
       <w>luaenv</w>
       <w>luaj</w>
+      <w>minecart</w>
+      <w>noinput</w>
       <w>reloadscripts</w>
+      <w>temurin</w>
+      <w>worldguard</w>
     </words>
   </dictionary>
 </component>

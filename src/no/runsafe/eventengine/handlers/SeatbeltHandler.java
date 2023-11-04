@@ -29,5 +29,5 @@ public class SeatbeltHandler implements IVehicleExit
 		players.remove(player.getUniqueId());
 	}
 
-	private static final List<UUID> players = new ArrayList<UUID>(0);
+	private static final List<UUID> players = new ArrayList<>(0);
 }
