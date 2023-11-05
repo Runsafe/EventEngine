@@ -220,7 +220,17 @@ public class HookHandler
 					return;
 				}
 				EventEngine.Debugger.debugFiner("Correct world!");
-				if (!(location.distance(hook.getLocation()) < 1)) return;
+				double distance = location.distance(hook.getLocation());
+				if (!(distance < 1))
+				{
+					EventEngine.Debugger.debugFine(
+						"%s is %.4f away from %s, ignoring event",
+						location,
+						distance,
+						hook.getLocation()
+          );
+					return;
+				}
 				EventEngine.Debugger.debugFiner("Distance is less than 1");
 				LuaTable table = new LuaTable();
 				if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
