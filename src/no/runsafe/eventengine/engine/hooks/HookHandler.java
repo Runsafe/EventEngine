@@ -217,7 +217,7 @@ public class HookHandler
 				EventEngine.Debugger.debugFiner("Hook world is null, using location");
 				if (!location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
 				{
-					return;
+					continue;
 				}
 				EventEngine.Debugger.debugFiner("Correct world!");
 				double distance = location.distance(hook.getLocation());
@@ -229,7 +229,7 @@ public class HookHandler
 						distance,
 						hook.getLocation()
           );
-					return;
+					continue;
 				}
 				EventEngine.Debugger.debugFiner("Distance is less than 1");
 				LuaTable table = new LuaTable();
@@ -241,7 +241,8 @@ public class HookHandler
 				table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 				table.set("blockData", LuaValue.valueOf((block).getData()));
 
-				execute(hook, table);
+				ITimer timer = execute(hook, table);
+				event.addCancellationHandle(timer::cancel);
 				return;
 			}
 			if (!hookWorld.getName().equals(block.getWorld().getName())) continue;
@@ -258,6 +259,7 @@ public class HookHandler
 
 			ITimer timer = execute(hook, table);
 			event.addCancellationHandle(timer::cancel);
+			return;
 		}
 	}
 
