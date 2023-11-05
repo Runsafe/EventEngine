@@ -168,7 +168,7 @@ public class HookHandler
 
 		for (Hook hook : hooks)
 			if (hook.getPlayerName().equalsIgnoreCase(player.getName()))
-				execute(hook);
+				execute(hook, null);
 	}
 
 	@Override
@@ -214,46 +214,27 @@ public class HookHandler
 			ILocation location = block.getLocation();
 			if (hookWorld == null)
 			{
-				EventEngine.Debugger.debugFiner("Hook world is null, using location");
-				if (!location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
-				{
-					continue;
-				}
-				EventEngine.Debugger.debugFiner("Correct world!");
-				double distance = location.distance(hook.getLocation());
-				if (!(distance < 1))
-				{
-					EventEngine.Debugger.debugFine(
-						"%s is %.4f away from %s, ignoring event",
-						location,
-						distance,
-						hook.getLocation()
-          );
-					continue;
-				}
-				EventEngine.Debugger.debugFiner("Distance is less than 1");
-				LuaTable table = new LuaTable();
-				if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
-
-				table.set("x", LuaValue.valueOf(location.getBlockX()));
-				table.set("y", LuaValue.valueOf(location.getBlockY()));
-				table.set("z", LuaValue.valueOf(location.getBlockZ()));
-				table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
-				table.set("blockData", LuaValue.valueOf((block).getData()));
-
-				ITimer timer = execute(hook, table);
-				event.addCancellationHandle(timer::cancel);
-				return;
+				EventEngine.Debugger.debugFiner("Hook world is null, ignoring");
 			}
-			if (!hookWorld.getName().equals(block.getWorld().getName())) continue;
-
-			EventEngine.Debugger.debugFiner("Hook world is not null, sending location data");
+			if (!block.getWorld().isWorld(hookWorld))
+			{
+				EventEngine.Debugger.debugFine("Wrong world!");
+				continue;
+			}
+			if (location.distance(hook.getLocation()) >= 1)
+			{
+				EventEngine.Debugger.debugFiner("Wrong location");
+				continue;
+			}
 			LuaTable table = new LuaTable();
-			if (event.getPlayer() != null) table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
-
+			if (event.getPlayer() != null)
+			{
+				table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+			}
 			table.set("x", LuaValue.valueOf(location.getBlockX()));
 			table.set("y", LuaValue.valueOf(location.getBlockY()));
 			table.set("z", LuaValue.valueOf(location.getBlockZ()));
+			table.set("material", LuaValue.valueOf(block.getMaterial().getName()));
 			table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 			table.set("blockData", LuaValue.valueOf((block).getData()));
 
@@ -277,7 +258,7 @@ public class HookHandler
 			if (block == null) continue;
 			ILocation location = block.getLocation();
 			if (location.getWorld().getName().equals(hook.getLocation().getWorld().getName()))
-				if (location.distance(hook.getLocation()) < 1) execute(hook);
+				if (location.distance(hook.getLocation()) < 1) execute(hook, null);
 		}
 	}
 
@@ -301,6 +282,7 @@ public class HookHandler
 			table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 			table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 			table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+			table.set("material", LuaValue.valueOf(block.getMaterial().getName()));
 			table.set("blockID", LuaValue.valueOf(block.getMaterial().getItemID()));
 			table.set("blockData", LuaValue.valueOf(((RunsafeBlock) block).getData()));
 
@@ -331,6 +313,7 @@ public class HookHandler
 			table.set("x", LuaValue.valueOf(blockLocation.getBlockX()));
 			table.set("y", LuaValue.valueOf(blockLocation.getBlockY()));
 			table.set("z", LuaValue.valueOf(blockLocation.getBlockZ()));
+			table.set("material", LuaValue.valueOf(block.getMaterial().getName()));
 			table.set("blockID", LuaValue.valueOf(material.getItemID()));
 			table.set("blockData", LuaValue.valueOf(material.getData()));
 
@@ -394,6 +377,7 @@ public class HookHandler
 		if (!hookWorld.isWorld(player.getWorld())) return;
 		LuaTable table = new LuaTable();
 		table.set("player", player.getName());
+		table.set("material", LuaValue.valueOf(item.getType().name()));
 		table.set("itemID", item.getItemId());
 		table.set("itemName", item.hasDisplayName() ? item.getDisplayName() : item.getNormalName());
 
@@ -404,11 +388,6 @@ public class HookHandler
 	private ITimer execute(Hook hook, LuaTable arguments)
 	{
 		return scheduler.createSyncTimer(() -> hook.execute(arguments), 4L);
-	}
-
-	private ITimer execute(Hook hook)
-	{
-		return scheduler.createSyncTimer(hook::execute, 4L);
 	}
 
 	private final IScheduler scheduler;

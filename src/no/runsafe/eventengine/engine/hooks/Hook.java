@@ -48,6 +48,10 @@ public class Hook
 
 	public IWorld getWorld()
 	{
+		if (this.world == null && location != null)
+		{
+			return location.getWorld();
+		}
 		return this.world;
 	}
 
