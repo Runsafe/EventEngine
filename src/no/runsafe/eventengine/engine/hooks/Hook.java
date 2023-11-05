@@ -75,11 +75,6 @@ public class Hook
 		this.data = data;
 	}
 
-	public void execute()
-	{
-		this.execute(null);
-	}
-
 	public void execute(LuaTable arguments)
 	{
 		EventEngine.Debugger.debugFiner(

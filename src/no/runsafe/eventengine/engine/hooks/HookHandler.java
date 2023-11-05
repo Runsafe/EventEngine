@@ -122,11 +122,15 @@ public class HookHandler
 		for (final Hook hook : hooks)
 		{
 			Map<String, String> data = (Map<String, String>) event.getData();
-			if (!((String) hook.getData()).equalsIgnoreCase(String.format("%s-%s", data.get("world"), data.get("region"))))
+			String world = data.get("world");
+			String region = data.get("region");
+			if (!((String) hook.getData()).equalsIgnoreCase(String.format("%s-%s", world, region)))
 				continue;
 
 			final LuaTable table = new LuaTable();
 			table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
+			table.set("world", LuaValue.valueOf(world));
+			table.set("region", LuaValue.valueOf(region));
 			execute(hook, table);
 		}
 	}
@@ -231,6 +235,7 @@ public class HookHandler
 			{
 				table.set("player", LuaValue.valueOf(event.getPlayer().getName()));
 			}
+			table.set("world", LuaValue.valueOf(location.getWorld().getName()));
 			table.set("x", LuaValue.valueOf(location.getBlockX()));
 			table.set("y", LuaValue.valueOf(location.getBlockY()));
 			table.set("z", LuaValue.valueOf(location.getBlockZ()));
