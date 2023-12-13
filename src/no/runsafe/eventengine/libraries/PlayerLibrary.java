@@ -23,6 +23,7 @@ import java.util.List;
 
 public class PlayerLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public PlayerLibrary(RunsafePlugin plugin, IScheduler scheduler, IRegionControl regionControl)
 	{
 		super(plugin, "player");

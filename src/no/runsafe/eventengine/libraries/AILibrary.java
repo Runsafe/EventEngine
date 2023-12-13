@@ -21,6 +21,7 @@ public class AILibrary extends Library
 		#LUADOC
 		@library AI
 	 */
+	@SuppressWarnings("unused")
 	public AILibrary(RunsafePlugin plugin, IOutput output)
 	{
 		super(plugin, "ai");

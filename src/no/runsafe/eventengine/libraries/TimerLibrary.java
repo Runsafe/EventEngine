@@ -13,6 +13,7 @@ import java.util.List;
 
 public class TimerLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public TimerLibrary(RunsafePlugin plugin, IScheduler scheduler)
 	{
 		super(plugin, "timer");

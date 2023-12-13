@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 public class EffectLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public EffectLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "effects");

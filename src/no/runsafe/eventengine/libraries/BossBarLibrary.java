@@ -17,6 +17,7 @@ import java.util.List;
 
 public class BossBarLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public BossBarLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "bossbar");

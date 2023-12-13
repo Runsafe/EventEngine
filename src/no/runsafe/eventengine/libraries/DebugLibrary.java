@@ -13,6 +13,7 @@ public class DebugLibrary extends Library
 		#LUADOC
 		@library Debug
 	 */
+	@SuppressWarnings("unused")
 	public DebugLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "debug");

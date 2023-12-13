@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 public class HookingLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public HookingLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "hooks");
@@ -32,6 +33,7 @@ public class HookingLibrary extends Library
 	private class RegisterHook extends VoidFunction
 	{
 		@Override
+		@SuppressWarnings("unused")
 		public void run(FunctionParameters parameters)
 		{
 			EventEngine.Debugger.debugFiner("Registering hook on thread #%d %s", Thread.currentThread().getId(),

@@ -26,6 +26,7 @@ import org.luaj.vm2.LuaTable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class WorldLibrary extends Library
 {
 	private static IDebug debug;

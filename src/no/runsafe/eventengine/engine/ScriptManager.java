@@ -20,6 +20,7 @@ import java.util.List;
 
 public class ScriptManager implements IPluginEnabled
 {
+	@SuppressWarnings("unused")
 	public ScriptManager(EventEngine eventEngine, IGlobal environment, IConsole output, IScheduler scheduler)
 	{
 		this.environment = environment;

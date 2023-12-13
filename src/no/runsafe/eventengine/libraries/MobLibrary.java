@@ -15,6 +15,7 @@ import org.luaj.vm2.LuaTable;
 
 public class MobLibrary extends Library
 {
+	@SuppressWarnings("unused")
 	public MobLibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "mobs");

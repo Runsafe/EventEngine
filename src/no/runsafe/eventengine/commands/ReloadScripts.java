@@ -11,6 +11,7 @@ import no.runsafe.framework.api.player.IPlayer;
 
 public class ReloadScripts extends ExecutableCommand
 {
+	@SuppressWarnings("unused")
 	public ReloadScripts(IConsole output, ScriptManager scriptManager)
 	{
 		super("reloadscripts", "Reloads all lua scripts.", "runsafe.eventengine.reload");

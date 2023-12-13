@@ -11,7 +11,7 @@ import org.luaj.vm2.LuaValue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Hook
+public final class Hook
 {
 	public Hook(HookType type, String function, IGlobal environment, Logger logger)
 	{
@@ -19,6 +19,75 @@ public class Hook
 		this.function = function;
 		this.environment = environment;
 		this.logger = logger;
+	}
+
+	public Runnable getExecutor(LuaTable arguments)
+	{
+		return new Executor(arguments);
+	}
+
+	private final class Executor implements Runnable
+	{
+		public Executor(LuaTable arguments)
+		{
+			this.arguments = arguments;
+		}
+
+		@Override
+		public void run()
+		{
+			EventEngine.Debugger.debugFiner(
+				"Executing hook on thread #%d %s",
+				Thread.currentThread().getId(),
+				Thread.currentThread().getName()
+			);
+			LuaValue handler = getHandler();
+			if (handler == null)
+			{
+				EventEngine.Debugger.debugFiner("There is no handler, not invoking hook");
+				return;
+			}
+			try
+			{
+				if (arguments != null)
+				{
+					EventEngine.Debugger.debugFine("Invoking hook with arguments: %s", arguments);
+					handler.call(arguments);
+					return;
+				}
+				EventEngine.Debugger.debugFine("Invoking hook without arguments");
+				handler.call();
+			}
+			catch (LuaError error)
+			{
+				logger.log(
+					Level.WARNING,
+					"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
+				);
+			}
+		}
+
+		private LuaValue getHandler()
+		{
+			String scriptFunction = getFunction();
+			boolean isStringFunction = scriptFunction.startsWith("return ");
+			try
+			{
+				return isStringFunction
+					? environment.get("dostring").call(scriptFunction)
+					: environment.get(scriptFunction);
+			}
+			catch (LuaError e)
+			{
+				logger.log(
+					Level.WARNING,
+					"LuaError " + e.getMessage() + " trying to get Lua event handler script"
+				);
+				return null;
+			}
+		}
+
+		private final LuaTable arguments;
 	}
 
 	public HookType getType()
@@ -73,59 +142,6 @@ public class Hook
 	public void setData(Object data)
 	{
 		this.data = data;
-	}
-
-	public void execute(LuaTable arguments)
-	{
-		EventEngine.Debugger.debugFiner(
-			"Executing hook on thread #%d %s",
-			Thread.currentThread().getId(),
-			Thread.currentThread().getName()
-		);
-		LuaValue handler = getHandler();
-		if (handler == null)
-		{
-			EventEngine.Debugger.debugFiner("There is no handler, not invoking hook");
-			return;
-		}
-		try
-		{
-			if (arguments != null)
-			{
-				EventEngine.Debugger.debugFine("Invoking hook with arguments: %s", arguments);
-				handler.call(arguments);
-				return;
-			}
-			EventEngine.Debugger.debugFine("Invoking hook without arguments");
-			handler.call();
-		}
-		catch (LuaError error)
-		{
-			this.logger.log(
-				Level.WARNING,
-				"LuaError: @" + context + " " + error.getMessage() + " in event hook " + getFunction()
-			);
-		}
-	}
-
-	public LuaValue getHandler()
-	{
-		String scriptFunction = getFunction();
-		boolean isStringFunction = scriptFunction.startsWith("return ");
-		try
-		{
-			return isStringFunction
-				? environment.get("dostring").call(scriptFunction)
-				: environment.get(scriptFunction);
-		}
-		catch (LuaError e)
-		{
-			logger.log(
-				Level.WARNING,
-				"LuaError " + e.getMessage() + " trying to get Lua event handler script"
-			);
-			return null;
-		}
 	}
 
 	public void setContext(String context)

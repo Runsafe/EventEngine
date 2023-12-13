@@ -5,6 +5,7 @@ import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 
 public class CustomEvent extends RunsafeCustomEvent
 {
+	@SuppressWarnings("unused")
 	public CustomEvent(IPlayer player, String event)
 	{
 		super(player, event);
