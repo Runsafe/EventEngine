@@ -15,7 +15,10 @@ public class PlayerInteractEventHook extends AsyncHookInvoker<RunsafePlayerInter
 	{
 		super(event, scheduler);
 		block = event.getBlock();
-		location = block.getLocation();
+		if (block != null)
+			location = block.getLocation();
+		else
+			location = null;
 	}
 
 	@Override
@@ -69,6 +72,9 @@ public class PlayerInteractEventHook extends AsyncHookInvoker<RunsafePlayerInter
 		{
 			table.set("player", event.getPlayer().getName());
 		}
+		if (location == null)
+			return table;
+
 		table.set("world", location.getWorld().getName());
 		table.set("x", location.getBlockX());
 		table.set("y", location.getBlockY());
