@@ -25,6 +25,10 @@ function Player:sendTitle(title, subtitle)
     EventEngine.player.sendTitle(self.name, title, subtitle);
 end
 
+function Player:playSound(sound, volume, pitch)
+    EventEngine.player.playSound(self.name, sound, volume, pitch)
+end
+
 function Player:setMode(mode)
     EventEngine.player.setMode(self.name, mode);
 end

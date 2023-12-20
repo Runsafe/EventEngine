@@ -9,6 +9,7 @@ import no.runsafe.framework.api.lua.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.Buff;
 import no.runsafe.framework.minecraft.Item;
+import no.runsafe.framework.minecraft.Sound;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.GameMode;
@@ -75,6 +76,14 @@ public class PlayerLibrary extends Library
 			protected void run(FunctionParameters parameters)
 			{
 				parameters.getPlayer(0).sendTitle(parameters.getString(1), parameters.getString(2));
+			}
+		});
+		lib.set("playSound", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).playSound(Sound.Get(parameters.getString(1)), parameters.getFloat(2), parameters.getFloat(3));
 			}
 		});
 		lib.set("setHealth", new VoidFunction()
