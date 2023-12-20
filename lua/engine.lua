@@ -26,7 +26,11 @@ function Player:sendTitle(title, subtitle)
 end
 
 function Player:playSound(sound, volume, pitch)
-    EventEngine.player.playSound(self.name, sound, volume, pitch)
+    EventEngine.player.playSound(self.name, sound, volume, pitch);
+end
+
+function Player:setCompassTarget(location)
+    EventEngine.player.setCompassTarget(self.name, location.world, location.x, location.y, location.z);
 end
 
 function Player:setMode(mode)

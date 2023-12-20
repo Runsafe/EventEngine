@@ -86,6 +86,14 @@ public class PlayerLibrary extends Library
 				parameters.getPlayer(0).playSound(Sound.Get(parameters.getString(1)), parameters.getFloat(2), parameters.getFloat(3));
 			}
 		});
+		lib.set("setCompassTarget", new VoidFunction()
+		{
+			@Override
+			protected void run(FunctionParameters parameters)
+			{
+				parameters.getPlayer(0).setCompassTarget(parameters.getLocation(1));
+			}
+		});
 		lib.set("setHealth", new VoidFunction()
 		{
 			@Override
