@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.engine.events;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.eventengine.engine.hooks.Hook;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.IWorld;
@@ -20,7 +21,13 @@ public class PlayerChatEventHook extends AsyncHookInvoker<RunsafePlayerChatEvent
 	@Override
 	protected boolean filter(Hook hook)
 	{
-		return hook.getWorld().isWorld(playerWorld);
+		if (!(hook.getWorld().isWorld(playerWorld)))
+		{
+			EventEngine.Debugger.debugFiner("Filtering chat event: Wrong world.");
+			return false;
+		}
+		EventEngine.Debugger.debugFiner("Filtering chat event: Correct world");
+		return true;
 	}
 
 	@Override
