@@ -16,7 +16,12 @@ pipeline {
         ant 'Default'
         jdk 'Default'
       }
-      steps { buildPluginWithAnt env.plugin, 'WorldGuardBridge', 'build/jar/*.jar' }
+      steps {
+        dir('EventEngine') {
+          sh 'cp -a ../lua .'
+	}
+        buildPluginWithAnt env.plugin, 'WorldGuardBridge', 'build/jar/*.jar,EventEngine'
+      }
     }
     stage('Deploy to test server') {
       agent { label 'server4' }
