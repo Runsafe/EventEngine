@@ -17,10 +17,7 @@ pipeline {
         jdk 'Default'
       }
       steps {
-        dir('EventEngine') {
-          sh 'cp -a ../lua .'
-	}
-        buildPluginWithAnt env.plugin, 'WorldGuardBridge', 'build/jar/*.jar,EventEngine'
+        buildPluginWithAnt env.plugin, 'WorldGuardBridge', 'build/jar/*.jar', [[src:'lua/*', dest:'EventEngine/lua']]
       }
     }
     stage('Deploy to test server') {
