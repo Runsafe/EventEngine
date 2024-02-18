@@ -1,5 +1,6 @@
 package no.runsafe.eventengine.libraries;
 
+import no.runsafe.eventengine.EventEngine;
 import no.runsafe.eventengine.events.CustomEvent;
 import no.runsafe.eventengine.handlers.SeatbeltHandler;
 import no.runsafe.framework.RunsafePlugin;
@@ -355,7 +356,24 @@ public class PlayerLibrary extends Library
 			@Override
 			protected boolean run(FunctionParameters parameters)
 			{
-				return parameters.getPlayer(0).hasItemStrict(Item.get(parameters.getString(1)), parameters.getInt(2));
+				IPlayer player = parameters.getPlayer(0);
+				Item checkItem = Item.get(parameters.getString(1));
+				if (checkItem == null)
+				{
+					EventEngine.Debugger.debugFine("Item check for player %s with invalid item.", player.getName());
+					return false;
+				}
+				int itemData = parameters.getInt(2);
+				EventEngine.Debugger.debugFine("Checking if player %s has item %s with data %d",
+					player.getName(), checkItem.getName(), itemData
+				);
+				if (player.hasItemStrict(checkItem, itemData))
+				{
+					EventEngine.Debugger.debugFine("Player %s has item.", player.getName());
+					return true;
+				}
+				EventEngine.Debugger.debugFine("Player %s does not have item.", player.getName());
+				return false;
 			}
 		});
 
