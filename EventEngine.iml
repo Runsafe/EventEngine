@@ -7,9 +7,9 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="framework" level="project" />
     <orderEntry type="library" name="luaj-jse-3.0-alpha2" level="project" />
+    <orderEntry type="module" module-name="Framework" />
     <orderEntry type="library" name="spigot" level="project" />
-    <orderEntry type="library" name="RunsafeWorldGuardBridge" level="project" />
+    <orderEntry type="module" module-name="RunsafeWorldGuardBridge" />
   </component>
 </module>
