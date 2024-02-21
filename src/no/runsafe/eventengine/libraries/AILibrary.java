@@ -1,12 +1,12 @@
 package no.runsafe.eventengine.libraries;
 
 import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.lua.FunctionParameters;
 import no.runsafe.framework.api.lua.IntegerFunction;
 import no.runsafe.framework.api.lua.Library;
 import no.runsafe.framework.api.lua.VoidFunction;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.luaj.vm2.LuaError;
@@ -22,10 +22,9 @@ public class AILibrary extends Library
 		@library AI
 	 */
 	@SuppressWarnings("unused")
-	public AILibrary(RunsafePlugin plugin, IOutput output)
+	public AILibrary(RunsafePlugin plugin)
 	{
 		super(plugin, "ai");
-		AILibrary.output = output;
 	}
 
 	@Override
@@ -62,7 +61,15 @@ public class AILibrary extends Library
 		if (ai.size() <= id)
 			throw new LuaError("No AI with given ID.");
 
-		RunsafePlayerFakeChatEvent.Broadcast(AILibrary.ai.get(id), message, output);
+		new AIChatEvent(AILibrary.ai.get(id), message).Fire();
+	}
+
+	private static class AIChatEvent extends RunsafePlayerFakeChatEvent
+	{
+		public AIChatEvent(IPlayer identity, String message)
+		{
+			super(identity, message);
+		}
 	}
 
 	/*
@@ -82,6 +89,5 @@ public class AILibrary extends Library
 		return AILibrary.ai.size() - 1;
 	}
 
-	private static IOutput output;
 	private static final List<RunsafeFakePlayer> ai = new ArrayList<>();
 }
