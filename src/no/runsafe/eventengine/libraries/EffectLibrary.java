@@ -99,7 +99,10 @@ public class EffectLibrary extends Library
 	)
 	{
 		IEntity entity = location.getWorld().spawnCreature(location, ProjectileEntity.Firework.getName());
-
+		if (entity == null)
+		{
+			return;
+		}
 		Firework firework = (Firework) ((RunsafeEntity) entity).getRaw();
 		FireworkMeta meta = firework.getFireworkMeta();
 

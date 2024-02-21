@@ -5,11 +5,9 @@ import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.entity.IEntity;
 import no.runsafe.framework.api.lua.*;
+import no.runsafe.framework.api.minecraft.RunsafeEntityType;
 import no.runsafe.framework.internal.wrapper.ObjectUnwrapper;
-import no.runsafe.framework.minecraft.entity.PassiveEntity;
-import no.runsafe.framework.minecraft.entity.RunsafeEntity;
-import no.runsafe.framework.minecraft.entity.RunsafeItemFrame;
-import no.runsafe.framework.minecraft.entity.RunsafeMinecart;
+import no.runsafe.framework.minecraft.entity.*;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 
@@ -30,8 +28,9 @@ public class MobLibrary extends Library
 			@Override
 			public Integer run(FunctionParameters parameters)
 			{
-				return no.runsafe.framework.minecraft.entity.EntityType.getTypeByName(parameters.getString(0)).spawn(
-					parameters.getLocation(1)).getEntityId();
+				RunsafeEntityType entityType = EntityType.getTypeByName(parameters.getString(0));
+				if (entityType == null) return null;
+				return entityType.spawn(parameters.getLocation(1)).getEntityId();
 			}
 		});
 
