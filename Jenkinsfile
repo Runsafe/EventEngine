@@ -7,6 +7,7 @@ pipeline {
   environment { plugin = "EventEngine" }
   triggers {
     upstream '/Runsafe/WorldGuardBridge/master'
+    upstream '/Runsafe/WorldGuardBridge/develop'
     pollSCM '@monthly'
   }
   stages {
